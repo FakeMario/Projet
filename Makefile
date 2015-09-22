@@ -9,7 +9,7 @@
 CC = gcc
 
 # define any compile-time flags
-CFLAGS = `sdl-config --cflags --libs` -g -std=c99
+CFLAGS = `sdl-config --cflags --libs` -g
 
 #-Wall 
 

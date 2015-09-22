@@ -11,7 +11,7 @@ int gameover;
 
 /* source and destination rectangles */
 SDL_Rect camera;
-pt_sprite hero =(pt_sprite) malloc (sizeof(struct s_sprite));
+pt_sprite hero =(pt_sprite) malloc (sizeof(s_sprite));
 
 void HandleEvent(SDL_Event event)
 {
@@ -47,18 +47,8 @@ void HandleEvent(SDL_Event event)
 	camera.x = 0;
       break;
     case SDLK_UP:
-      if ( hero->rc_image.x == 0 )
-	hero->rc_image.x = 32;
-      else
-	hero->rc_image.x = 0;
-      hero->coord.y -= 5;
       break;
     case SDLK_DOWN:
-      if ( hero->rc_image.x == 128 )
-	hero->rc_image.x = 160;
-      else
-	hero->rc_image.x = 128;
-      hero->coord.y += 5;
       break;
     }
     break;
