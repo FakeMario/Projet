@@ -4,7 +4,7 @@
 
 #define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 480
-#define SPRITE_SIZE     32
+#define SPRITE_SIZE     64
 #define CAMERA_SPEED 5
 
 int gameover;
@@ -29,19 +29,23 @@ void HandleEvent(SDL_Event event)
       gameover = 1;
       break;
     case SDLK_LEFT:
-      if ( hero->rc_image.x == 192 )
-	hero->rc_image.x = 224;
+      if ( hero->rc_image.x < 2*SPRITE_SIZE )
+	hero->rc_image.x = 2*SPRITE_SIZE;
+      if ( hero->rc_image.x == 3*SPRITE_SIZE )
+	hero->rc_image.x = 2*SPRITE_SIZE;
       else
-	hero->rc_image.x = 192;
+	hero->rc_image.x += SPRITE_SIZE;
       camera.x -= CAMERA_SPEED;
       if (camera.x <= 0)
 	camera.x = 2000-640;
       break;
     case SDLK_RIGHT:
-      if ( hero->rc_image.x == 64 )
-	hero->rc_image.x = 96;
+      if ( hero->rc_image.x > SPRITE_SIZE )
+	hero->rc_image.x = 0;
+      if ( hero->rc_image.x == SPRITE_SIZE )
+	hero->rc_image.x = 0;
       else
-	hero->rc_image.x = 64;
+	hero->rc_image.x += SPRITE_SIZE;
       camera.x += CAMERA_SPEED;
       if (camera.x >= 2000-640)
 	camera.x = 0;
@@ -78,7 +82,7 @@ int main(int argc, char* argv[])
   SDL_FreeSurface(temp);
 
   /* setup sprite colorkey and turn on RLE */
-  hero->colorkey = SDL_MapRGB(screen->format, 255, 0, 255);
+  hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
   SDL_SetColorKey(hero->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, hero->colorkey);
 
   /* load background */
@@ -92,7 +96,7 @@ int main(int argc, char* argv[])
   hero->coord.y = 430;
 
   /* set animation frame */
-  hero->rc_image.x = 128;
+  hero->rc_image.x = 0;
   hero->rc_image.y = 0;
   hero->rc_image.w = SPRITE_SIZE;
   hero->rc_image.h = SPRITE_SIZE;
