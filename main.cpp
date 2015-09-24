@@ -1,18 +1,19 @@
 
 #include "SDL.h"
-#include "sprite.h"
+#include "sprite.cpp"
 
 #define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 480
 #define SPRITE_SIZE     128
-#define CAMERA_SPEED 5
+#define CAMERA_SPEED 1
 #define NBPLAYERS 1
 
 int gameover;
+unsigned int oldtime = 10000000;
 
 /* source and destination rectangles */
 SDL_Rect camera;
-pt_sprite hero =(pt_sprite) malloc (sizeof(s_sprite));
+pt_sprite hero = (pt_sprite) malloc (sizeof(s_sprite));
 
 void update_events(char*keys);
 void HandleEvent(char* key, SDL_Surface *screen);
@@ -46,10 +47,11 @@ void HandleEvent(char* key, SDL_Surface *screen)
   SDLKey tabkey[NBPLAYERS][3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
   int i;
   for (i=0; i<NBPLAYERS; i++){
-    if(key[tabkey[i][0]]){ //UP
+    if(key[tabkey[i][0]]) { //UP
+      oldtime = SDL_GetTicks();
     }
     
-    if(key[tabkey[i][1]]){ //LEFT
+    if(key[tabkey[i][1]]) { //LEFT
       if ( hero->rc_image.x < 2*SPRITE_SIZE )
 	hero->rc_image.x = 2*SPRITE_SIZE;
       if ( hero->rc_image.x == 3*SPRITE_SIZE )
@@ -61,7 +63,7 @@ void HandleEvent(char* key, SDL_Surface *screen)
 	camera.x = 2000-640;
     }
 
-    if(key[tabkey[i][2]]){ //RIGHT
+    if(key[tabkey[i][2]]) { //RIGHT
       if ( hero->rc_image.x > SPRITE_SIZE )
 	hero->rc_image.x = 0;
       if ( hero->rc_image.x == SPRITE_SIZE )
@@ -108,8 +110,8 @@ int main(int argc, char* argv[])
 
 
   /* set sprite position */
-  hero->coord.x = 300;
-  hero->coord.y = 340;
+  hero->coord.x = hero->x = 300;
+  hero->coord.y = hero->y = 430;
 
   /* set animation frame */
   hero->rc_image.x = 0;
@@ -134,9 +136,11 @@ int main(int argc, char* argv[])
 		
       /* look for an event */
 
-	HandleEvent(key, screen);
-	update_events(key);
+      HandleEvent(key, screen);
+      update_events(key);
       
+      jump(hero, SDL_GetTicks(), oldtime); // jumps only if oldtime < SDLGetTicks() so if u press up */
+      reload_pos(hero);
 
       /* collide with edges of screen */
       if (hero->coord.x <= 0)

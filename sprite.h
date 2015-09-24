@@ -14,6 +14,7 @@
    int colorkey; /* color which has to be invisible on the background */
    SDL_Rect rc_image; /*coords on the bmp */
    SDL_Rect coord; /* coords on the screen */
+   float x,y;
    const int size; /* sprite size */
 };
 typedef struct s_sprite *pt_sprite;
