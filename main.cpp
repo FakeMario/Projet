@@ -6,6 +6,7 @@
 #define SCREEN_HEIGHT 480
 #define SPRITE_SIZE     128
 #define CAMERA_SPEED 5
+#define NBPLAYERS 1
 
 int gameover;
 
@@ -13,22 +14,42 @@ int gameover;
 SDL_Rect camera;
 pt_sprite hero =(pt_sprite) malloc (sizeof(s_sprite));
 
-void HandleEvent(SDL_Event event)
-{
-  switch (event.type) {
-    /* close button clicked */
-  case SDL_QUIT:
-    gameover = 1;
-    break;
-			
-    /* handle the keyboard */
-  case SDL_KEYDOWN:
-    switch (event.key.keysym.sym) {
-    case SDLK_ESCAPE:
-    case SDLK_q:
+void update_events(char*keys);
+void HandleEvent(char* key, SDL_Surface *screen);
+
+void update_events(char* keys){
+  SDL_Event event;
+  while(SDL_PollEvent(&event)){
+    switch(event.type){
+    case SDL_QUIT:
       gameover = 1;
       break;
-    case SDLK_LEFT:
+
+    case SDL_KEYUP:
+      keys[event.key.keysym.sym] = 0;
+      break;
+      
+    case SDL_KEYDOWN:
+      switch(event.key.keysym.sym){
+      case SDLK_ESCAPE:
+	gameover = 1;
+	break;
+      }
+      keys[event.key.keysym.sym]=1;
+      break;
+    }
+  }
+}
+
+void HandleEvent(char* key, SDL_Surface *screen)
+{
+  SDLKey tabkey[NBPLAYERS][3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
+  int i;
+  for (i=0; i<NBPLAYERS; i++){
+    if(key[tabkey[i][0]]){ //UP
+    }
+    
+    if(key[tabkey[i][1]]){ //LEFT
       if ( hero->rc_image.x < 2*SPRITE_SIZE )
 	hero->rc_image.x = 2*SPRITE_SIZE;
       if ( hero->rc_image.x == 3*SPRITE_SIZE )
@@ -38,8 +59,9 @@ void HandleEvent(SDL_Event event)
       camera.x -= CAMERA_SPEED;
       if (camera.x <= 0)
 	camera.x = 2000-640;
-      break;
-    case SDLK_RIGHT:
+    }
+
+    if(key[tabkey[i][2]]){ //RIGHT
       if ( hero->rc_image.x > SPRITE_SIZE )
 	hero->rc_image.x = 0;
       if ( hero->rc_image.x == SPRITE_SIZE )
@@ -49,15 +71,9 @@ void HandleEvent(SDL_Event event)
       camera.x += CAMERA_SPEED;
       if (camera.x >= 2000-640)
 	camera.x = 0;
-      break;
-    case SDLK_UP:
-      break;
-    case SDLK_DOWN:
-      break;
     }
-    break;
   }
-}
+}	       
 
 int main(int argc, char* argv[])
 {
@@ -109,15 +125,18 @@ int main(int argc, char* argv[])
 
   gameover = 0;
 
+  char key[SDLK_LAST]= {0};
+ 
   /* message pump */
   while (!gameover)
     {
       SDL_Event event;
 		
       /* look for an event */
-      if (SDL_PollEvent(&event)) {
-	HandleEvent(event);
-      }
+
+	HandleEvent(key, screen);
+	update_events(key);
+      
 
       /* collide with edges of screen */
       if (hero->coord.x <= 0)
