@@ -6,11 +6,12 @@
 #
 
 # define the C compiler to use
-CC = g++
+CC = gcc
 
 # define any compile-time flags
-CFLAGS = `sdl-config --cflags --libs` -g
+CFLAGS = `sdl-config --cflags --libs` -g -std=c99
 
+WARNINGS=-Wstrict-prototypes -Wmissing-prototypes -Wold-style-definition -Wextra 
 #-Wall 
 
 # define any directories containing header files other than /usr/include
@@ -32,7 +33,7 @@ LIBS = -lSDL_ttf -lm
 
 # define the C source files
 # TODO: update and complete the following line with your .c files names
-SRCS = main.cpp
+SRCS = main.c
 
 # define the C object files 
 #
