@@ -111,7 +111,7 @@ int main(int argc, char* argv[])
 
   /* set sprite position */
   hero->coord.x = hero->x = 300;
-  hero->coord.y = hero->y = 430;
+  hero->coord.y = hero->y = 335;
 
   /* set animation frame */
   hero->rc_image.x = 0;
