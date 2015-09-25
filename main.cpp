@@ -80,7 +80,7 @@ void HandleEvent(char* key, SDL_Surface *screen)
 
 int main(int argc, char* argv[])
 {
-  int level = 1;
+  int level = 2;
   SDL_Surface *screen, *temp, *background;
   SDL_Rect rcBackground;
   enemy_type robot_enemy;
@@ -114,11 +114,19 @@ int main(int argc, char* argv[])
   SDL_SetColorKey(hero->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, hero->colorkey);
 
   /* load background */
-  temp  = SDL_LoadBMP("background.bmp");
-  background = SDL_DisplayFormat(temp);
-  SDL_FreeSurface(temp);
-
-
+  switch(level){
+  case 1:
+    temp  = SDL_LoadBMP("background.bmp");
+    background = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    break;
+  case 2:
+    temp = SDL_LoadBMP("background2.bmp");
+    background = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    break;
+  }
+  
   /* set sprite position */
   hero->coord.x = hero->x = 300;
   hero->coord.y = hero->y = 335;
