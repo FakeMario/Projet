@@ -5,13 +5,13 @@
 
 #define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 480
-#define SPRITE_SIZE     128
+#define SPRITE_WIDTH  50
+#define SPRITE_HEIGHT     128
 #define CAMERA_SPEED 1
 #define NBPLAYERS 1
 
 int gameover;
 unsigned int oldtime = 10000000;
-bool jumping = false;
 int level = 1;
 int levelover = 0;
 
@@ -56,24 +56,24 @@ void HandleEvent(char* key, SDL_Surface *screen)
     }
     
     if(key[tabkey[i][1]]) { //LEFT
-      if ( hero->rc_image.x < 2*SPRITE_SIZE )
-	hero->rc_image.x = 2*SPRITE_SIZE;
-      if ( hero->rc_image.x == 3*SPRITE_SIZE )
-	hero->rc_image.x = 2*SPRITE_SIZE;
+      if ( hero->rc_image.x < 2*SPRITE_WIDTH )
+	hero->rc_image.x = 2*SPRITE_WIDTH;
+      if ( hero->rc_image.x == 3*SPRITE_WIDTH )
+	hero->rc_image.x = 2*SPRITE_WIDTH;
       else
-	hero->rc_image.x += SPRITE_SIZE;
+	hero->rc_image.x += SPRITE_WIDTH;
       camera.x -= CAMERA_SPEED;
       if (camera.x <= 0)
 	camera.x = 2000-640;
     }
 
     if(key[tabkey[i][2]]) { //RIGHT
-      if ( hero->rc_image.x > SPRITE_SIZE )
+      if ( hero->rc_image.x > SPRITE_WIDTH )
 	hero->rc_image.x = 0;
-      if ( hero->rc_image.x == SPRITE_SIZE )
+      if ( hero->rc_image.x == SPRITE_WIDTH )
 	hero->rc_image.x = 0;
       else
-	hero->rc_image.x += SPRITE_SIZE;
+	hero->rc_image.x += SPRITE_WIDTH;
 
       camera.x += CAMERA_SPEED;
     }
@@ -82,7 +82,7 @@ void HandleEvent(char* key, SDL_Surface *screen)
 
 int main(int argc, char* argv[])
 {
-  SDL_Surface *screen, *temp, *background;
+  SDL_Surface *screen, *temp, *background, *tile0, *tile1, *tile2, *tile3;
   SDL_Rect rcBackground;
   enemy_type robot_enemy_1, robot_enemy_2;
   list_of_enemy enemy_list, enemy_list_copy;
@@ -107,7 +107,7 @@ int main(int argc, char* argv[])
   hero->sprite = SDL_DisplayFormat(temp);
   SDL_FreeSurface(temp);
 
-  /* load background */
+  /* load background */ //A changer plus tard
   switch(level){
   case 1:
     temp  = SDL_LoadBMP("background.bmp");
@@ -121,6 +121,23 @@ int main(int argc, char* argv[])
     break;
     levelover = 0;
   }
+
+  //load tiles
+  temp = SDL_LoadBMP("tile0.bmp");
+  tile0 = SDL_DisplayFormat(temp);
+  SDL_FreeSurface(temp);
+
+  temp = SDL_LoadBMP("tile1.bmp");
+  tile1 = SDL_DisplayFormat(temp);
+  SDL_FreeSurface(temp);
+
+  temp = SDL_LoadBMP("tile2.bmp");
+  tile2 = SDL_DisplayFormat(temp);
+  SDL_FreeSurface;
+
+  temp = SDL_LoadBMP("tile3.bmp");
+  tile3 = SDL_DisplayFormat(temp);
+  SDL_FreeSurface;
 
   /* create list of new enemy */
   enemy_list = create_new_list_of_enemy();
@@ -140,8 +157,8 @@ int main(int argc, char* argv[])
   /* set animation frame */
   hero->rc_image.x = 0;
   hero->rc_image.y = 0;
-  hero->rc_image.w = SPRITE_SIZE;
-  hero->rc_image.h = SPRITE_SIZE;
+  hero->rc_image.w = SPRITE_WIDTH;
+  hero->rc_image.h = SPRITE_HEIGHT;
 
   /* Init camera (point of view) */
   camera.h = SCREEN_HEIGHT;
@@ -169,13 +186,13 @@ int main(int argc, char* argv[])
       /* collide with edges of screen */
       if (hero->coord.x <= 0)
 	hero->coord.x = 0;
-      if (hero->coord.x >= SCREEN_WIDTH - SPRITE_SIZE) 
-	hero->coord.x = SCREEN_WIDTH - SPRITE_SIZE;
+      if (hero->coord.x >= SCREEN_WIDTH - SPRITE_WIDTH) 
+	hero->coord.x = SCREEN_WIDTH - SPRITE_WIDTH;
 
       if (hero->coord.y <= 0)
 	hero->coord.y = 0;
-      if (hero->coord.y >= SCREEN_HEIGHT - SPRITE_SIZE) 
-	hero->coord.y = SCREEN_HEIGHT - SPRITE_SIZE;
+      if (hero->coord.y >= SCREEN_HEIGHT - SPRITE_HEIGHT) 
+	hero->coord.y = SCREEN_HEIGHT - SPRITE_HEIGHT;
 
       // Next level when we are at the end of the screen
       if (camera.x >= 2000-SCREEN_WIDTH){
