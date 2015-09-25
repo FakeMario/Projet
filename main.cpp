@@ -1,7 +1,7 @@
 
 #include "SDL.h"
 #include "sprite.cpp"
-#include "enemy.h"
+#include "enemy.cpp"
 
 #define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 480
@@ -84,8 +84,8 @@ int main(int argc, char* argv[])
 {
   SDL_Surface *screen, *temp, *background;
   SDL_Rect rcBackground;
-  enemy_type robot_enemy;
-  list_of_enemy enemy_list;
+  enemy_type robot_enemy_1, robot_enemy_2;
+  list_of_enemy enemy_list, enemy_list_copy;
 
   gameover = 0;
 
@@ -124,8 +124,10 @@ int main(int argc, char* argv[])
 
   /* create list of new enemy */
   enemy_list = create_new_list_of_enemy();
-  robot_enemy = create_new_enemy('R',screen);
-  enemy_list = cons(robot_enemy, enemy_list);
+  robot_enemy_1 = create_new_enemy('R',screen, 200, 200, 0.3);
+  robot_enemy_2 = create_new_enemy('R',screen, 300, 300, 0.3);
+  enemy_list = cons(robot_enemy_1, enemy_list);
+  enemy_list = cons(robot_enemy_2, enemy_list);
 
   /* setup sprite colorkey and turn on RLE */
   hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
@@ -188,7 +190,11 @@ int main(int argc, char* argv[])
       SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
 
       /* draw the enemy sprite */
-      SDL_BlitSurface(enemy_list->first->sprite, &enemy_list->first->rc_image, screen, &enemy_list->first->coord);
+      enemy_list_copy = enemy_list;
+      while (enemy_list_copy != NULL){
+      SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
+      enemy_list_copy = enemy_list_copy->rest;
+      }
 
       /* update the screen */
       SDL_UpdateRect(screen, 0, 0, 0, 0);
