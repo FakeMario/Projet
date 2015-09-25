@@ -10,8 +10,7 @@
 #define NBPLAYERS 1
 
 int gameover;
-unsigned int oldtime = 10000000;
-bool jumping = false;
+unsigned int oldtime = 100000;
 
 /* source and destination rectangles */
 SDL_Rect camera;
@@ -122,6 +121,7 @@ int main(int argc, char* argv[])
   /* set sprite position */
   hero->coord.x = hero->x = 300;
   hero->coord.y = hero->y = 335;
+  hero->pos = 0;
 
   /* set animation frame */
   hero->rc_image.x = 0;
@@ -143,13 +143,14 @@ int main(int argc, char* argv[])
   while (!gameover)
     {
       SDL_Event event;
-		
+	
       /* look for an event */
-
+      
       HandleEvent(key, screen);
       update_events(key);
       
       jump(hero, SDL_GetTicks(), oldtime); // jumps only if oldtime < SDLGetTicks() so if u press up */
+      
       reload_pos(hero);
 
       /* collide with edges of screen */
@@ -163,7 +164,6 @@ int main(int argc, char* argv[])
       if (hero->coord.y >= SCREEN_HEIGHT - SPRITE_SIZE) 
 	hero->coord.y = SCREEN_HEIGHT - SPRITE_SIZE;
 
-      
       SDL_BlitSurface(background, &camera, screen, NULL);
 
       /* draw the sprite */
