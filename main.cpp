@@ -176,7 +176,7 @@ int main(int argc, char* argv[])
 	hero->coord.y = SCREEN_HEIGHT - SPRITE_SIZE;
 
       // Next level when we are at the end of the screen
-      if (camera.x >= 2000-640){
+      if (camera.x >= 2000-SCREEN_WIDTH){
 	levelover = 1;
 	camera.x = 0;
 	level ++;
