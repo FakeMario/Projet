@@ -12,7 +12,6 @@
 
 int gameover;
 unsigned int oldtime = 10000000;
-bool jumping = false;
 int level = 1;
 int levelover = 0;
 
