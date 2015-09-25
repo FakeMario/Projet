@@ -82,7 +82,7 @@ void HandleEvent(char* key, SDL_Surface *screen)
 
 int main(int argc, char* argv[])
 {
-  SDL_Surface *screen, *temp, *background, *tile0, *tile1, *tile2, *tile3;
+  SDL_Surface *screen, *temp, *background, *tile0, *tile1, *tile2, *tile3 *tileset;
   SDL_Rect rcBackground;
   enemy_type robot_enemy;
   list_of_enemy enemy_list;
@@ -215,6 +215,10 @@ int main(int argc, char* argv[])
   SDL_FreeSurface(hero->sprite);
   SDL_FreeSurface(enemy_list->first->sprite);
   SDL_FreeSurface(background);
+  SDL_FreeSurface(tile0);
+  SDL_FreeSurface(tile1);
+  SDL_FreeSurface(tile2);
+  SDL_FreeSurface(tile3);
   SDL_Quit();
 
   return 0;
