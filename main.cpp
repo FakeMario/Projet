@@ -10,6 +10,7 @@
 
 int gameover;
 unsigned int oldtime = 10000000;
+bool jumping = false;
 
 /* source and destination rectangles */
 SDL_Rect camera;
