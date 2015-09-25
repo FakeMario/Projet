@@ -79,6 +79,7 @@ void HandleEvent(char* key, SDL_Surface *screen)
 
 int main(int argc, char* argv[])
 {
+  int level = 1;
   SDL_Surface *screen, *temp, *background;
   SDL_Rect rcBackground;
 
