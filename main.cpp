@@ -1,6 +1,7 @@
 
 #include "SDL.h"
 #include "sprite.cpp"
+#include "enemy.h"
 
 #define SCREEN_WIDTH  640
 #define SCREEN_HEIGHT 480
@@ -82,6 +83,9 @@ int main(int argc, char* argv[])
 {
   SDL_Surface *screen, *temp, *background;
   SDL_Rect rcBackground;
+  enemy_type robot_enemy;
+  list_of_enemy enemy_list;
+
 
   /* initialize SDL */
   SDL_Init(SDL_INIT_VIDEO);
@@ -99,6 +103,11 @@ int main(int argc, char* argv[])
   temp = SDL_LoadBMP("sprite.bmp");
   hero->sprite = SDL_DisplayFormat(temp);
   SDL_FreeSurface(temp);
+
+  /* create list of new enemy */
+  enemy_list = create_new_list_of_enemy();
+  robot_enemy = create_new_enemy('R',screen);
+  enemy_list = cons(robot_enemy, enemy_list);
 
   /* setup sprite colorkey and turn on RLE */
   hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
@@ -160,12 +169,16 @@ int main(int argc, char* argv[])
       /* draw the sprite */
       SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
 
+      /* draw the enemy sprite */
+      SDL_BlitSurface(enemy_list->first->sprite, &enemy_list->first->rc_image, screen, &enemy_list->first->coord);
+
       /* update the screen */
       SDL_UpdateRect(screen, 0, 0, 0, 0);
     }
 
   /* clean up */
   SDL_FreeSurface(hero->sprite);
+  SDL_FreeSurface(enemy_list->first->sprite);
   SDL_FreeSurface(background);
   SDL_Quit();
 
