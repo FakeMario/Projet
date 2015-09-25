@@ -11,14 +11,10 @@
 #define NBPLAYERS 1
 
 int gameover;
-<<<<<<< HEAD
-unsigned int oldtime = 100000;
-=======
 unsigned int oldtime = 10000000;
 bool jumping = false;
 int level = 1;
 int levelover = 0;
->>>>>>> 00591fdb51b158b6872e9c6d3f170794efc706a0
 
 /* source and destination rectangles */
 SDL_Rect camera;
@@ -156,7 +152,6 @@ int main(int argc, char* argv[])
   /* set sprite position */
   hero->coord.x = hero->x = 300;
   hero->coord.y = hero->y = 335;
-  hero->pos = 0;
 
   /* set animation frame */
   hero->rc_image.x = 0;
@@ -178,14 +173,13 @@ int main(int argc, char* argv[])
   while (!levelover&&!gameover)
     {
       SDL_Event event;
-	
+		
       /* look for an event */
-      
+
       HandleEvent(key, screen);
       update_events(key);
       
       jump(hero, SDL_GetTicks(), oldtime); // jumps only if oldtime < SDLGetTicks() so if u press up */
-      
       reload_pos(hero);
 
       /* collide with edges of screen */
@@ -199,8 +193,6 @@ int main(int argc, char* argv[])
       if (hero->coord.y >= SCREEN_HEIGHT - SPRITE_HEIGHT) 
 	hero->coord.y = SCREEN_HEIGHT - SPRITE_HEIGHT;
 
-<<<<<<< HEAD
-=======
       // Next level when we are at the end of the screen
       if (camera.x >= 2000-SCREEN_WIDTH){
 	levelover = 1;
@@ -208,7 +200,6 @@ int main(int argc, char* argv[])
 	level ++;
       }
       
->>>>>>> 00591fdb51b158b6872e9c6d3f170794efc706a0
       SDL_BlitSurface(background, &camera, screen, NULL);
 
       /* draw the sprite */
