@@ -4,6 +4,7 @@
 #include "enemy.cpp"
 #include "tiles.cpp"
 
+#define TAILLE_TUILE 64
 #define NB_BLOCS_HAUTEUR 12
 #define NB_BLOCS_LARGEUR 16
 #define SCREEN_WIDTH  640
