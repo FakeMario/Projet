@@ -28,27 +28,27 @@ void Afficher(SDL_Surface* screen, SDL_Surface* tile0, SDL_Surface* tile1, SDL_S
   int i,j;
   SDL_Rect Rect_dest;
   SDL_Rect Rect_source;
-  Rect_source.w = LARGEUR_TUILE;
-  Rect_source.h = HAUTEUR_TUILE;
+  Rect_source.w = TAILLE_TUILE;
+  Rect_source.h = TAILLE_TUILE;
 
   for(i=0; i<nb_blocs_larg; i++){
     for(j=0; j<nb_blocs_haut; j++){
-      Rect_dest.x = i*LARGEUR_TUILE;
-      Rect_dest.y = j*HAUTEUR_TUILE;
-      Rect_source.x = (table[j][i]-'0')*LARGEUR_TUILE;
+      Rect_dest.x = i*TAILLE_TUILE;
+      Rect_dest.y = j*TAILLE_TUILE;
+      Rect_source.x = (table[j][i]-'0')*TAILLE_TUILE;
       Rect_source.y = 0;
       switch (table[j][i]){
       case 0:
-	SDL_BlitzSurface(tile0, &Rect_source, screen, &Rect_dest);
+	SDL_BlitSurface(tile0, &Rect_source, screen, &Rect_dest);
 	break;
       case 1:
-	SDL_BlitzSurface(tile1, &Rect_source, screen, &Rect_dest);
+	SDL_BlitSurface(tile1, &Rect_source, screen, &Rect_dest);
 	break;
       case 2:
-  SDL_BlitzSurface(tile2, &Rect_source, screen, &Rect_dest);
+	SDL_BlitSurface(tile2, &Rect_source, screen, &Rect_dest);
 	break;
       case 3:
-	SDL_BlitzSurface(tile3, &Rect_source, screen, &Rect_dest);
+	SDL_BlitSurface(tile3, &Rect_source, screen, &Rect_dest);
 	break;
       }
     }
@@ -57,6 +57,3 @@ void Afficher(SDL_Surface* screen, SDL_Surface* tile0, SDL_Surface* tile1, SDL_S
 
 }
 
-int main (){
-  return 0;
-}
