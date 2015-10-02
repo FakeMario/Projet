@@ -1,6 +1,7 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
+#include <stdio.h>
 #include <stdbool.h>
 #include "math.h"
 #include "SDL.h"
@@ -22,8 +23,6 @@ typedef struct enemy *enemy_type;
 
 enemy_type create_new_enemy(char type, SDL_Surface *screen, float x, float y, float speed);
 
-
-
 /*LIST OF ENEMY*/
 
 typedef struct List_of_enemy * list_of_enemy;
@@ -34,11 +33,8 @@ struct List_of_enemy{
 
 
 list_of_enemy create_new_list_of_enemy();
-
 list_of_enemy cons(enemy_type enemy, list_of_enemy L);
-
-
-
-
+void deplacement_enemy(enemy_type enemy);
+/* void deplacement_sprite_enemy(enemy_type enemy, char direction); */
 
 #endif
