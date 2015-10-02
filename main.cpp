@@ -65,6 +65,9 @@ void HandleEvent(char* key, SDL_Surface *screen)
 	hero->rc_image.x = 2*SPRITE_WIDTH;
       else
 	hero->rc_image.x += SPRITE_WIDTH;
+
+      hero->x -= 0.1;
+      
     }
 
     if(key[tabkey[i][2]]) { //RIGHT
@@ -74,13 +77,15 @@ void HandleEvent(char* key, SDL_Surface *screen)
 	hero->rc_image.x = 0;
       else
 	hero->rc_image.x += SPRITE_WIDTH;
+      hero->x += 0.1;
     }
+  
   }
 }	       
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
-  SDL_Surface *screen, *temp, *background, *tile0, *tile1, *tile2, *tile3, *tileset;
+  SDL_Surface *screen,*temp,*tileset;
   enemy_type robot_enemy_1, robot_enemy_2;
   list_of_enemy enemy_list, enemy_list_copy;
 
@@ -96,30 +101,21 @@ int main(int argc, char* argv[])
     /* create window */
     screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
+    //load tileset
+    temp = SDL_LoadBMP("tileset.bmp");
+    tileset = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+
+    // fonction affichage
+    Afficher(screen,tileset,table,NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
+    
     /* set keyboard repeat */
     SDL_EnableKeyRepeat(70, 70);
 
     /* load sprite */
     temp = SDL_LoadBMP("sprite.bmp");
     hero->sprite = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);
-   
-    //load tiles
-    temp = SDL_LoadBMP("tile0.bmp");
-    tile0 = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);
-
-    temp = SDL_LoadBMP("tile1.bmp");
-    tile1 = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);
-
-    temp = SDL_LoadBMP("tile2.bmp");
-    tile2 = SDL_DisplayFormat(temp);
-    SDL_FreeSurface;
-
-    temp = SDL_LoadBMP("tile3.bmp");
-    tile3 = SDL_DisplayFormat(temp);
-    SDL_FreeSurface;
+    SDL_FreeSurface(temp);   
 
     /* create list of new enemy */
     enemy_list = create_new_list_of_enemy();
@@ -146,29 +142,13 @@ int main(int argc, char* argv[])
 
     char key[SDLK_LAST]= {0};
 
-    char * table[][32] = { //16 blocs large * 12 blocs haut (64px sur 1024*768)
-      "0000000000000000",
-      "0000000002220000",
-      "0000000000000000",
-      "0002220000000000",
-      "0000000000000000",
-      "0000000022220000",
-      "0000000000000000",
-      "0000022000000000",
-      "0000222200000000",
-      "0002222220000000",
-      "0022222222000000",
-      "1111111111111111",
-    };
-   
-
     /* message pump */
     while (!levelover&&!gameover)
       {
 	SDL_Event event;
 		
 	/* look for an event */
-	Afficher(screen, tile0, tile1, tile2, tile3, *table, NB_BLOCS_LARGEUR, NB_BLOCS_HAUTEUR);
+
 	HandleEvent(key, screen);
 	update_events(key);
       
@@ -203,10 +183,7 @@ int main(int argc, char* argv[])
   /* clean up */
   SDL_FreeSurface(hero->sprite);
   SDL_FreeSurface(enemy_list->first->sprite);
-  SDL_FreeSurface(tile0);
-  SDL_FreeSurface(tile1);
-  SDL_FreeSurface(tile2);
-  SDL_FreeSurface(tile3);
+  SDL_FreeSurface(tileset);
   SDL_Quit();
 
   return 0;
