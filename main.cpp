@@ -78,9 +78,9 @@ void HandleEvent(char* key, SDL_Surface *screen)
   }
 }	       
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
-  SDL_Surface *screen, *temp, *background, *tile0, *tile1, *tile2, *tile3, *tileset;
+  SDL_Surface *screen,*temp,*tileset;
   enemy_type robot_enemy_1, robot_enemy_2;
   list_of_enemy enemy_list, enemy_list_copy;
 
@@ -96,30 +96,21 @@ int main(int argc, char* argv[])
     /* create window */
     screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
+    //load tileset
+    temp = SDL_LoadBMP("tileset.bmp");
+    tileset = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+
+    // fonction affichage
+    Afficher(screen,tileset,table,NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
+    
     /* set keyboard repeat */
     SDL_EnableKeyRepeat(70, 70);
 
     /* load sprite */
     temp = SDL_LoadBMP("sprite.bmp");
     hero->sprite = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);
-   
-    //load tiles
-    temp = SDL_LoadBMP("tile0.bmp");
-    tile0 = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);
-
-    temp = SDL_LoadBMP("tile1.bmp");
-    tile1 = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);
-
-    temp = SDL_LoadBMP("tile2.bmp");
-    tile2 = SDL_DisplayFormat(temp);
-    SDL_FreeSurface;
-
-    temp = SDL_LoadBMP("tile3.bmp");
-    tile3 = SDL_DisplayFormat(temp);
-    SDL_FreeSurface;
+    SDL_FreeSurface(temp);   
 
     /* create list of new enemy */
     enemy_list = create_new_list_of_enemy();
@@ -181,16 +172,13 @@ int main(int argc, char* argv[])
 	}
 
 	/* update the screen */
-	SDL_UpdateRect(screen, 0, 0, 0, 0);
+	//SDL_UpdateRect(screen, 0, 0, 0, 0);
       }
   }
   /* clean up */
   SDL_FreeSurface(hero->sprite);
   SDL_FreeSurface(enemy_list->first->sprite);
-  SDL_FreeSurface(tile0);
-  SDL_FreeSurface(tile1);
-  SDL_FreeSurface(tile2);
-  SDL_FreeSurface(tile3);
+  SDL_FreeSurface(tileset);
   SDL_Quit();
 
   return 0;
