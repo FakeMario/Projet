@@ -6,7 +6,9 @@
 #define NB_BLOCS_HAUTEUR 12
 #define NB_BLOCS_LARGEUR 16
 
-char* table[]= { //16 blocs large * 12 blocs haut (64px sur 1024*768)
+#pragma GCC diagnostic ignored "-Wwrite-strings"
+
+char* table0[]= { //16 blocs large * 12 blocs haut (64px sur 1024*768)
   "0000000000000000",
   "0000000002220000",
   "0000000000000000",
@@ -20,6 +22,8 @@ char* table[]= { //16 blocs large * 12 blocs haut (64px sur 1024*768)
   "0022222222000000",
   "1111111111111111",
 };
+
+char** table[1]={table0};
 
 void Afficher(SDL_Surface* screen, SDL_Surface* tileset, char** table, int nb_blocs_larg, int nb_blocs_haut){
   int i,j;
@@ -37,7 +41,6 @@ void Afficher(SDL_Surface* screen, SDL_Surface* tileset, char** table, int nb_bl
       SDL_BlitSurface(tileset,&Rect_source,screen,&Rect_dest); 
     }
   }
-  //SDL_Flip(screen);
-
 }
+
 

@@ -16,7 +16,7 @@
 
 int gameover;
 unsigned int oldtime = 10000000;
-int level = 1;
+int level = 0;
 int levelover = 0;
 
 /* source and destination rectangles */
@@ -148,7 +148,7 @@ int main(int argc, char** argv)
 		
 	/* look for an event */
 	// fonction affichage
-	Afficher(screen,tileset,table,NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
+	Afficher(screen,tileset,table[level],NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
 
 	HandleEvent(key, screen);
 	update_events(key);
