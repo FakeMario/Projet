@@ -3,6 +3,7 @@
 #include "sprite.cpp"
 #include "enemy.cpp"
 #include "tiles.cpp"
+#include "collision.cpp"
 
 #define TAILLE_TUILE 64
 #define NB_BLOCS_HAUTEUR 12
@@ -167,6 +168,9 @@ int main(int argc, char** argv)
 	if (hero->coord.y >= SCREEN_HEIGHT - SPRITE_HEIGHT) 
 	  hero->coord.y = SCREEN_HEIGHT - SPRITE_HEIGHT;
 
+	//if(CollisionDecor(hero, table[level]) == true)
+	// printf("fromage");
+	
 	/* draw the sprite */
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
 
@@ -174,18 +178,24 @@ int main(int argc, char** argv)
 	enemy_list_copy = enemy_list;
 	while (enemy_list_copy != NULL){
 	  SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
-	  enemy_list_copy = enemy_list_copy->rest;
+	  if (Collision_H_E(hero, enemy_list_copy->first) == 1) {
+	    printf("Ennemi touché");
+	  }
+	   if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
+	    printf("Moins une vie");
+	  }
+	    enemy_list_copy = enemy_list_copy->rest;
+	  }
+
+	  /* update the screen */
+	  SDL_UpdateRect(screen, 0, 0, 0, 0);
 	}
-
-	/* update the screen */
-	SDL_UpdateRect(screen, 0, 0, 0, 0);
       }
-  }
-  /* clean up */
-  SDL_FreeSurface(hero->sprite);
-  SDL_FreeSurface(enemy_list->first->sprite);
-  SDL_FreeSurface(tileset);
-  SDL_Quit();
+    /* clean up */
+    SDL_FreeSurface(hero->sprite);
+    SDL_FreeSurface(enemy_list->first->sprite);
+    SDL_FreeSurface(tileset);
+    SDL_Quit();
 
-  return 0;
-}
+    return 0;
+  }
