@@ -22,6 +22,7 @@ enemy_type create_new_enemy(char type, SDL_Surface *screen, float x, float y, fl
   enemy->rc_image.h = 50;
   enemy->speed = speed;
   break;
+
   case 'C':
 temp = SDL_LoadBMP("mini_champi.bmp");
   enemy->sprite = SDL_DisplayFormat(temp);
@@ -38,6 +39,7 @@ temp = SDL_LoadBMP("mini_champi.bmp");
   enemy->rc_image.h = 20;
   enemy->speed = speed;
   break;
+
   }
   return enemy;
 }
@@ -58,6 +60,7 @@ list_of_enemy cons(enemy_type enemy, list_of_enemy L){
   L1->rest = L;
   return L1;
 }
+
 
 
 void deplacement_enemy(enemy_type enemy, char direction)
@@ -99,3 +102,4 @@ void deplacement_enemy(enemy_type enemy, char direction)
 //   }
 
 // }
+

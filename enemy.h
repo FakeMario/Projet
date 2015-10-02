@@ -37,4 +37,5 @@ list_of_enemy cons(enemy_type enemy, list_of_enemy L);
 void deplacement_enemy(enemy_type enemy);
 /* void deplacement_sprite_enemy(enemy_type enemy, char direction); */
 
+
 #endif

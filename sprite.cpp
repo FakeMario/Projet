@@ -4,7 +4,7 @@ void jump(pt_sprite hero, unsigned int time, unsigned int oldtime)
 {
   if (time - oldtime <= 300 && time - oldtime > 0) {
     hero->y -= 0.75;
-  } else if (hero->y < 335) {
+  } else if (hero->y < 700) {
     hero->y += 0.5;
   }
 }
