@@ -101,8 +101,7 @@ int main(int argc, char** argv)
     tileset = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
 
-    // fonction affichage
-    Afficher(screen,tileset,table,NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
+   
     
     /* set keyboard repeat */
     SDL_EnableKeyRepeat(70, 70);
@@ -143,6 +142,8 @@ int main(int argc, char** argv)
 	SDL_Event event;
 		
 	/* look for an event */
+	// fonction affichage
+	Afficher(screen,tileset,table,NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
 
 	HandleEvent(key, screen);
 	update_events(key);
@@ -172,7 +173,7 @@ int main(int argc, char** argv)
 	}
 
 	/* update the screen */
-	//SDL_UpdateRect(screen, 0, 0, 0, 0);
+	SDL_UpdateRect(screen, 0, 0, 0, 0);
       }
   }
   /* clean up */
