@@ -3,6 +3,7 @@
 #include "sprite.cpp"
 #include "enemy.cpp"
 #include "tiles.cpp"
+#include "collision.cpp"
 
 #define TAILLE_TUILE 64
 #define NB_BLOCS_HAUTEUR 12
@@ -11,7 +12,6 @@
 #define SCREEN_HEIGHT 768
 #define SPRITE_WIDTH  50
 #define SPRITE_HEIGHT     128
-#define CAMERA_SPEED 1
 #define NBPLAYERS 1
 
 int gameover;
@@ -146,9 +146,10 @@ int main(int argc, char** argv)
       {
 	SDL_Event event;
 		
-	/* look for an event */
 	// fonction affichage
 	Afficher(screen,tileset,table[level],NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
+
+	printf("%d", collision_hero_decor(hero, table[level]));
 
 	HandleEvent(key, screen);
 	update_events(key);

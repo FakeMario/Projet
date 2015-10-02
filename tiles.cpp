@@ -8,7 +8,7 @@
 
 #pragma GCC diagnostic ignored "-Wwrite-strings"
 
-char* table0[]= { //16 blocs large * 12 blocs haut (64px sur 1024*768)
+char* table0[]={ //16 blocs large * 12 blocs haut (64px sur 1024*768)
   "0000000000000000",
   "0000000002220000",
   "0000000000000000",
@@ -22,6 +22,7 @@ char* table0[]= { //16 blocs large * 12 blocs haut (64px sur 1024*768)
   "0022222222000000",
   "1111111111111111",
 };
+  
 
 char** table[1]={table0};
 
