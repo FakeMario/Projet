@@ -3,11 +3,11 @@
 #include "sprite.cpp"
 #include "enemy.cpp"
 #include "tiles.cpp"
-<<<<<<< HEAD
+
 #include "hero_life.cpp"
-=======
+
 #include "collision.cpp"
->>>>>>> 84b7774f3c4e1954c71aa4a6f27368aa4d80726f
+
 
 #define TAILLE_TUILE 64
 #define NB_BLOCS_HAUTEUR 12
@@ -16,7 +16,6 @@
 #define SCREEN_HEIGHT 768
 #define SPRITE_WIDTH  50
 #define SPRITE_HEIGHT     128
-#define CAMERA_SPEED 1
 #define NBPLAYERS 1
 
 int gameover;
@@ -91,16 +90,16 @@ void HandleEvent(char* key, SDL_Surface *screen)
 int main(int argc, char** argv)
 {
   SDL_Surface *screen,*temp,*tileset;
-<<<<<<< HEAD
-=======
+
+
   enemy_type robot_enemy_1, robot_enemy_2;
   list_of_enemy enemy_list, enemy_list_copy;
->>>>>>> 84b7774f3c4e1954c71aa4a6f27368aa4d80726f
+
 
   enemy_type robot_enemy_1, robot_enemy_2, mini_champi_enemy_1;
   list_of_enemy enemy_list, enemy_list_copy;
 
-<<<<<<< HEAD
+
   // hero_lives_type life_1, life_2, life_3;
   // list_of_hero_lives hero_lives_list,hero_lives_list_copy;
 
@@ -119,7 +118,7 @@ int main(int argc, char** argv)
     /* create window */
     screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
-=======
+
   while (!gameover){
     /* initialize SDL */
     SDL_Init(SDL_INIT_VIDEO);
@@ -130,12 +129,12 @@ int main(int argc, char** argv)
     /* create window */
     screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
->>>>>>> 84b7774f3c4e1954c71aa4a6f27368aa4d80726f
+
     //load tileset
     temp = SDL_LoadBMP("tileset.bmp");
     tileset = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
-<<<<<<< HEAD
+
 
    
     
@@ -184,7 +183,7 @@ int main(int argc, char** argv)
     char key[SDLK_LAST]= {0};
 
     past_time_enemy =SDL_GetTicks();
-=======
+
 
    
     
@@ -220,20 +219,21 @@ int main(int argc, char** argv)
     levelover = 0;
 
     char key[SDLK_LAST]= {0};
->>>>>>> 84b7774f3c4e1954c71aa4a6f27368aa4d80726f
+
 
     /* message pump */
     while (!levelover&&!gameover)
       {
 	SDL_Event event;
 		
-	/* look for an event */
 	// fonction affichage
-<<<<<<< HEAD
+
 	Afficher(screen,tileset,table,NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
-=======
+
 	Afficher(screen,tileset,table[level],NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
->>>>>>> 84b7774f3c4e1954c71aa4a6f27368aa4d80726f
+
+
+	printf("%d", collision_hero_decor(hero, table[level]));
 
 	HandleEvent(key, screen);
 	update_events(key);
@@ -252,12 +252,11 @@ int main(int argc, char** argv)
 	if (hero->coord.y >= SCREEN_HEIGHT - SPRITE_HEIGHT) 
 	  hero->coord.y = SCREEN_HEIGHT - SPRITE_HEIGHT;
 
-<<<<<<< HEAD
-=======
+
 	//if(CollisionDecor(hero, table[level]) == true)
 	// printf("fromage");
 	
->>>>>>> 84b7774f3c4e1954c71aa4a6f27368aa4d80726f
+
 	/* draw the sprite */
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
 
@@ -265,7 +264,7 @@ int main(int argc, char** argv)
 	enemy_list_copy = enemy_list;
 	while (enemy_list_copy != NULL){
 	  SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
-<<<<<<< HEAD
+
 	  present_time_enemy = SDL_GetTicks();
 	  /* deplacement of the enemy */
 	  if (((present_time_enemy - past_time_enemy)/6000)%2 == 0){
@@ -308,7 +307,7 @@ int main(int argc, char** argv)
 
   return 0;
 }
-=======
+
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 1) {
 	    printf("Ennemi touché");
 	  }
@@ -330,4 +329,4 @@ int main(int argc, char** argv)
 
     return 0;
   }
->>>>>>> 84b7774f3c4e1954c71aa4a6f27368aa4d80726f
+
