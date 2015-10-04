@@ -1,13 +1,9 @@
-/*à modifier */
+
 #include "SDL.h"
 #include "sprite.cpp"
 #include "enemy.cpp"
 #include "tiles.cpp"
-
-#include "hero_life.cpp"
-
 #include "collision.cpp"
-
 
 #define TAILLE_TUILE 64
 #define NB_BLOCS_HAUTEUR 12
@@ -15,7 +11,7 @@
 #define SCREEN_WIDTH  1024
 #define SCREEN_HEIGHT 768
 #define SPRITE_WIDTH  50
-#define SPRITE_HEIGHT     128
+#define SPRITE_HEIGHT 128
 #define NBPLAYERS 1
 
 int gameover;
@@ -90,22 +86,11 @@ void HandleEvent(char* key, SDL_Surface *screen)
 int main(int argc, char** argv)
 {
   SDL_Surface *screen,*temp,*tileset;
-
-
-  enemy_type robot_enemy_1, robot_enemy_2;
+  enemy_type robot_enemy_1, robot_enemy_2, mini_champi_enemy_1 ;
   list_of_enemy enemy_list, enemy_list_copy;
-
-
-  enemy_type robot_enemy_1, robot_enemy_2, mini_champi_enemy_1;
-  list_of_enemy enemy_list, enemy_list_copy;
-
-
   // hero_lives_type life_1, life_2, life_3;
   // list_of_hero_lives hero_lives_list,hero_lives_list_copy;
-
   int past_time_enemy, present_time_enemy;
-
-
   gameover = 0;
 
   while (!gameover){
@@ -118,25 +103,10 @@ int main(int argc, char** argv)
     /* create window */
     screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
-
-  while (!gameover){
-    /* initialize SDL */
-    SDL_Init(SDL_INIT_VIDEO);
-
-    /* set the title bar */
-    SDL_WM_SetCaption("SDL Animation", "SDL Animation");
-
-    /* create window */
-    screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
-
-
     //load tileset
     temp = SDL_LoadBMP("tileset.bmp");
     tileset = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
-
-
-   
     
     /* set keyboard repeat */
     SDL_EnableKeyRepeat(70, 70);
@@ -163,11 +133,11 @@ int main(int argc, char** argv)
     // hero_lives_list = list_hero_lives_cons(life_1, hero_lives_list);
     // hero_lives_list = list_hero_lives_cons(life_2, hero_lives_list);
     // hero_lives_list = list_hero_lives_cons(life_3, hero_lives_list);
-
+      
     /* setup sprite colorkey and turn on RLE */
     hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
     SDL_SetColorKey(hero->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, hero->colorkey);
-  
+	  
     /* set sprite position */
     hero->coord.x = hero->x = 300;
     hero->coord.y = hero->y = 700;
@@ -179,62 +149,21 @@ int main(int argc, char** argv)
     hero->rc_image.h = SPRITE_HEIGHT;
 
     levelover = 0;
-
-    char key[SDLK_LAST]= {0};
-
     past_time_enemy =SDL_GetTicks();
 
-
-   
-    
-    /* set keyboard repeat */
-    SDL_EnableKeyRepeat(70, 70);
-
-    /* load sprite */
-    temp = SDL_LoadBMP("sprite.bmp");
-    hero->sprite = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);   
-
-    /* create list of new enemy */
-    enemy_list = create_new_list_of_enemy();
-    robot_enemy_1 = create_new_enemy('R',screen, 250, 200, 0);
-    robot_enemy_2 = create_new_enemy('R',screen, 200, 200, 0);
-    enemy_list = cons(robot_enemy_1, enemy_list);
-    enemy_list = cons(robot_enemy_2, enemy_list);
-
-    /* setup sprite colorkey and turn on RLE */
-    hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
-    SDL_SetColorKey(hero->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, hero->colorkey);
-  
-    /* set sprite position */
-    hero->coord.x = hero->x = 300;
-    hero->coord.y = hero->y = 700;
-
-    /* set animation frame */
-    hero->rc_image.x = 0;
-    hero->rc_image.y = 0;
-    hero->rc_image.w = SPRITE_WIDTH;
-    hero->rc_image.h = SPRITE_HEIGHT;
-
-    levelover = 0;
-
     char key[SDLK_LAST]= {0};
-
-
+ 
+					    
     /* message pump */
     while (!levelover&&!gameover)
       {
 	SDL_Event event;
-		
+	  
 	// fonction affichage
 
-	Afficher(screen,tileset,table,NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
-
 	Afficher(screen,tileset,table[level],NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
-
-
-	printf("%d", collision_hero_decor(hero, table[level]));
-
+	/*printf("%d", */collision_hero_decor(hero, table[level])/*)*/;
+	   
 	HandleEvent(key, screen);
 	update_events(key);
       
@@ -252,11 +181,9 @@ int main(int argc, char** argv)
 	if (hero->coord.y >= SCREEN_HEIGHT - SPRITE_HEIGHT) 
 	  hero->coord.y = SCREEN_HEIGHT - SPRITE_HEIGHT;
 
-
-	//if(CollisionDecor(hero, table[level]) == true)
-	// printf("fromage");
+	// if(CollisionDecor(hero, table[level]) == true)
+	//  printf("fromage");
 	
-
 	/* draw the sprite */
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
 
@@ -264,7 +191,12 @@ int main(int argc, char** argv)
 	enemy_list_copy = enemy_list;
 	while (enemy_list_copy != NULL){
 	  SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
-
+	  if (Collision_H_E(hero, enemy_list_copy->first) == 1) {
+	    printf("Ennemi touché");
+	  }
+	  if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
+	    printf("Moins une vie");
+	  }
 	  present_time_enemy = SDL_GetTicks();
 	  /* deplacement of the enemy */
 	  if (((present_time_enemy - past_time_enemy)/6000)%2 == 0){
@@ -284,21 +216,19 @@ int main(int argc, char** argv)
 	  }
 	  enemy_list_copy = enemy_list_copy->rest;
 	}
-
+	      
 	// /* draw the hero lives sprite */
 	// hero_lives_list=hero_lives_list_copy;
 	// while (hero_lives_list_copy != NULL){
 	//   SDL_BlitSurface(hero_lives_list_copy->first->sprite, &hero_lives_list_copy->first->rc_image, screen, &hero_lives_list_copy->first->coord);
 	//   hero_lives_list_copy = hero_lives_list_copy->rest;
 	// }
-
-
-
-
+       	
 	/* update the screen */
 	SDL_UpdateRect(screen, 0, 0, 0, 0);
       }
   }
+
   /* clean up */
   SDL_FreeSurface(hero->sprite);
   SDL_FreeSurface(enemy_list->first->sprite);
@@ -307,26 +237,4 @@ int main(int argc, char** argv)
 
   return 0;
 }
-
-	  if (Collision_H_E(hero, enemy_list_copy->first) == 1) {
-	    printf("Ennemi touché");
-	  }
-	   if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
-	    printf("Moins une vie");
-	  }
-	    enemy_list_copy = enemy_list_copy->rest;
-	  }
-
-	  /* update the screen */
-	  SDL_UpdateRect(screen, 0, 0, 0, 0);
-	}
-      }
-    /* clean up */
-    SDL_FreeSurface(hero->sprite);
-    SDL_FreeSurface(enemy_list->first->sprite);
-    SDL_FreeSurface(tileset);
-    SDL_Quit();
-
-    return 0;
-  }
 
