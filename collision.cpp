@@ -10,18 +10,26 @@
 #define SCREEN_WIDTH  1024
 #define SCREEN_HEIGHT 768
 
+int Collision_H_E(pt_sprite hero, object_type enemy);
+
 
 void collision_hero_decor (pt_sprite hero,char** table, bool Gauche, bool Droite, bool Haut, bool Bas){
   int i,j;
   SDL_Rect coord;
+  object_type object =(object_type)malloc(sizeof(struct object));
   for (i=0; i<NB_BLOCS_LARGEUR; i++){
     for (j=0; j<NB_BLOCS_HAUTEUR; j++){
       if (table[j][i]!='0'){ //si on n'est pas sur une case ciel
 	//si le hero est à gauche ou à droite du bloc
 	coord.x = i*TAILLE_TUILE;
 	coord.y = j*TAILLE_TUILE;
-	printf("%c",table[j][i]);
-	printf("toast");
+	//	coord.w = coord.h = TAILLE_TUILE;
+	object->x = coord.x;
+	object->y = coord.y;
+	object->rc_image.h = object->rc_image.w = TAILLE_TUILE;
+	//printf("%c",table[j][i]);
+	if(Collision_H_E(hero, object)==2)
+	  printf("toast");
       }
     }
   }
