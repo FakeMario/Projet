@@ -7,22 +7,22 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
   SDL_Surface * temp;
   switch (type) {
   case 'R': /*Robot*/
-  temp = SDL_LoadBMP("robot_1.bmp");
-  object->sprite = SDL_DisplayFormat(temp);
-  SDL_FreeSurface(temp);
-  object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
-  SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
-  object->x = x;
-  object->y = y;
-  object->coord.x = (int)object->x;
-  object->coord.y = (int)object->y;
-  object->rc_image.x = 0;
-  object->rc_image.y = 0;
-  object->rc_image.w = 40;
-  object->rc_image.h = 50;
-  break;
+    temp = SDL_LoadBMP("robot_1.bmp");
+    object->sprite = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
+    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
+    object->x = x;
+    object->y = y;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
+    object->rc_image.x = 0;
+    object->rc_image.y = 0;
+    object->rc_image.w = 40;
+    object->rc_image.h = 50;
+    break;
 
-  case 'C':
+  case 'C': /*Mini-Champi*/
     temp = SDL_LoadBMP("mini_champi.bmp");
     object->sprite = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
@@ -38,6 +38,21 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
     object->rc_image.h = 20;
     break;
     
+  case 'L': /*Life of the hero*/
+    temp = SDL_LoadBMP("life.bmp");
+    object->sprite = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
+    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
+    object->x = x;
+    object->y = y;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
+    object->rc_image.x = 0;
+    object->rc_image.y = 0;
+    object->rc_image.w = 25;
+    object->rc_image.h = 20;
+    break;
   }
   return object;
 }
