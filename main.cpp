@@ -18,6 +18,7 @@ int gameover;
 unsigned int oldtime = 10000000;
 int level = 0;
 int levelover = 0;
+bool Gauche, Droite, Haut, Bas;
 
 /* source and destination rectangles */
 pt_sprite hero = (pt_sprite) malloc (sizeof(s_sprite));
@@ -139,7 +140,7 @@ int main(int argc, char** argv)
     SDL_SetColorKey(hero->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, hero->colorkey);
 	  
     /* set sprite position */
-    hero->coord.x = hero->x = 300;
+    hero->coord.x = hero->x = 0;
     hero->coord.y = hero->y = 700;
 
     /* set animation frame */
@@ -162,7 +163,7 @@ int main(int argc, char** argv)
 	// fonction affichage
 
 	Afficher(screen,tileset,table[level],NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
-	/*printf("%d", */collision_hero_decor(hero, table[level])/*)*/;
+	collision_hero_decor(hero, table[level], Gauche, Droite, Haut, Bas);
 	   
 	HandleEvent(key, screen);
 	update_events(key);

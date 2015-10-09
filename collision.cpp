@@ -11,60 +11,22 @@
 #define SCREEN_HEIGHT 768
 
 
-int collision_hero_decor (pt_sprite hero,char** table){
+void collision_hero_decor (pt_sprite hero,char** table, bool Gauche, bool Droite, bool Haut, bool Bas){
   int i,j;
   SDL_Rect coord;
   for (i=0; i<NB_BLOCS_LARGEUR; i++){
     for (j=0; j<NB_BLOCS_HAUTEUR; j++){
-      //printf("%d",(int)(table[j][i]));
-      if (((int)table[j][i]-'0')==0){ //si on n'est pas sur une case ciel
+      if (table[j][i]!='0'){ //si on n'est pas sur une case ciel
 	//si le hero est à gauche ou à droite du bloc
 	coord.x = i*TAILLE_TUILE;
 	coord.y = j*TAILLE_TUILE;
-	if ((coord.x <= hero->x+SPRITE_WIDTH <= coord.x+TAILLE_TUILE)&&((coord.y <= hero->coord.y <= coord.y+TAILLE_TUILE)||(coord.y <= hero->y+SPRITE_HEIGHT <= coord.y+TAILLE_TUILE)))
-	  return 1;
-	//si le hero est au dessus ou en dessous du bloc
-	if ((coord.y <= hero->y+SPRITE_WIDTH <= coord.y+TAILLE_TUILE)&&((coord.x <= hero->coord.x <= coord.x+TAILLE_TUILE)||(coord.x <= hero->x+SPRITE_WIDTH <= coord.x+TAILLE_TUILE)))
-	  return 1;
+	printf("%c",table[j][i]);
+	printf("toast");
       }
     }
   }
-  return 0;
 }
 
-// bool CollisionDecor(pt_sprite sprite, char** table)
-// {
-//   SDL_Rect coord;
-//   if (sprite->x < 0 || sprite->y <=0 || sprite->x >= SCREEN_WIDTH || sprite->y >= SCREEN_HEIGHT)
-//     return true;
-//   for (int i = 0; i < NB_BLOCS_HAUTEUR; i++) {
-//     for (int j = 0; j < NB_BLOCS_LARGEUR; j++) {
-//       if (((int)table[i][j]-'0') != 0) {
-//       coord.x = j * TAILLE_TUILE;
-//       coord.y = 768 - i * TAILLE_TUILE;
-//       if (sprite->x < coord.x) { à gauche
-// 	if (sprite->x - coord.x >= -3) { forcement < 0
-// 	  return true;
-// 	}
-//       } else {
-// 	if (sprite->x - coord.x + TAILLE_TUILE >= 3) {
-// 	  return true;
-// 	}
-//       }
-//       if (sprite->y < coord.y) { sprite + haut
-// 	if (sprite->y - coord.y <= -3) {
-// 	  return true;
-// 	} else {
-// 	  if (sprite->y - coord.y >= 3) {
-// 	    return true;
-// 	  }
-// 	}	  
-//       }
-//       }
-//       return false;
-//     }
-//   }
-// }
 
 int Collision_H_E(pt_sprite hero, enemy_type enemy)
 {
