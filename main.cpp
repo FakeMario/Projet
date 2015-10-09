@@ -1,5 +1,6 @@
 
 #include "SDL.h"
+#include <time.h>
 #include "sprite.cpp"
 #include "enemy.cpp"
 #include "tiles.cpp"
@@ -56,7 +57,7 @@ void HandleEvent(char* key, SDL_Surface *screen)
   int i;
   for (i=0; i<NBPLAYERS; i++){
     if(key[tabkey[i][0]]) { //UP
-      oldtime = SDL_GetTicks();
+	oldtime = SDL_GetTicks();
     }
     
     if(key[tabkey[i][1]]) { //LEFT
