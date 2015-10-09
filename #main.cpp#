@@ -73,14 +73,11 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
 	hero->rc_image.x += SPRITE_WIDTH;
       
       hero->x -= 0.1;
-      if (0!=collision_hero_decor(hero, table[level], mintab, maxtab))
+if (0!=collision_hero_decor(hero, table[level], mintab, maxtab))
 	hero->x += 0.1;
-      
-      if((hero->x < (SCREEN_WIDTH/2))&&(mintab > 0)){
-        mintab--;
-	maxtab--;
-	SDL_Flip(screen);
-      }
+
+if((hero->x < (SCREEN_WIDTH/2))&&(mintab >= 0))
+  printf("toast");
     }
     
     if(key[tabkey[i][2]]) { //RIGHT
@@ -94,12 +91,6 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
       hero->x += 0.1;
       if (0!=collision_hero_decor(hero, table[level], mintab, maxtab))
 	hero->x -= 0.1;
-
-      if((hero->x > (SCREEN_WIDTH/2))&&(maxtab < NB_BLOCS_LARGEUR)){
-	mintab++;
-	maxtab++;
-	SDL_Flip(screen);
-      }
     }
   }
 }	       
