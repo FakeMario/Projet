@@ -28,7 +28,7 @@ void collision_hero_decor (pt_sprite hero,char** table, bool Gauche, bool Droite
 }
 
 
-int Collision_H_E(pt_sprite hero, enemy_type enemy)
+int Collision_H_E(pt_sprite hero, object_type enemy)
 {
   if ((enemy->x >= hero->x + hero->rc_image.w)      // ennemi trop à droite
       || (enemy->x + enemy->rc_image.w <= hero->x) // trop à gauche

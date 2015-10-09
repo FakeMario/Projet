@@ -2,81 +2,94 @@
 
 /*CREATE ENEMY*/
 
-enemy_type create_new_enemy(char type, SDL_Surface *screen, float x, float y, float speed){
-  enemy_type enemy =(enemy_type)malloc(sizeof(struct enemy));
+object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
+  object_type object =(object_type)malloc(sizeof(struct object));
   SDL_Surface * temp;
   switch (type) {
   case 'R': /*Robot*/
-  temp = SDL_LoadBMP("robot_1.bmp");
-  enemy->sprite = SDL_DisplayFormat(temp);
-  SDL_FreeSurface(temp);
-  enemy->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
-  SDL_SetColorKey(enemy->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, enemy->colorkey);
-  enemy->x = x;
-  enemy->y = y;
-  enemy->coord.x = (int)enemy->x;
-  enemy->coord.y = (int)enemy->y;
-  enemy->rc_image.x = 0;
-  enemy->rc_image.y = 0;
-  enemy->rc_image.w = 40;
-  enemy->rc_image.h = 50;
-  enemy->speed = speed;
-  break;
-
-  case 'C':
-    temp = SDL_LoadBMP("mini_champi.bmp");
-    enemy->sprite = SDL_DisplayFormat(temp);
+    temp = SDL_LoadBMP("robot_1.bmp");
+    object->sprite = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
-    enemy->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
-    SDL_SetColorKey(enemy->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, enemy->colorkey);
-    enemy->x = x;
-    enemy->y = y;
-    enemy->coord.x = (int)enemy->x;
-    enemy->coord.y = (int)enemy->y;
-    enemy->rc_image.x = 0;
-    enemy->rc_image.y = 0;
-    enemy->rc_image.w = 20;
-    enemy->rc_image.h = 20;
-    enemy->speed = speed;
+    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
+    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
+    object->x = x;
+    object->y = y;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
+    object->rc_image.x = 0;
+    object->rc_image.y = 0;
+    object->rc_image.w = 40;
+    object->rc_image.h = 50;
+    break;
+
+  case 'C': /*Mini-Champi*/
+    temp = SDL_LoadBMP("mini_champi.bmp");
+    object->sprite = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
+    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
+    object->x = x;
+    object->y = y;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
+    object->rc_image.x = 0;
+    object->rc_image.y = 0;
+    object->rc_image.w = 20;
+    object->rc_image.h = 20;
     break;
     
+  case 'L': /*Life of the hero*/
+    temp = SDL_LoadBMP("life.bmp");
+    object->sprite = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
+    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
+    object->x = x;
+    object->y = y;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
+    object->rc_image.x = 0;
+    object->rc_image.y = 0;
+    object->rc_image.w = 25;
+    object->rc_image.h = 20;
+    break;
   }
-  return enemy;
+  return object;
 }
 
 
 
-/*LIST OF ENEMY */
+/*LIST OF OBJECT */
 
-list_of_enemy create_new_list_of_enemy(){
+list_of_object create_new_list_of_object(){
   return NULL;
 }
 
 
-list_of_enemy cons(enemy_type enemy, list_of_enemy L){
-  list_of_enemy L1 = create_new_list_of_enemy();
-  L1 = (list_of_enemy) malloc(sizeof(struct List_of_enemy));
-  L1->first = enemy;
+list_of_object cons(object_type object, list_of_object L){
+  list_of_object L1 = create_new_list_of_object();
+  L1 = (list_of_object) malloc(sizeof(struct List));
+  L1->first = object;
   L1->rest = L;
   return L1;
 }
 
 
 
-void deplacement_enemy(enemy_type enemy, char direction)
+void deplacement_object(object_type object, char direction)
 {
   switch (direction) {
   case 'L': /*Left*/
-    enemy->x -= 0.04;
-    enemy->y += 0;
-    enemy->coord.x = (int)enemy->x;
-    enemy->coord.y = (int)enemy->y;
+    object->x -= 0.04;
+    object->y += 0;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
     break;
   case 'R': /*Right*/
-    enemy->x += 0.04;
-    enemy->y += 0;
-    enemy->coord.x = (int)enemy->x;
-    enemy->coord.y = (int)enemy->y;
+    object->x += 0.04;
+    object->y += 0;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
     break;
   }
 
