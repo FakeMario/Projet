@@ -89,7 +89,7 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
 	  hero->rc_image.x += SPRITE_WIDTH;
 	hero->x += 0.1;
       }
-      printf("Droite : %d\n", Droite);
+      //printf("Droite : %d\n", Droite);
       Droite = 1; // On réinitialise pour pas rester bloqués
     }
   }
@@ -182,8 +182,12 @@ int main(int argc, char** argv)
 	HandleEvent(key, screen, &time_j);
 	update_events(key);
       
-	jump(hero, SDL_GetTicks(), oldtime, &Haut, &Bas); // jumps only if oldtime < SDLGetTicks() so if u press up */
+	// jump(hero, SDL_GetTicks(), oldtime, &Haut, &Bas); // jumps only if oldtime < SDLGetTicks() so if u press up */
+	jump(hero, SDL_GetTicks(), oldtime, Haut, Bas); // jumps only if oldtime < SDLGetTicks() so if u press up */
+
 	reload_pos(hero);
+	Bas = 1;
+	Haut = 1;
 
 	/* collide with edges of screen */
 	if (hero->coord.x <= 0)
@@ -212,6 +216,14 @@ int main(int argc, char** argv)
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
 	    if (SDL_GetTicks()-invulnerable_time > 1500) {
 	      invulnerable_time = SDL_GetTicks();
+	      if (life_of_hero_list != NULL){
+		life_of_hero_list = life_of_hero_list -> rest;
+	      }
+	      if (life_of_hero_list == NULL){
+		printf("Gameover\n");
+		gameover = 1;
+	      }
+
 	      printf("Moins une vie\n");
 	    }
 
@@ -255,7 +267,7 @@ int main(int argc, char** argv)
   /* clean up */
   SDL_FreeSurface(hero->sprite);
   SDL_FreeSurface(enemy_list->first->sprite);
-  SDL_FreeSurface(life_of_hero_list->first->sprite);
+  //SDL_FreeSurface(life_of_hero_list->first->sprite);
   SDL_FreeSurface(tileset);
   SDL_Quit();
 
