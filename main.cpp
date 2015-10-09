@@ -7,6 +7,7 @@
 #define TAILLE_TUILE 64
 #define NB_BLOCS_HAUTEUR 12
 #define NB_BLOCS_LARGEUR 24
+#define NB_BLOCS_LARGEUR_ECRAN 16
 #define SCREEN_WIDTH  1024
 #define SCREEN_HEIGHT 768
 #define SPRITE_WIDTH  50
@@ -79,7 +80,7 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
       if((hero->x < (SCREEN_WIDTH/2))&&(mintab > 0)){
         mintab--;
 	maxtab--;
-	SDL_Flip(screen);
+
       }
     }
     
@@ -98,7 +99,7 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
       if((hero->x > (SCREEN_WIDTH/2))&&(maxtab < NB_BLOCS_LARGEUR)){
 	mintab++;
 	maxtab++;
-	SDL_Flip(screen);
+	
       }
     }
   }
@@ -123,7 +124,7 @@ int main(int argc, char** argv)
     SDL_WM_SetCaption("SDL Animation", "SDL Animation");
 
     /* create window */
-    screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
+    screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR_ECRAN, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
     //load tileset
     temp = SDL_LoadBMP("tileset.bmp");
