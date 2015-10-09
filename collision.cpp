@@ -28,7 +28,7 @@ void collision_hero_decor (pt_sprite hero,char** table, bool Gauche, bool Droite
 	object->y = coord.y;
 	object->rc_image.h = object->rc_image.w = TAILLE_TUILE;
 	//printf("%c",table[j][i]);
-	if(Collision_H_E(hero, object)==2)
+	if(Collision_H_E(hero, object)!=0)
 	  printf("toast");
       }
     }
