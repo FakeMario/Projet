@@ -24,22 +24,22 @@ enemy_type create_new_enemy(char type, SDL_Surface *screen, float x, float y, fl
   break;
 
   case 'C':
-temp = SDL_LoadBMP("mini_champi.bmp");
-  enemy->sprite = SDL_DisplayFormat(temp);
-  SDL_FreeSurface(temp);
-  enemy->colorkey = SDL_MapRGB(screen->format, 180, 20, 100);
-  SDL_SetColorKey(enemy->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, enemy->colorkey);
-  enemy->x = x;
-  enemy->y = y;
-  enemy->coord.x = (int)enemy->x;
-  enemy->coord.y = (int)enemy->y;
-  enemy->rc_image.x = 0;
-  enemy->rc_image.y = 0;
-  enemy->rc_image.w = 20;
-  enemy->rc_image.h = 20;
-  enemy->speed = speed;
-  break;
-
+    temp = SDL_LoadBMP("mini_champi.bmp");
+    enemy->sprite = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    enemy->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
+    SDL_SetColorKey(enemy->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, enemy->colorkey);
+    enemy->x = x;
+    enemy->y = y;
+    enemy->coord.x = (int)enemy->x;
+    enemy->coord.y = (int)enemy->y;
+    enemy->rc_image.x = 0;
+    enemy->rc_image.y = 0;
+    enemy->rc_image.w = 20;
+    enemy->rc_image.h = 20;
+    enemy->speed = speed;
+    break;
+    
   }
   return enemy;
 }
