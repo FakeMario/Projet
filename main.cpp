@@ -18,7 +18,7 @@ int gameover;
 unsigned int oldtime = 10000000;
 int level = 0;
 int levelover = 0;
-bool Gauche, Droite, Haut, Bas;
+int Gauche = 1 , Droite = 1 , Haut = 1 , Bas = 1;
 
 /* source and destination rectangles */
 pt_sprite hero = (pt_sprite) malloc (sizeof(s_sprite));
@@ -60,27 +60,27 @@ void HandleEvent(char* key, SDL_Surface *screen)
     }
     
     if(key[tabkey[i][1]]) { //LEFT
-      if ( hero->rc_image.x < 2*SPRITE_WIDTH )
-	hero->rc_image.x = 2*SPRITE_WIDTH;
-      if ( hero->rc_image.x == 3*SPRITE_WIDTH )
-	hero->rc_image.x = 2*SPRITE_WIDTH;
-      else
-	hero->rc_image.x += SPRITE_WIDTH;
-
-      hero->x -= 0.1;
-      
+	  if ( hero->rc_image.x < 2*SPRITE_WIDTH )
+	    hero->rc_image.x = 2*SPRITE_WIDTH;
+	  if ( hero->rc_image.x == 3*SPRITE_WIDTH )
+	    hero->rc_image.x = 2*SPRITE_WIDTH;
+	  else
+	    hero->rc_image.x += SPRITE_WIDTH;
+	  
+	  hero->x -= 0.1;
+	  printf("Gauche : %d\n", Gauche);
     }
 
     if(key[tabkey[i][2]]) { //RIGHT
-      if ( hero->rc_image.x > SPRITE_WIDTH )
-	hero->rc_image.x = 0;
-      if ( hero->rc_image.x == SPRITE_WIDTH )
-	hero->rc_image.x = 0;
-      else
-	hero->rc_image.x += SPRITE_WIDTH;
-      hero->x += 0.1;
+	if ( hero->rc_image.x > SPRITE_WIDTH )
+	  hero->rc_image.x = 0;
+	if ( hero->rc_image.x == SPRITE_WIDTH )
+	  hero->rc_image.x = 0;
+	else
+	  hero->rc_image.x += SPRITE_WIDTH;
+	hero->x += 0.1;
+	printf("Droite : %d\n", Droite);
     }
-  
   }
 }	       
 
@@ -164,7 +164,7 @@ int main(int argc, char** argv)
 	// fonction affichage
 
 	Afficher(screen,tileset,table[level],NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
-	collision_hero_decor(hero, table[level], Gauche, Droite, Haut, Bas);
+	collision_hero_decor(hero, table[level], &Gauche, &Droite, &Haut, &Bas);
 	   
 	HandleEvent(key, screen);
 	update_events(key);

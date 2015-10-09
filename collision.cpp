@@ -13,7 +13,7 @@
 int Collision_H_E(pt_sprite hero, object_type enemy);
 
 
-void collision_hero_decor (pt_sprite hero,char** table, bool Gauche, bool Droite, bool Haut, bool Bas){
+void collision_hero_decor (pt_sprite hero,char** table, int* Gauche, int* Droite, int* Haut, int* Bas){
   int i,j;
   SDL_Rect coord;
   object_type tuile =(object_type)malloc(sizeof(struct object));
@@ -28,14 +28,14 @@ void collision_hero_decor (pt_sprite hero,char** table, bool Gauche, bool Droite
 	tuile->rc_image.h = tuile->rc_image.w = TAILLE_TUILE;
 	if(Collision_H_E(hero, tuile)!=0){
 	  if(tuile->y < hero->y + hero->rc_image.h && hero->y + (hero->rc_image.h/2) < tuile->y)
-	    printf("BAS");
+	    Bas = 0;
 	  if(tuile->y + tuile->rc_image.h > hero->y && hero->y + (hero->rc_image.h/2) > tuile->y)
-	    printf("HAUT");
+	    Haut = 0;
 	  if(tuile->x < hero->x + hero->rc_image.w && hero->x < tuile->x) 
-	    printf("DROITE");
+	    Droite = 0;
 	  if(tuile->x + tuile->rc_image.w > hero->x && hero->x + hero->rc_image.x < tuile->x + tuile->rc_image.h)
-	    printf("GAUCHE");
-	    }
+	    Gauche = 0;
+	}
       }
     }
   }
