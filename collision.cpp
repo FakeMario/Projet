@@ -16,20 +16,26 @@ int Collision_H_E(pt_sprite hero, object_type enemy);
 void collision_hero_decor (pt_sprite hero,char** table, bool Gauche, bool Droite, bool Haut, bool Bas){
   int i,j;
   SDL_Rect coord;
-  object_type object =(object_type)malloc(sizeof(struct object));
+  object_type tuile =(object_type)malloc(sizeof(struct object));
   for (i=0; i<NB_BLOCS_LARGEUR; i++){
     for (j=0; j<NB_BLOCS_HAUTEUR; j++){
       if (table[j][i]!='0'){ //si on n'est pas sur une case ciel
 	//si le hero est à gauche ou à droite du bloc
 	coord.x = i*TAILLE_TUILE;
 	coord.y = j*TAILLE_TUILE;
-	//	coord.w = coord.h = TAILLE_TUILE;
-	object->x = coord.x;
-	object->y = coord.y;
-	object->rc_image.h = object->rc_image.w = TAILLE_TUILE;
-	//printf("%c",table[j][i]);
-	if(Collision_H_E(hero, object)!=0)
-	  printf("toast");
+	tuile->x = coord.x;
+	tuile->y = coord.y;
+	tuile->rc_image.h = tuile->rc_image.w = TAILLE_TUILE;
+	if(Collision_H_E(hero, tuile)!=0){
+	  if(tuile->y < hero->y + hero->rc_image.h && hero->y + (hero->rc_image.h/2) < tuile->y)
+	    printf("BAS");
+	  if(tuile->y + tuile->rc_image.h > hero->y && hero->y + (hero->rc_image.h/2) > tuile->y)
+	    printf("HAUT");
+	  if(tuile->x < hero->x + hero->rc_image.w && hero->x < tuile->x) 
+	    printf("DROITE");
+	  if(tuile->x + tuile->rc_image.w > hero->x && hero->x + hero->rc_image.x < tuile->x + tuile->rc_image.h)
+	    printf("GAUCHE");
+	    }
       }
     }
   }
