@@ -8,7 +8,7 @@
 
 /*EMENY*/
 
- struct enemy {
+ struct object {
    SDL_Surface *sprite; 
    int colorkey;
    SDL_Rect rc_image;
@@ -18,23 +18,23 @@
    float x;
    float y;
 };
-typedef struct enemy *enemy_type;
+typedef struct object *object_type;
 
 
-enemy_type create_new_enemy(char type, SDL_Surface *screen, float x, float y, float speed);
+object_type create_new_object(char type, SDL_Surface *screen, float x, float y);
 
 /*LIST OF ENEMY*/
 
-typedef struct List_of_enemy * list_of_enemy;
-struct List_of_enemy{
-  enemy_type first;
-  list_of_enemy  rest;
+typedef struct List * list_of_object;
+struct List{
+  object_type first;
+  list_of_object rest;
 };
 
 
-list_of_enemy create_new_list_of_enemy();
-list_of_enemy cons(enemy_type enemy, list_of_enemy L);
-void deplacement_enemy(enemy_type enemy);
+list_of_object create_new_list_of_object();
+list_of_object cons(object_type object, list_of_object L);
+void deplacement_object(object_type object);
 /* void deplacement_sprite_enemy(enemy_type enemy, char direction); */
 
 

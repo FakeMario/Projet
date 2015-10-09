@@ -86,8 +86,8 @@ void HandleEvent(char* key, SDL_Surface *screen)
 int main(int argc, char** argv)
 {
   SDL_Surface *screen,*temp,*tileset;
-  enemy_type robot_enemy_1, robot_enemy_2, mini_champi_enemy_1 ;
-  list_of_enemy enemy_list, enemy_list_copy;
+  object_type robot_enemy_1, robot_enemy_2, mini_champi_enemy_1 ;
+  list_of_object enemy_list, enemy_list_copy;
   // hero_lives_type life_1, life_2, life_3;
   // list_of_hero_lives hero_lives_list,hero_lives_list_copy;
   int past_time_enemy, present_time_enemy;
@@ -117,10 +117,10 @@ int main(int argc, char** argv)
     SDL_FreeSurface(temp);   
 
     /* create list of new enemy */
-    enemy_list = create_new_list_of_enemy();
-    robot_enemy_1 = create_new_enemy('R',screen, 250, 200, 0);
-    robot_enemy_2 = create_new_enemy('R',screen, 200, 200, 0);
-    mini_champi_enemy_1 = create_new_enemy('C',screen, 700, 250, 0);
+    enemy_list = create_new_list_of_object();
+    robot_enemy_1 = create_new_object('R',screen, 250, 200);
+    robot_enemy_2 = create_new_object('R',screen, 200, 200);
+    mini_champi_enemy_1 = create_new_object('C',screen, 700, 250);
     enemy_list = cons(robot_enemy_1, enemy_list);
     enemy_list = cons(robot_enemy_2, enemy_list);
     enemy_list = cons(mini_champi_enemy_1, enemy_list);
@@ -200,14 +200,14 @@ int main(int argc, char** argv)
 	  present_time_enemy = SDL_GetTicks();
 	  /* deplacement of the enemy */
 	  if (((present_time_enemy - past_time_enemy)/6000)%2 == 0){
-	    deplacement_enemy(enemy_list_copy->first,'L');
+	    deplacement_object(enemy_list_copy->first,'L');
 	    /* deplacement sprite enemy */
 	    enemy_list_copy->first->rc_image.x = enemy_list_copy->first->rc_image.x + enemy_list_copy->first->rc_image.w;
 	    if(enemy_list_copy->first->rc_image.x == 2 * enemy_list_copy->first->rc_image.w || enemy_list_copy->first->rc_image.x == 4 * enemy_list_copy->first->rc_image.w ){
 	      enemy_list_copy->first->rc_image.x = 0;
 	    }
 	  } else {
-	    deplacement_enemy(enemy_list_copy->first,'R');
+	    deplacement_object(enemy_list_copy->first,'R');
 	    /* deplacement sprite enemy */
 	    enemy_list_copy->first->rc_image.x = enemy_list_copy->first->rc_image.x + enemy_list_copy->first->rc_image.w;
 	    if(enemy_list_copy->first->rc_image.x == 4 * enemy_list_copy->first->rc_image.w){
