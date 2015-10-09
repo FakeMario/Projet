@@ -1,5 +1,6 @@
 
 #include "SDL.h"
+
 #include "sprite.cpp"
 #include "enemy.cpp"
 #include "tiles.cpp"
@@ -63,22 +64,29 @@ void HandleEvent(char* key, SDL_Surface *screen)
     }
     
     if(key[tabkey[i][1]]) { //LEFT
-      if(Gauche){
+      
+      //      if(Gauche){
 	  if ( hero->rc_image.x < 2*SPRITE_WIDTH )
 	    hero->rc_image.x = 2*SPRITE_WIDTH;
 	  if ( hero->rc_image.x == 3*SPRITE_WIDTH )
 	    hero->rc_image.x = 2*SPRITE_WIDTH;
 	  else
 	    hero->rc_image.x += SPRITE_WIDTH;
-	  
-	  hero->x -= 0.1;;
-      }
-      printf("Gauche : %d\n", Gauche);
-      Gauche = 1; // Idem Droite
+
+
+	    hero->x -= 0.1;
+	    if (0!=collision_hero_decor(hero, table[level]))
+	      hero->x += 0.1;
+	   
+
+	    //      }
+	    //      printf("Gauche : %d\n", Gauche);
+	    //      Gauche = 1; // Idem Droite
+      
     }
 
     if(key[tabkey[i][2]]) { //RIGHT
-      if(Droite){
+      //      if(Droite){
 	if ( hero->rc_image.x > SPRITE_WIDTH )
 	  hero->rc_image.x = 0;
 	if ( hero->rc_image.x == SPRITE_WIDTH )
@@ -86,10 +94,12 @@ void HandleEvent(char* key, SDL_Surface *screen)
 	else
 	  hero->rc_image.x += SPRITE_WIDTH;
 	hero->x += 0.1;
-      }
-      //printf("Droite : %d\n", Droite);
-      Droite = 1; // On réinitialise pour pas rester bloqués
-    }
+	    if (0!=collision_hero_decor(hero, table[level]))
+	      hero->x -= 0.1;
+	    //      }
+	    //      printf("Droite : %d\n", Droite);
+	    //      Droite = 1; // On réinitialise pour pas rester bloqués
+         }
   }
 }	       
 
@@ -175,12 +185,12 @@ int main(int argc, char** argv)
 	// fonction affichage
 
 	Afficher(screen,tileset,table[level],NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
-	collision_hero_decor(hero, table[level], &Gauche, &Droite, &Haut, &Bas);
+	//	collision_hero_decor(hero, table[level], &Gauche, &Droite, &Haut, &Bas);
 	   
 	HandleEvent(key, screen);
 	update_events(key);
       
-	jump(hero, SDL_GetTicks(), oldtime, Haut, Bas); // jumps only if oldtime < SDLGetTicks() so if u press up */
+	jump(hero, SDL_GetTicks(), oldtime, table[level]); // jumps only if oldtime < SDLGetTicks() so if u press up */
 	reload_pos(hero);
 	Bas = 1;
 	Haut = 1;
