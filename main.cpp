@@ -178,8 +178,10 @@ int main(int argc, char** argv)
 	HandleEvent(key, screen);
 	update_events(key);
       
-	jump(hero, SDL_GetTicks(), oldtime); // jumps only if oldtime < SDLGetTicks() so if u press up */
+	jump(hero, SDL_GetTicks(), oldtime, Haut, Bas); // jumps only if oldtime < SDLGetTicks() so if u press up */
 	reload_pos(hero);
+	Bas = 1;
+	Haut = 1;
 
 	/* collide with edges of screen */
 	if (hero->coord.x <= 0)
