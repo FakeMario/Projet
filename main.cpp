@@ -100,7 +100,8 @@ int main(int argc, char** argv)
   object_type life_1,life_2,life_3;
   list_of_object enemy_list, enemy_list_copy;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
-  int past_time_enemy, present_time_enemy;
+  int past_time_enemy, present_time_enemy, past_time_collision, present_time_collision;
+  int invulnerable_time = -1500;
   gameover = 0;
 
   while (!gameover){
@@ -162,6 +163,7 @@ int main(int argc, char** argv)
     levelover = 0;
     past_time_enemy =SDL_GetTicks();
 
+
     char key[SDLK_LAST]= {0};
  
 					    
@@ -204,12 +206,20 @@ int main(int argc, char** argv)
 	enemy_list_copy = enemy_list;
 	while (enemy_list_copy != NULL){
 	  SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
+
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 1) {
-	    printf("Ennemi touché");
+
+	    //printf("Ennemi touché");
 	  }
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
-	    printf("Moins une vie");
+	    if (SDL_GetTicks()-invulnerable_time > 1500) {
+	      invulnerable_time = SDL_GetTicks();
+	      printf("Moins une vie\n");
+	    }
+
 	  }
+
+	  
 	  present_time_enemy = SDL_GetTicks();
 	  /* deplacement of the enemy */
 	  if (((present_time_enemy - past_time_enemy)/6000)%2 == 0){
