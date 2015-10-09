@@ -3,6 +3,7 @@
 int collision_hero_decor (pt_sprite hero,char** table);
 
 void jump(pt_sprite hero, unsigned int time, unsigned int oldtime, char** table)
+
 {
   if (time - oldtime <= 300 && time - oldtime > 0) {
     hero->y -= 0.75;

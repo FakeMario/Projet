@@ -1,4 +1,3 @@
-
 #include "SDL.h"
 
 #include "sprite.cpp"
@@ -23,6 +22,7 @@ int Gauche = 1 ;
 int Droite = 1 ; 
 int Haut = 1; 
 int Bas = 1;
+int time_j = -730;
 
 /* source and destination rectangles */
 pt_sprite hero = (pt_sprite) malloc (sizeof(s_sprite));
@@ -54,18 +54,18 @@ void update_events(char* keys){
   }
 }
 
-void HandleEvent(char* key, SDL_Surface *screen)
+void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
 {
   SDLKey tabkey[NBPLAYERS][3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
   int i;
   for (i=0; i<NBPLAYERS; i++){
-    if(key[tabkey[i][0]]) { //UP
-      oldtime = SDL_GetTicks();
-    }
-    
+    /*if (SDL_GetTicks() - *time_j > 730) {
+     *time_j = SDL_GetTicks();*/	    
+      if(key[tabkey[i][0]]) { //UP
+	oldtime = SDL_GetTicks();
+      }
+      //}
     if(key[tabkey[i][1]]) { //LEFT
-      
-      //      if(Gauche){
 	  if ( hero->rc_image.x < 2*SPRITE_WIDTH )
 	    hero->rc_image.x = 2*SPRITE_WIDTH;
 	  if ( hero->rc_image.x == 3*SPRITE_WIDTH )
@@ -77,12 +77,6 @@ void HandleEvent(char* key, SDL_Surface *screen)
 	    hero->x -= 0.1;
 	    if (0!=collision_hero_decor(hero, table[level]))
 	      hero->x += 0.1;
-	   
-
-	    //      }
-	    //      printf("Gauche : %d\n", Gauche);
-	    //      Gauche = 1; // Idem Droite
-      
     }
 
     if(key[tabkey[i][2]]) { //RIGHT
@@ -110,7 +104,7 @@ int main(int argc, char** argv)
   object_type life_1,life_2,life_3;
   list_of_object enemy_list, enemy_list_copy;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
-  int past_time_enemy, present_time_enemy, past_time_collision, present_time_collision;
+  int past_time_enemy, present_time_enemy;
   int invulnerable_time = -1500;
   gameover = 0;
 
@@ -187,9 +181,10 @@ int main(int argc, char** argv)
 	Afficher(screen,tileset,table[level],NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
 	//	collision_hero_decor(hero, table[level], &Gauche, &Droite, &Haut, &Bas);
 	   
-	HandleEvent(key, screen);
+	HandleEvent(key, screen, &time_j);
 	update_events(key);
       
+
 	jump(hero, SDL_GetTicks(), oldtime, table[level]); // jumps only if oldtime < SDLGetTicks() so if u press up */
 	reload_pos(hero);
 	Bas = 1;
@@ -206,8 +201,6 @@ int main(int argc, char** argv)
 	if (hero->coord.y >= SCREEN_HEIGHT - SPRITE_HEIGHT) 
 	  hero->coord.y = SCREEN_HEIGHT - SPRITE_HEIGHT;
 
-	// if(CollisionDecor(hero, table[level]) == true)
-	//  printf("fromage");
 	
 	/* draw the sprite */
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
