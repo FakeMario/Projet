@@ -58,13 +58,11 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
 {
   SDLKey tabkey[NBPLAYERS][3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
   int i;
-  for (i=0; i<NBPLAYERS; i++){
-    /*if (SDL_GetTicks() - *time_j > 730) {
-     *time_j = SDL_GetTicks();*/	    
+  for (i=0; i<NBPLAYERS; i++){	    
       if(key[tabkey[i][0]]) { //UP
 	oldtime = SDL_GetTicks();
       }
-      //}
+      
     if(key[tabkey[i][1]]) { //LEFT
 	  if ( hero->rc_image.x < 2*SPRITE_WIDTH )
 	    hero->rc_image.x = 2*SPRITE_WIDTH;
@@ -80,20 +78,17 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
     }
 
     if(key[tabkey[i][2]]) { //RIGHT
-      //      if(Droite){
 	if ( hero->rc_image.x > SPRITE_WIDTH )
 	  hero->rc_image.x = 0;
 	if ( hero->rc_image.x == SPRITE_WIDTH )
 	  hero->rc_image.x = 0;
 	else
 	  hero->rc_image.x += SPRITE_WIDTH;
+
 	hero->x += 0.1;
-	    if (0!=collision_hero_decor(hero, table[level]))
-	      hero->x -= 0.1;
-	    //      }
-	    //      printf("Droite : %d\n", Droite);
-	    //      Droite = 1; // On réinitialise pour pas rester bloqués
-         }
+	if (0!=collision_hero_decor(hero, table[level]))
+	  hero->x -= 0.1;
+    }
   }
 }	       
 
@@ -179,16 +174,12 @@ int main(int argc, char** argv)
 	// fonction affichage
 
 	Afficher(screen,tileset,table[level],NB_BLOCS_LARGEUR,NB_BLOCS_HAUTEUR);
-	//	collision_hero_decor(hero, table[level], &Gauche, &Droite, &Haut, &Bas);
 	   
 	HandleEvent(key, screen, &time_j);
 	update_events(key);
       
-
 	jump(hero, SDL_GetTicks(), oldtime, table[level]); // jumps only if oldtime < SDLGetTicks() so if u press up */
 	reload_pos(hero);
-	Bas = 1;
-	Haut = 1;
 
 	/* collide with edges of screen */
 	if (hero->coord.x <= 0)
@@ -201,7 +192,6 @@ int main(int argc, char** argv)
 	if (hero->coord.y >= SCREEN_HEIGHT - SPRITE_HEIGHT) 
 	  hero->coord.y = SCREEN_HEIGHT - SPRITE_HEIGHT;
 
-	
 	/* draw the sprite */
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
 
@@ -212,7 +202,6 @@ int main(int argc, char** argv)
 
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 1) {
 
-	    //printf("Ennemi touché");
 	  }
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
 	    if (SDL_GetTicks()-invulnerable_time > 1500) {
@@ -268,7 +257,6 @@ int main(int argc, char** argv)
   /* clean up */
   SDL_FreeSurface(hero->sprite);
   SDL_FreeSurface(enemy_list->first->sprite);
-  //SDL_FreeSurface(life_of_hero_list->first->sprite);
   SDL_FreeSurface(tileset);
   SDL_Quit();
 
