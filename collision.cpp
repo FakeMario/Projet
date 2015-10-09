@@ -26,10 +26,13 @@ void collision_hero_decor (pt_sprite hero,char** table, int* Gauche, int* Droite
 	tuile->y = coord.y;
 	tuile->rc_image.h = tuile->rc_image.w = TAILLE_TUILE;
 	if(Collision_H_E(hero, tuile)!=0){
-	  if(tuile->y < hero->y + hero->rc_image.h && hero->y + (hero->rc_image.h/2) < tuile->y)
-	    *Bas = 0;
-	  if(tuile->y + tuile->rc_image.h > hero->y && hero->y + (hero->rc_image.h/2) > tuile->y)
+	  if(tuile->y < hero->y + hero->rc_image.h)// && hero->y + (hero->rc_image.h/2) < tuile->y)
+	    *Bas = 0;	  
+	  
+	  if(tuile->y + tuile->rc_image.h > hero->y)// && hero->y + (hero->rc_image.h/2) > tuile->y)
 	    *Haut = 0;
+	  
+	  
 	  if(tuile->x < hero->x + hero->rc_image.w && hero->x < tuile->x) 
 	    *Droite = 0;
 	  if(tuile->x + tuile->rc_image.w > hero->x && hero->x + hero->rc_image.x > tuile->x + tuile->rc_image.h)
@@ -39,6 +42,8 @@ void collision_hero_decor (pt_sprite hero,char** table, int* Gauche, int* Droite
     }
   }
 }
+
+
 
 
 int Collision_H_E(pt_sprite hero, object_type enemy)
