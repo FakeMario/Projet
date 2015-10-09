@@ -44,9 +44,9 @@ void collision_hero_decor (pt_sprite hero,char** table, int* Gauche, int* Droite
 int Collision_H_E(pt_sprite hero, object_type enemy)
 {
   if ((enemy->x >= hero->x + hero->rc_image.w)      // ennemi trop à droite
-      || (enemy->x + enemy->rc_image.w <= hero->x) // trop à gauche
+      || (enemy->x + enemy->rc_image.w < hero->x) // trop à gauche
       || (enemy->y >= hero->y + hero->rc_image.h) // trop en bas
-      || (enemy->y + enemy->rc_image.h <= hero->y))  // trop en haut
+      || (enemy->y + enemy->rc_image.h < hero->y))  // trop en haut
     return 0; 
   else
     if (enemy->y - enemy->rc_image.h > hero->y) // on saute sur l'ennemi
