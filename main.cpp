@@ -18,7 +18,10 @@ int gameover;
 unsigned int oldtime = 10000000;
 int level = 0;
 int levelover = 0;
-int Gauche = 1 , Droite = 1 , Haut = 1 , Bas = 1;
+int Gauche = 1 ;
+int Droite = 1 ; 
+int Haut = 1; 
+int Bas = 1;
 
 /* source and destination rectangles */
 pt_sprite hero = (pt_sprite) malloc (sizeof(s_sprite));
@@ -60,6 +63,7 @@ void HandleEvent(char* key, SDL_Surface *screen)
     }
     
     if(key[tabkey[i][1]]) { //LEFT
+      if(Gauche){
 	  if ( hero->rc_image.x < 2*SPRITE_WIDTH )
 	    hero->rc_image.x = 2*SPRITE_WIDTH;
 	  if ( hero->rc_image.x == 3*SPRITE_WIDTH )
@@ -67,11 +71,14 @@ void HandleEvent(char* key, SDL_Surface *screen)
 	  else
 	    hero->rc_image.x += SPRITE_WIDTH;
 	  
-	  hero->x -= 0.1;
-	  printf("Gauche : %d\n", Gauche);
+	  hero->x -= 0.1;;
+      }
+      printf("Gauche : %d\n", Gauche);
+      Gauche = 1; // Idem Droite
     }
 
     if(key[tabkey[i][2]]) { //RIGHT
+      if(Droite){
 	if ( hero->rc_image.x > SPRITE_WIDTH )
 	  hero->rc_image.x = 0;
 	if ( hero->rc_image.x == SPRITE_WIDTH )
@@ -79,7 +86,9 @@ void HandleEvent(char* key, SDL_Surface *screen)
 	else
 	  hero->rc_image.x += SPRITE_WIDTH;
 	hero->x += 0.1;
-	printf("Droite : %d\n", Droite);
+      }
+      printf("Droite : %d\n", Droite);
+      Droite = 1; // On réinitialise pour pas rester bloqués
     }
   }
 }	       
