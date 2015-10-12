@@ -99,7 +99,7 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
       if((hero->x > (SCREEN_WIDTH/2))&&(maxtab < NB_BLOCS_LARGEUR)){
 	mintab++;
 	maxtab++;
-	
+        
       }
     }
   }

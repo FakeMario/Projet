@@ -20,7 +20,7 @@ int collision_hero_decor (pt_sprite hero,char** table, int min, int max) {
   for (i=min; i<=max; i++){
     for (j=0; j<NB_BLOCS_HAUTEUR; j++){
       if (table[j][i]!='0'){ //si on n'est pas sur une case ciel
-	coord.x = i*TAILLE_TUILE;
+	coord.x = (i-min)*TAILLE_TUILE;
 	coord.y = j*TAILLE_TUILE;
 	tuile->x = coord.x;
 	tuile->y = coord.y;

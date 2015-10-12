@@ -38,7 +38,7 @@ void Afficher(SDL_Surface* screen, SDL_Surface* tileset, char** table, int min, 
 
   for(i=min; i<=max; i++){
     for(j=0; j<nb_blocs_haut; j++){
-      Rect_dest.x = i*TAILLE_TUILE;
+      Rect_dest.x = (i-min)*TAILLE_TUILE;
       Rect_dest.y = j*TAILLE_TUILE;
       Rect_source.x = (table[j][i]-'0')*TAILLE_TUILE;
       Rect_source.y = 0;
