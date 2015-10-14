@@ -1,5 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "SDL.h"
+
+#define SCREEN_WIDTH  1024
+#define TAILLE_TUILE 64
 
 #pragma GCC diagnostic ignored "-Wwrite-strings"
 
@@ -37,3 +41,23 @@ char* table1[]={
 };
 
 char** table[2]={table0,table1};
+
+
+
+int collision_hero_decor (pt_sprite hero,char** table);
+
+
+void CheckLevel(pt_sprite hero, char** table, int* level, int* levelover, SDL_Surface* screen){
+  if (collision_hero_decor(hero, table) == 2){ //si on touche une sortie
+    if (hero->x > SCREEN_WIDTH/2){ //si il est du coté droit = si il sort par la droite
+      *level++;
+      hero->x = TAILLE_TUILE +1; //+1 pour pas qu'il reparte direct dans le lvl précédent
+    }
+    else { //si on sort par la gauche
+      *level--;
+      hero->x = SCREEN_WIDTH - TAILLE_TUILE - hero->rc_image.w -1;
+    }
+    *levelover = 1;
+    SDL_Flip(screen);
+  }
+}

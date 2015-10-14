@@ -73,7 +73,7 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
       
       if (hero->x >= 0){
 	hero->x -= 0.1;
-	if (0!=collision_hero_decor(hero, table[level]))
+	if ((0!=collision_hero_decor(hero, table[level]))&&(collision_hero_decor(hero, table[level])!=2))
 	  hero->x += 0.1;
       
       }
@@ -88,7 +88,7 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
 	hero->rc_image.x += SPRITE_WIDTH;
       
       hero->x += 0.1;
-      if (0!=collision_hero_decor(hero, table[level]))
+      if ((0!=collision_hero_decor(hero, table[level]))&&(collision_hero_decor(hero, table[level])!=2))
 	hero->x -= 0.1;
       
       
@@ -106,6 +106,17 @@ int main(int argc, char** argv)
   int past_time_enemy, present_time_enemy;
   int invulnerable_time = -1500;
   gameover = 0;
+
+  /* set sprite position */
+  hero->coord.x = hero->x = 0;
+  hero->coord.y = hero->y = 300;
+                                //On défini ça ici parce que sinon il revient à la meme position à chaque changement de niveau
+  /* set animation frame */
+  hero->rc_image.x = 0;
+  hero->rc_image.y = 0;
+  hero->rc_image.w = SPRITE_WIDTH;
+  hero->rc_image.h = SPRITE_HEIGHT;
+
 
   while (!gameover){
     /* initialize SDL */
@@ -153,16 +164,6 @@ int main(int argc, char** argv)
     hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
     SDL_SetColorKey(hero->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, hero->colorkey);
 	  
-    /* set sprite position */
-    hero->coord.x = hero->x = 0;
-    hero->coord.y = hero->y = 300;
-
-    /* set animation frame */
-    hero->rc_image.x = 0;
-    hero->rc_image.y = 0;
-    hero->rc_image.w = SPRITE_WIDTH;
-    hero->rc_image.h = SPRITE_HEIGHT;
-
     levelover = 0;
     past_time_enemy =SDL_GetTicks();
 
@@ -184,6 +185,8 @@ int main(int argc, char** argv)
       
 	jump(hero, SDL_GetTicks(), oldtime, table[level]); // jumps only if oldtime < SDLGetTicks() so if u press up */
 	reload_pos(hero);
+
+	CheckLevel(hero, table[level], &level, &levelover, screen);
 
 	/* collide with edges of screen */
 	if (hero->coord.x <= 0)

@@ -11,6 +11,7 @@
 #define SCREEN_HEIGHT 768
 
 int Collision_H_E(pt_sprite hero, object_type enemy);
+int Collision_Sortie(char tuile);
 
 
 int collision_hero_decor (pt_sprite hero,char** table) {
@@ -26,7 +27,10 @@ int collision_hero_decor (pt_sprite hero,char** table) {
 	tuile->y = coord.y;
 	tuile->rc_image.h = tuile->rc_image.w = TAILLE_TUILE;
 	if(Collision_H_E(hero, tuile)!=0) {
-	  return Collision_H_E(hero, tuile);
+	  if (Collision_Sortie(table[j][i])) //si on rencontre une sortie
+	    return 2; //return spécial sortie
+	  else 
+	    return Collision_H_E(hero, tuile);
 	}
       }
     }
@@ -49,3 +53,17 @@ int Collision_H_E(pt_sprite hero, object_type enemy)
       return 2; 
 }
 
+int Collision_Sortie(char tuile){
+  return ((tuile =='7')
+	  || (tuile =='8')
+	  || (tuile =='9') 
+	  || (tuile ==':') 
+	  || (tuile ==';')
+	  || (tuile =='<')
+	  || (tuile =='?')
+	  || (tuile =='>')
+	  || (tuile =='=')
+	  || (tuile =='@')
+	  || (tuile =='A')
+	  || (tuile =='B'));
+}
