@@ -1,13 +1,13 @@
 #include "SDL.h"
 #include "sprite.cpp"
 #include "enemy.cpp"
-#include "tiles.cpp"
+#include "level.cpp"
+#include "affichage.cpp"
 #include "collision.cpp"
 
 #define TAILLE_TUILE 64
 #define NB_BLOCS_HAUTEUR 12
-#define NB_BLOCS_LARGEUR 24
-#define NB_BLOCS_LARGEUR_ECRAN 16
+#define NB_BLOCS_LARGEUR 16
 #define SCREEN_WIDTH  1024
 #define SCREEN_HEIGHT 768
 #define SPRITE_WIDTH  50
@@ -23,8 +23,6 @@ int Droite = 1 ;
 int Haut = 1; 
 int Bas = 1;
 int time_j = -730;
-int mintab = 0;
-int maxtab = 15;
 
 /* source and destination rectangles */
 pt_sprite hero = (pt_sprite) malloc (sizeof(s_sprite));
@@ -73,14 +71,11 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
       else
 	hero->rc_image.x += SPRITE_WIDTH;
       
-      hero->x -= 0.1;
-      if (0!=collision_hero_decor(hero, table[level], mintab, maxtab))
-	hero->x += 0.1;
+      if (hero->x >= 0){
+	hero->x -= 0.1;
+	if (0!=collision_hero_decor(hero, table[level]))
+	  hero->x += 0.1;
       
-      if((hero->x < (SCREEN_WIDTH/2))&&(mintab > 0)){
-        mintab--;
-	maxtab--;
-
       }
     }
     
@@ -93,14 +88,10 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
 	hero->rc_image.x += SPRITE_WIDTH;
       
       hero->x += 0.1;
-      if (0!=collision_hero_decor(hero, table[level], mintab, maxtab))
+      if (0!=collision_hero_decor(hero, table[level]))
 	hero->x -= 0.1;
-
-      if((hero->x > (SCREEN_WIDTH/2))&&(maxtab < NB_BLOCS_LARGEUR)){
-	mintab++;
-	maxtab++;
-        
-      }
+      
+      
     }
   }
 }	       
@@ -124,7 +115,7 @@ int main(int argc, char** argv)
     SDL_WM_SetCaption("SDL Animation", "SDL Animation");
 
     /* create window */
-    screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR_ECRAN, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
+    screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
     //load tileset
     temp = SDL_LoadBMP("tileset.bmp");
@@ -186,12 +177,12 @@ int main(int argc, char** argv)
 	  
 	// fonction affichage
 
-	Afficher(screen,tileset,table[level],mintab, maxtab,NB_BLOCS_HAUTEUR);
+	Afficher(screen,tileset,table[level],NB_BLOCS_HAUTEUR, NB_BLOCS_LARGEUR);
 	   
 	HandleEvent(key, screen, &time_j);
 	update_events(key);
       
-	jump(hero, SDL_GetTicks(), oldtime, table[level], mintab, maxtab); // jumps only if oldtime < SDLGetTicks() so if u press up */
+	jump(hero, SDL_GetTicks(), oldtime, table[level]); // jumps only if oldtime < SDLGetTicks() so if u press up */
 	reload_pos(hero);
 
 	/* collide with edges of screen */
