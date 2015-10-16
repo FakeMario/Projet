@@ -6,8 +6,8 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
   object_type object =(object_type)malloc(sizeof(struct object));
   SDL_Surface * temp;
   switch (type) {
-  case 'R': /*Robot*/
-    temp = SDL_LoadBMP("robot_1.bmp");
+  case 'G': /*Ghost*/
+    temp = SDL_LoadBMP("ghost.bmp");
     object->sprite = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
     object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
@@ -18,8 +18,8 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
     object->coord.y = (int)object->y;
     object->rc_image.x = 0;
     object->rc_image.y = 0;
-    object->rc_image.w = 40;
-    object->rc_image.h = 50;
+    object->rc_image.w = 41;
+    object->rc_image.h = 40;
     break;
 
   case 'C': /*Mini-Champi*/

@@ -99,18 +99,18 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
 int main(int argc, char** argv)
 {
   SDL_Surface *screen,*temp,*tileset;
-  object_type robot_enemy_1, robot_enemy_2, mini_champi_enemy_1;
+  object_type robot_enemy_1, robot_enemy_2, mini_champi_enemy_1, mini_champi_enemy_2;
   object_type life_1,life_2,life_3;
   list_of_object enemy_list, enemy_list_copy;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
   int past_time_enemy, present_time_enemy;
-  int invulnerable_time = -1500;
+  int invulnerable_time = -1500, invulnerable_time2 = -1500;
   gameover = 0;
 
   /* set sprite position */
   hero->coord.x = hero->x = 0;
   hero->coord.y = hero->y = 300;
-                                //On défini ça ici parce que sinon il revient à la meme position à chaque changement de niveau
+  //On défini ça ici parce que sinon il revient à la meme position à chaque changement de niveau
   /* set animation frame */
   hero->rc_image.x = 0;
   hero->rc_image.y = 0;
@@ -143,12 +143,14 @@ int main(int argc, char** argv)
 
     /* create list of new enemy */
     enemy_list = create_new_list_of_object();
-    robot_enemy_1 = create_new_object('R',screen, 250, 200);
-    robot_enemy_2 = create_new_object('R',screen, 200, 200);
+    robot_enemy_1 = create_new_object('G',screen, 250, 200);
+    robot_enemy_2 = create_new_object('G',screen, 200, 200);
     mini_champi_enemy_1 = create_new_object('C',screen, 700, 250);
+    mini_champi_enemy_2 = create_new_object('C',screen, 750, 250);
     enemy_list = cons(robot_enemy_1, enemy_list);
     enemy_list = cons(robot_enemy_2, enemy_list);
     enemy_list = cons(mini_champi_enemy_1, enemy_list);
+    enemy_list = cons(mini_champi_enemy_2, enemy_list);
 
     /* create list of new hero lives */
     life_of_hero_list = create_new_list_of_object();
@@ -206,9 +208,9 @@ int main(int argc, char** argv)
 	enemy_list_copy = enemy_list;
 	while (enemy_list_copy != NULL){
 	  SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
-
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 1) {
-
+	    free(enemy_list_copy -> first);
+	    enemy_list = enemy_list -> rest;
 	  }
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
 	    if (SDL_GetTicks()-invulnerable_time > 1500) {
@@ -216,6 +218,7 @@ int main(int argc, char** argv)
 	      if (life_of_hero_list != NULL){
 		life_of_hero_list = life_of_hero_list -> rest;
 	      }
+	    
 	      if (life_of_hero_list == NULL){
 		printf("Gameover\n");
 		gameover = 1;
