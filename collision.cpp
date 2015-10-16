@@ -67,3 +67,23 @@ int Collision_Sortie(char tuile){
 	  || (tuile =='A')
 	  || (tuile =='B'));
 }
+
+
+void Collision_screen_hero(pt_sprite hero){
+  if (hero->x <= 0)
+    hero->x = hero->coord.x = 0;
+  if (hero->x >= SCREEN_WIDTH - SPRITE_WIDTH) 
+    hero->x = hero->coord.x = SCREEN_WIDTH - SPRITE_WIDTH;
+
+  if (hero->y <= 0)
+    hero->y = hero->coord.y = 0;
+  if (hero->y >= SCREEN_HEIGHT - SPRITE_HEIGHT) 
+     hero->y = hero->coord.y = SCREEN_HEIGHT - SPRITE_HEIGHT;
+}
+
+void Collision_screen_enemy(object_type enemy){
+  if (enemy->x <= 0)
+    enemy->x = enemy->coord.x = 0;
+  if (enemy->x >= SCREEN_WIDTH - SPRITE_WIDTH) 
+    enemy->x = enemy->coord.x = SCREEN_WIDTH - SPRITE_WIDTH;
+}

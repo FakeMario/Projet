@@ -86,8 +86,6 @@ pt_sprite convert_enemy_type_to_pt_spite (object_type object){
 }
 
 
-int collision_hero_decor (pt_sprite hero, char** table);
-
 void deplacement_object(object_type object, char direction, char** table)
 {
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
@@ -104,7 +102,6 @@ void deplacement_object(object_type object, char direction, char** table)
       if (object->rc_image.x == 2 * object->rc_image.w || object->rc_image.x == 4 * object->rc_image.w){
 	object->rc_image.x=0;
       }
-    
     break;
   case 'R': /*Right*/
     object->x += 0.08;

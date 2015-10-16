@@ -191,15 +191,7 @@ int main(int argc, char** argv)
 	CheckLevel(hero, table[level], &level, &levelover, screen);
 
 	/* collide with edges of screen */
-	if (hero->coord.x <= 0)
-	  hero->coord.x = 0;
-	if (hero->coord.x >= SCREEN_WIDTH - SPRITE_WIDTH) 
-	  hero->coord.x = SCREEN_WIDTH - SPRITE_WIDTH;
-
-	if (hero->coord.y <= 0)
-	  hero->coord.y = 0;
-	if (hero->coord.y >= SCREEN_HEIGHT - SPRITE_HEIGHT) 
-	  hero->coord.y = SCREEN_HEIGHT - SPRITE_HEIGHT;
+	Collision_screen_hero(hero);
 
 	/* draw the sprite */
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
@@ -227,6 +219,7 @@ int main(int argc, char** argv)
 	    }
 	  }
 
+	  Collision_screen_enemy(enemy_list_copy->first);
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
 	    if (SDL_GetTicks()-invulnerable_time > 1500) {
 	      invulnerable_time = SDL_GetTicks();
