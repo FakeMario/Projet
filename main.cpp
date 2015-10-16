@@ -210,6 +210,23 @@ int main(int argc, char** argv)
 	while (enemy_list_copy != NULL){
 	  printf("%p \n", enemy_list_copy->first);
 	  SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
+	  present_time_enemy = SDL_GetTicks();
+	  /* deplacement of the enemy */
+	  if (enemy_list_copy->first->type == 'C'){
+	    if (((present_time_enemy - past_time_enemy)/4000)%2 == 0){
+	      deplacement_object(enemy_list_copy->first,'R');
+	    } else {
+	      deplacement_object(enemy_list_copy->first,'L');
+	    }
+	  }
+	  if (enemy_list_copy->first->type == 'G'){
+	    if (((present_time_enemy - past_time_enemy)/6000)%2 == 0){
+	      deplacement_object(enemy_list_copy->first,'L');
+	    } else {
+	      deplacement_object(enemy_list_copy->first,'R');
+	    }
+	  }
+
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
 	    if (SDL_GetTicks()-invulnerable_time > 1500) {
 	      invulnerable_time = SDL_GetTicks();
@@ -218,34 +235,10 @@ int main(int argc, char** argv)
 	      }
 	    
 	      if (life_of_hero_list == NULL){
-		printf("Gameover\n");
 		gameover = 1;
 	      }
-
-	      printf("Moins une vie\n");
-	    }
-
-	  }
-
-	  
-	  present_time_enemy = SDL_GetTicks();
-	  /* deplacement of the enemy */
-	  if (((present_time_enemy - past_time_enemy)/6000)%2 == 0){
-	    deplacement_object(enemy_list_copy->first,'L');
-	    /* deplacement sprite enemy */
-	    enemy_list_copy->first->rc_image.x = enemy_list_copy->first->rc_image.x + enemy_list_copy->first->rc_image.w;
-	    if(enemy_list_copy->first->rc_image.x == 2 * enemy_list_copy->first->rc_image.w || enemy_list_copy->first->rc_image.x == 4 * enemy_list_copy->first->rc_image.w ){
-	      enemy_list_copy->first->rc_image.x = 0;
-	    }
-	  } else {
-	    deplacement_object(enemy_list_copy->first,'R');
-	    /* deplacement sprite enemy */
-	    enemy_list_copy->first->rc_image.x = enemy_list_copy->first->rc_image.x + enemy_list_copy->first->rc_image.w;
-	    if(enemy_list_copy->first->rc_image.x == 4 * enemy_list_copy->first->rc_image.w){
-	      enemy_list_copy->first->rc_image.x = 2 * enemy_list_copy->first->rc_image.w;
 	    }
 	  }
-
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 1) {
 	    free(enemy_list_copy->first);
 	    if (NULL!=enemy_list_prev) {
@@ -256,13 +249,11 @@ int main(int argc, char** argv)
 	    free(enemy_list_copy);
 	    enemy_list_copy = enemy_list_prev;
 	  }
-
-
-
-
 	  enemy_list_prev = enemy_list_copy;
 	  enemy_list_copy = enemy_list_copy->rest;
-	}    
+	}
+
+
 	/* draw the hero lives sprite */
 	life_of_hero_list_copy = life_of_hero_list;
 	while (life_of_hero_list_copy != NULL){
