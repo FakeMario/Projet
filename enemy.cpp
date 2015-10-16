@@ -74,23 +74,40 @@ list_of_object cons(object_type object, list_of_object L){
   return L1;
 }
 
+pt_sprite convert_enemy_type_to_pt_spite (object_type object){
+  pt_sprite enemy = (pt_sprite)malloc(sizeof(struct s_sprite));
+  enemy->x = object->x;
+  enemy->y = object->y;
+  enemy->sprite = object->sprite;
+  enemy->colorkey = object->colorkey;
+  enemy->rc_image = object->rc_image;
+  enemy->coord = object->coord;
+  return enemy;
+}
 
 
-void deplacement_object(object_type object, char direction)
+int collision_hero_decor (pt_sprite hero, char** table);
+
+void deplacement_object(object_type object, char direction, char** table)
 {
+  pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
+    if (0==collision_hero_decor(enemy, table)){
+      object->y += 0.75;
+    }
   switch (direction) {
   case 'L': /*Left*/
-    object->x -= 0.06;
-    object->y += 0;
-    object->coord.x = (int)object->x;
-    object->coord.y = (int)object->y;
-    object->rc_image.x = object->rc_image.x+object->rc_image.w;
-    if (object->rc_image.x == 2 * object->rc_image.w || object->rc_image.x == 4 * object->rc_image.w){
-      object->rc_image.x=0;
-    }
+      object->x -= 0.08;
+      object->y += 0;
+      object->coord.x = (int)object->x;
+      object->coord.y = (int)object->y;
+      object->rc_image.x = object->rc_image.x+object->rc_image.w;
+      if (object->rc_image.x == 2 * object->rc_image.w || object->rc_image.x == 4 * object->rc_image.w){
+	object->rc_image.x=0;
+      }
+    
     break;
   case 'R': /*Right*/
-    object->x += 0.06;
+    object->x += 0.08;
     object->y += 0;
     object->coord.x = (int)object->x;
     object->coord.y = (int)object->y;

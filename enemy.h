@@ -35,7 +35,7 @@ struct List{
 
 list_of_object create_new_list_of_object();
 list_of_object cons(object_type object, list_of_object L);
-void deplacement_object(object_type object);
+void deplacement_object(object_type object, char direction, char** table);
 
 
 #endif

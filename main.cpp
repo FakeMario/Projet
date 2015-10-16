@@ -72,9 +72,9 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
 	hero->rc_image.x += SPRITE_WIDTH;
       /* Deplacement*/
       if (hero->x >= 0){
-	hero->x -= 0.1;
+	hero->x -= 0.3;
 	if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
-	  hero->x += 0.1;
+	  hero->x += 0.3;
       
       }
     }
@@ -87,9 +87,9 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
       else
 	hero->rc_image.x += SPRITE_WIDTH;
       
-      hero->x += 0.1;
+      hero->x += 0.3;
       if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
-	hero->x -= 0.1;
+	hero->x -= 0.3;
       
       
     }
@@ -99,7 +99,7 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
 int main(int argc, char** argv)
 {
   SDL_Surface *screen,*temp,*tileset;
-  object_type robot_enemy_1, robot_enemy_2, mini_champi_enemy_1, mini_champi_enemy_2;
+  object_type robot_enemy_1, robot_enemy_2, mini_champi_enemy_1, mini_champi_enemy_2, mini_champi_enemy_3;
   object_type life_1,life_2,life_3;
   list_of_object enemy_list, enemy_list_copy,enemy_list_prev;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
@@ -142,14 +142,16 @@ int main(int argc, char** argv)
 
     /* create list of new enemy */
     enemy_list = create_new_list_of_object();
-    robot_enemy_1 = create_new_object('G',screen, 250, 200);
-    robot_enemy_2 = create_new_object('G',screen, 200, 200);
-    mini_champi_enemy_1 = create_new_object('C',screen, 700, 250);
-    mini_champi_enemy_2 = create_new_object('C',screen, 750, 250);
+    robot_enemy_1 = create_new_object('G',screen, 200, 152);
+    robot_enemy_2 = create_new_object('G',screen, 825, 280);
+    mini_champi_enemy_1 = create_new_object('C',screen, 700, 684);
+    mini_champi_enemy_2 = create_new_object('C',screen, 725, 684);
+    mini_champi_enemy_3 = create_new_object('C',screen, 750, 684);
     enemy_list = cons(robot_enemy_1, enemy_list);
     enemy_list = cons(robot_enemy_2, enemy_list);
     enemy_list = cons(mini_champi_enemy_1, enemy_list);
     enemy_list = cons(mini_champi_enemy_2, enemy_list);
+    enemy_list = cons(mini_champi_enemy_3, enemy_list);
 
     /* create list of new hero lives */
     life_of_hero_list = create_new_list_of_object();
@@ -208,22 +210,21 @@ int main(int argc, char** argv)
 	enemy_list_prev = NULL;
 	enemy_list_copy = enemy_list;
 	while (enemy_list_copy != NULL){
-	  printf("%p \n", enemy_list_copy->first);
 	  SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
 	  present_time_enemy = SDL_GetTicks();
 	  /* deplacement of the enemy */
 	  if (enemy_list_copy->first->type == 'C'){
-	    if (((present_time_enemy - past_time_enemy)/4000)%2 == 0){
-	      deplacement_object(enemy_list_copy->first,'R');
+	    if (((present_time_enemy - past_time_enemy)/2500)%2 == 0){
+	      deplacement_object(enemy_list_copy->first,'R', table[level]);
 	    } else {
-	      deplacement_object(enemy_list_copy->first,'L');
+	      deplacement_object(enemy_list_copy->first,'L', table[level]);
 	    }
 	  }
 	  if (enemy_list_copy->first->type == 'G'){
-	    if (((present_time_enemy - past_time_enemy)/6000)%2 == 0){
-	      deplacement_object(enemy_list_copy->first,'L');
+	    if (((present_time_enemy - past_time_enemy)/8500)%2 == 0){
+	      deplacement_object(enemy_list_copy->first,'L', table[level]);
 	    } else {
-	      deplacement_object(enemy_list_copy->first,'R');
+	      deplacement_object(enemy_list_copy->first,'R', table[level]);
 	    }
 	  }
 
