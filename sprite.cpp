@@ -6,14 +6,15 @@ void jump(pt_sprite hero, unsigned int time, unsigned int oldtime, char** table)
 
 {
   if (time - oldtime <= 300 && time - oldtime > 0) {
-    hero->y -= 0.75;
+    hero->y -= 0.95;
     if (0!=collision_hero_decor(hero, table))
-	hero->y += 0.75;
-    }
+      hero->y += 0.95;
+  }
   else if (hero->y < 700) {
-    hero->y += 0.5;
-    if (0!=collision_hero_decor(hero, table))
-      hero->y -= 0.5;
+    hero->y += 0.8;
+    if (0!=collision_hero_decor(hero, table)) {
+      hero->y -= 0.8;
+    }
   }
 }
  
