@@ -18,7 +18,6 @@ int gameover = 0;
 unsigned int oldtime = 10000000;
 int level = 0;
 int levelover = 0;
-int time_j = -730;
 
 /* source and destination rectangles */
 pt_sprite hero = (pt_sprite) malloc (sizeof(s_sprite));
@@ -50,50 +49,50 @@ void update_events(char* keys){
   }
 }
 
-void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
+void HandleEvent(char* key, SDL_Surface *screen)
 {
   SDLKey tabkey[NBPLAYERS][3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
   int i;
   for (i=0; i<NBPLAYERS; i++){
-    /*if (SDL_GetTicks() - *time_j > 730) {
-     *time_j = SDL_GetTicks(); NE PAS DELETE */	    	    
+    hero->y += 0.8; /* pour calculer si collision avec bloc en dessous */
+    if((collision_hero_decor(hero, table[level]))!=0) { /* on autorise appui sur haut si perso pas dans le ciel */
       if(key[tabkey[i][0]]) { //UP
 	oldtime = SDL_GetTicks();
       }
-      //}
-      
-    if(key[tabkey[i][1]]) { //LEFT
-      /* Movement sprite*/
-      if ( hero->rc_image.x < 2*SPRITE_WIDTH )
-	hero->rc_image.x = 2*SPRITE_WIDTH;
-      if ( hero->rc_image.x == 3*SPRITE_WIDTH )
-	hero->rc_image.x = 2*SPRITE_WIDTH;
-      else
-	hero->rc_image.x += SPRITE_WIDTH;
-      /* Deplacement*/
-      if (hero->x >= 0){
-	hero->x -= 0.3;
-	if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
-	  hero->x += 0.3;
-      
-      }
     }
-    
-    if(key[tabkey[i][2]]) { //RIGHT
-      if ( hero->rc_image.x > SPRITE_WIDTH )
-	hero->rc_image.x = 0;
-      if ( hero->rc_image.x == SPRITE_WIDTH )
-	hero->rc_image.x = 0;
-      else
-	hero->rc_image.x += SPRITE_WIDTH;
+    hero->y -= 0.8; /* reprend sa pos */
       
-      hero->x += 0.3;
+
+  if(key[tabkey[i][1]]) { //LEFT
+    /* Movement sprite*/
+    if ( hero->rc_image.x < 2*SPRITE_WIDTH )
+      hero->rc_image.x = 2*SPRITE_WIDTH;
+    if ( hero->rc_image.x == 3*SPRITE_WIDTH )
+      hero->rc_image.x = 2*SPRITE_WIDTH;
+    else
+      hero->rc_image.x += SPRITE_WIDTH;
+    /* Deplacement*/
+    if (hero->x >= 0){
+      hero->x -= 0.3;
       if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
-	hero->x -= 0.3;
-      
+	hero->x += 0.3;
       
     }
   }
+    
+  if(key[tabkey[i][2]]) { //RIGHT
+    if ( hero->rc_image.x > SPRITE_WIDTH )
+      hero->rc_image.x = 0;
+    if ( hero->rc_image.x == SPRITE_WIDTH )
+      hero->rc_image.x = 0;
+    else
+      hero->rc_image.x += SPRITE_WIDTH;
+      hero->x += 0.3;
+      if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
+	hero->x -= 0.3; 
+      
+  }
+}
 }	       
 
 int main(int argc, char** argv)
@@ -183,7 +182,7 @@ int main(int argc, char** argv)
 
 	Afficher(screen,tileset,table[level],NB_BLOCS_HAUTEUR, NB_BLOCS_LARGEUR);
 	   
-	HandleEvent(key, screen, &time_j);
+	HandleEvent(key, screen);
 	update_events(key);
       
 	jump(hero, SDL_GetTicks(), oldtime, table[level]); // jumps only if oldtime < SDLGetTicks() so if u press up */

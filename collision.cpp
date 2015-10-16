@@ -28,7 +28,7 @@ int collision_hero_decor (pt_sprite hero,char** table) {
 	tuile->rc_image.h = tuile->rc_image.w = TAILLE_TUILE;
 	if(Collision_H_E(hero, tuile)!=0) {
 	  if (Collision_Sortie(table[j][i])) //si on rencontre une sortie
-	    return 3; //return spécial sortie
+	    return 3; //return special sortie
 	  else 
 	    return Collision_H_E(hero, tuile);
 	}
