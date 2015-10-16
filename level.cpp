@@ -48,7 +48,7 @@ int collision_hero_decor (pt_sprite hero,char** table);
 
 
 void CheckLevel(pt_sprite hero, char** table, int* level, int* levelover, SDL_Surface* screen){
-  if (collision_hero_decor(hero, table) == 2){ //si on touche une sortie
+  if (collision_hero_decor(hero, table) == 3){ //si on touche une sortie
     if (hero->x > SCREEN_WIDTH/2){ //si il est du coté droit = si il sort par la droite
       *level++;
       hero->x = TAILLE_TUILE +1; //+1 pour pas qu'il reparte direct dans le lvl précédent

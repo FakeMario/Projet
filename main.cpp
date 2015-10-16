@@ -59,21 +59,22 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
   SDLKey tabkey[NBPLAYERS][3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
   int i;
   for (i=0; i<NBPLAYERS; i++){	    
-      if(key[tabkey[i][0]]) { //UP
-	oldtime = SDL_GetTicks();
-      }
+    if(key[tabkey[i][0]]) { //UP
+      oldtime = SDL_GetTicks();
+    }
       
     if(key[tabkey[i][1]]) { //LEFT
+      /* Movement sprite*/
       if ( hero->rc_image.x < 2*SPRITE_WIDTH )
 	hero->rc_image.x = 2*SPRITE_WIDTH;
       if ( hero->rc_image.x == 3*SPRITE_WIDTH )
 	hero->rc_image.x = 2*SPRITE_WIDTH;
       else
 	hero->rc_image.x += SPRITE_WIDTH;
-      
+      /* Deplacement*/
       if (hero->x >= 0){
 	hero->x -= 0.1;
-	if ((0!=collision_hero_decor(hero, table[level]))&&(collision_hero_decor(hero, table[level])!=2))
+	if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
 	  hero->x += 0.1;
       
       }
@@ -88,7 +89,7 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
 	hero->rc_image.x += SPRITE_WIDTH;
       
       hero->x += 0.1;
-      if ((0!=collision_hero_decor(hero, table[level]))&&(collision_hero_decor(hero, table[level])!=2))
+      if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
 	hero->x -= 0.1;
       
       
