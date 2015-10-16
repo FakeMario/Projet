@@ -14,14 +14,10 @@
 #define SPRITE_HEIGHT 128
 #define NBPLAYERS 1
 
-int gameover;
+int gameover = 0;
 unsigned int oldtime = 10000000;
 int level = 0;
 int levelover = 0;
-int Gauche = 1 ;
-int Droite = 1 ; 
-int Haut = 1; 
-int Bas = 1;
 int time_j = -730;
 
 /* source and destination rectangles */
@@ -58,10 +54,13 @@ void HandleEvent(char* key, SDL_Surface *screen, int *time_j)
 {
   SDLKey tabkey[NBPLAYERS][3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
   int i;
-  for (i=0; i<NBPLAYERS; i++){	    
-    if(key[tabkey[i][0]]) { //UP
-      oldtime = SDL_GetTicks();
-    }
+  for (i=0; i<NBPLAYERS; i++){
+    /*if (SDL_GetTicks() - *time_j > 730) {
+     *time_j = SDL_GetTicks(); NE PAS DELETE */	    	    
+      if(key[tabkey[i][0]]) { //UP
+	oldtime = SDL_GetTicks();
+      }
+      //}
       
     if(key[tabkey[i][1]]) { //LEFT
       /* Movement sprite*/
@@ -102,11 +101,10 @@ int main(int argc, char** argv)
   SDL_Surface *screen,*temp,*tileset;
   object_type robot_enemy_1, robot_enemy_2, mini_champi_enemy_1, mini_champi_enemy_2;
   object_type life_1,life_2,life_3;
-  list_of_object enemy_list, enemy_list_copy;
+  list_of_object enemy_list, enemy_list_copy,enemy_list_prev;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
   int past_time_enemy, present_time_enemy;
   int invulnerable_time = -1500, invulnerable_time2 = -1500;
-  gameover = 0;
 
   /* set sprite position */
   hero->coord.x = hero->x = 0;
@@ -205,14 +203,13 @@ int main(int argc, char** argv)
 	/* draw the sprite */
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
 
+
 	/* draw the enemy sprite */
+	enemy_list_prev = NULL;
 	enemy_list_copy = enemy_list;
 	while (enemy_list_copy != NULL){
+	  printf("%p \n", enemy_list_copy->first);
 	  SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
-	  if (Collision_H_E(hero, enemy_list_copy->first) == 1) {
-	    free(enemy_list_copy -> first);
-	    enemy_list = enemy_list -> rest;
-	  }
 	  if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
 	    if (SDL_GetTicks()-invulnerable_time > 1500) {
 	      invulnerable_time = SDL_GetTicks();
@@ -248,9 +245,24 @@ int main(int argc, char** argv)
 	      enemy_list_copy->first->rc_image.x = 2 * enemy_list_copy->first->rc_image.w;
 	    }
 	  }
+
+	  if (Collision_H_E(hero, enemy_list_copy->first) == 1) {
+	    free(enemy_list_copy->first);
+	    if (NULL!=enemy_list_prev) {
+	      enemy_list_prev->rest = enemy_list_copy->rest;
+	    } else {
+	      enemy_list = enemy_list->rest;
+	    }
+	    free(enemy_list_copy);
+	    enemy_list_copy = enemy_list_prev;
+	  }
+
+
+
+
+	  enemy_list_prev = enemy_list_copy;
 	  enemy_list_copy = enemy_list_copy->rest;
-	}
-	      
+	}    
 	/* draw the hero lives sprite */
 	life_of_hero_list_copy = life_of_hero_list;
 	while (life_of_hero_list_copy != NULL){

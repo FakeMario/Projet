@@ -37,7 +37,7 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
     object->rc_image.w = 20;
     object->rc_image.h = 20;
     break;
-    
+
   case 'L': /*Life of the hero*/
     temp = SDL_LoadBMP("life.bmp");
     object->sprite = SDL_DisplayFormat(temp);
@@ -67,8 +67,7 @@ list_of_object create_new_list_of_object(){
 
 
 list_of_object cons(object_type object, list_of_object L){
-  list_of_object L1 = create_new_list_of_object();
-  L1 = (list_of_object) malloc(sizeof(struct List));
+  list_of_object L1 = (list_of_object) malloc(sizeof(struct List));
   L1->first = object;
   L1->rest = L;
   return L1;
