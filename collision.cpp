@@ -2,11 +2,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TAILLE_TUILE 64
-#define NB_BLOCS_HAUTEUR 12
-#define NB_BLOCS_LARGEUR 16
-#define SPRITE_WIDTH  50
-#define SPRITE_HEIGHT 128
+#define TAILLE_TUILE 32
+#define NB_BLOCS_HAUTEUR 24
+#define NB_BLOCS_LARGEUR 32
+#define SPRITE_WIDTH  24
+#define SPRITE_HEIGHT 62
 #define SCREEN_WIDTH  1024
 #define SCREEN_HEIGHT 768
 
@@ -20,7 +20,7 @@ int collision_hero_decor (pt_sprite hero,char** table) {
   object_type tuile =(object_type)malloc(sizeof(struct object));
   for (i=0; i<=NB_BLOCS_LARGEUR; i++){
     for (j=0; j<NB_BLOCS_HAUTEUR; j++){
-      if (table[j][i]!='0'){ //si on n'est pas sur une case ciel
+      if ((table[j][i]!='0')&&(table[j][i]!='6')){ //si on n'est pas sur une case ciel
 	coord.x = i*TAILLE_TUILE;
 	coord.y = j*TAILLE_TUILE;
 	tuile->x = coord.x;

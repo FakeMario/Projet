@@ -5,13 +5,13 @@
 #include "affichage.cpp"
 #include "collision.cpp"
 
-#define TAILLE_TUILE 64
-#define NB_BLOCS_HAUTEUR 12
-#define NB_BLOCS_LARGEUR 16
+#define TAILLE_TUILE 32
+#define NB_BLOCS_HAUTEUR 24
+#define NB_BLOCS_LARGEUR 32
 #define SCREEN_WIDTH  1024
 #define SCREEN_HEIGHT 768
-#define SPRITE_WIDTH  50
-#define SPRITE_HEIGHT 128
+#define SPRITE_WIDTH  24
+#define SPRITE_HEIGHT 62
 #define NBPLAYERS 1
 
 int gameover = 0;
@@ -106,8 +106,8 @@ int main(int argc, char** argv)
   int invulnerable_time = -1500, invulnerable_time2 = -1500;
 
   /* set sprite position */
-  hero->coord.x = hero->x = 0;
-  hero->coord.y = hero->y = 300;
+  hero->coord.x = hero->x = TAILLE_TUILE + 1;
+  hero->coord.y = hero->y = SCREEN_HEIGHT - SPRITE_HEIGHT - TAILLE_TUILE - 1;
   //On défini ça ici parce que sinon il revient à la meme position à chaque changement de niveau
   /* set animation frame */
   hero->rc_image.x = 0;

@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include "SDL.h"
 
-#define TAILLE_TUILE 64
-#define NB_BLOCS_HAUTEUR 12
-#define NB_BLOCS_LARGEUR 16
+#define TAILLE_TUILE 32
+#define NB_BLOCS_HAUTEUR 24
+#define NB_BLOCS_LARGEUR 32
 
 
 void Afficher(SDL_Surface* screen, SDL_Surface* tileset, char** table, int nb_blocs_haut, int nb_blocs_large){
