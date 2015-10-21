@@ -56,13 +56,12 @@ void HandleEvent(char* key, SDL_Surface *screen)
   int i;
   for (i=0; i<NBPLAYERS; i++){
     hero->y += 0.8; /* pour calculer si collision avec bloc en dessous */
-    if((collision_hero_decor(hero, table[level]))!=0) { /* on autorise appui sur haut si perso pas dans le ciel */
+    if((collision_hero_decor(hero, table[level]))!=0) { /* on autorise appui sur haut si perso pas dans le ciel ou si il a droit au double saut */
       if(key[tabkey[i][0]]) { //UP
 	oldtime = SDL_GetTicks();
       }
     }
     hero->y -= 0.8; /* reprend sa pos */
-      
 
   if(key[tabkey[i][1]]) { //LEFT
     /* Movement sprite*/
@@ -106,6 +105,7 @@ int main(int argc, char** argv)
   int past_time_enemy, present_time_enemy;
   int invulnerable_time = -1500, invulnerable_time2 = -1500;
   int sleep_time = 0;
+  int firsttime = 1;
 
   /* set sprite position */
   hero->coord.x = hero->x = TAILLE_TUILE + 1;
@@ -167,13 +167,15 @@ int main(int argc, char** argv)
    
     /* create list of new hero lives */
     life_of_hero_list = create_new_list_of_object();
-    life_1 = create_new_object('L',screen, 5, 5);
-    life_2 = create_new_object('L',screen, 35, 5);
-    life_3 = create_new_object('L',screen, 65, 5);
-    life_of_hero_list = cons(life_1, life_of_hero_list);
-    life_of_hero_list = cons(life_2, life_of_hero_list);
-    life_of_hero_list = cons(life_3, life_of_hero_list);
-
+    if(firsttime){
+      life_1 = create_new_object('L',screen, 5, 5);
+      life_2 = create_new_object('L',screen, 35, 5);
+      life_3 = create_new_object('L',screen, 65, 5);
+      life_of_hero_list = cons(life_1, life_of_hero_list);
+      life_of_hero_list = cons(life_2, life_of_hero_list);
+      life_of_hero_list = cons(life_3, life_of_hero_list);
+      firsttime = 0;
+    }
       
     /* setup sprite colorkey and turn on RLE */
     hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
@@ -271,7 +273,8 @@ int main(int argc, char** argv)
 
 	/* update the screen */
 	SDL_UpdateRect(screen, 0, 0, 0, 0);
-	//SDL_Delay(0.1);
+
+	//régulation du rythme du programme
 	if (SDL_GetTicks()-sleep_time > 3) {
 	  sleep_time = SDL_GetTicks();
 	} else { 
