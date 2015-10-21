@@ -244,7 +244,8 @@ int main(int argc, char** argv)
 	    enemy_list_copy = enemy_list_prev;
 	  }
 	  enemy_list_prev = enemy_list_copy;
-	  enemy_list_copy = enemy_list_copy->rest;
+	  if (enemy_list_copy != NULL)
+	    enemy_list_copy = enemy_list_copy->rest;
 	}
 
 
