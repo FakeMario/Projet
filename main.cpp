@@ -260,10 +260,10 @@ int main(int argc, char** argv)
 	/* update the screen */
 	SDL_UpdateRect(screen, 0, 0, 0, 0);
 	//SDL_Delay(0.1);
-	if (SDL_GetTicks()-sleep_time > 30) {
+	if (SDL_GetTicks()-sleep_time > 3) {
 	  sleep_time = SDL_GetTicks();
 	} else { 
-	  SDL_Delay(30 - (SDL_GetTicks() - sleep_time));
+	  SDL_Delay(3 - (SDL_GetTicks() - sleep_time));
 	}	      
       }
   }
