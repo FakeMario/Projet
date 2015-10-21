@@ -141,7 +141,16 @@ int main(int argc, char** argv)
     hero->sprite = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);   
 
+    // Eliminer les ennemis qu'on n'a pas tué quand on change de tableau
+    if (enemy_list != NULL){
+      enemy_list = NULL;
+      free(enemy_list);
+    }
+
     /* create list of new enemy */
+
+    // 1er level
+    if (level == 0){
     enemy_list = create_new_list_of_object();
     robot_enemy_1 = create_new_object('G',screen, 200, 152);
     robot_enemy_2 = create_new_object('G',screen, 825, 280);
@@ -153,7 +162,9 @@ int main(int argc, char** argv)
     enemy_list = cons(mini_champi_enemy_1, enemy_list);
     enemy_list = cons(mini_champi_enemy_2, enemy_list);
     enemy_list = cons(mini_champi_enemy_3, enemy_list);
-
+    }
+    
+   
     /* create list of new hero lives */
     life_of_hero_list = create_new_list_of_object();
     life_1 = create_new_object('L',screen, 5, 5);
@@ -182,7 +193,7 @@ int main(int argc, char** argv)
 	  
 	// fonction affichage
 	Afficher(screen,tileset,table[level],NB_BLOCS_HAUTEUR, NB_BLOCS_LARGEUR);
-	   
+	  
 	HandleEvent(key, screen);
 	update_events(key);
       
