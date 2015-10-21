@@ -1,4 +1,5 @@
 #include "SDL.h"
+#include <time.h>
 #include "sprite.cpp"
 #include "enemy.cpp"
 #include "level.cpp"
@@ -179,7 +180,6 @@ int main(int argc, char** argv)
 	SDL_Event event;
 	  
 	// fonction affichage
-
 	Afficher(screen,tileset,table[level],NB_BLOCS_HAUTEUR, NB_BLOCS_LARGEUR);
 	   
 	HandleEvent(key, screen);
