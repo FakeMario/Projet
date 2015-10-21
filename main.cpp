@@ -104,6 +104,7 @@ int main(int argc, char** argv)
   list_of_object life_of_hero_list, life_of_hero_list_copy;
   int past_time_enemy, present_time_enemy;
   int invulnerable_time = -1500, invulnerable_time2 = -1500;
+  int sleep_time = 0;
 
   /* set sprite position */
   hero->coord.x = hero->x = TAILLE_TUILE + 1;
@@ -258,7 +259,12 @@ int main(int argc, char** argv)
 
 	/* update the screen */
 	SDL_UpdateRect(screen, 0, 0, 0, 0);
-	SDL_Delay(1);
+	//SDL_Delay(0.1);
+	if (SDL_GetTicks()-sleep_time > 30) {
+	  sleep_time = SDL_GetTicks();
+	} else { 
+	  SDL_Delay(30 - (SDL_GetTicks() - sleep_time));
+	}	      
       }
   }
 
