@@ -153,7 +153,7 @@ int main(int argc, char** argv)
     if (level == 0){
     enemy_list = create_new_list_of_object();
     robot_enemy_1 = create_new_object('G',screen, 200, 152);
-    robot_enemy_2 = create_new_object('G',screen, 825, 280);
+    robot_enemy_2 = create_new_object('G',screen, 1000, 280);
     mini_champi_enemy_1 = create_new_object('C',screen, 700, 684);
     mini_champi_enemy_2 = create_new_object('C',screen, 725, 684);
     mini_champi_enemy_3 = create_new_object('C',screen, 750, 684);
