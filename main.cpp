@@ -105,7 +105,6 @@ int main(int argc, char** argv)
   int past_time_enemy, present_time_enemy;
   int invulnerable_time = -1500, invulnerable_time2 = -1500;
   int sleep_time = 0;
-  int firsttime = 1;
 
   /* set sprite position */
   hero->coord.x = hero->x = TAILLE_TUILE + 1;
@@ -166,16 +165,15 @@ int main(int argc, char** argv)
     
    
     /* create list of new hero lives */
-    life_of_hero_list = create_new_list_of_object();
-    if(firsttime){
-      life_1 = create_new_object('L',screen, 5, 5);
-      life_2 = create_new_object('L',screen, 35, 5);
-      life_3 = create_new_object('L',screen, 65, 5);
-      life_of_hero_list = cons(life_1, life_of_hero_list);
-      life_of_hero_list = cons(life_2, life_of_hero_list);
-      life_of_hero_list = cons(life_3, life_of_hero_list);
-      firsttime = 0;
-    }
+    life_of_hero_list = create_new_list_of_object(); 
+    life_1 = create_new_object('L',screen, 5, 5);
+    life_2 = create_new_object('L',screen, 35, 5);
+    life_3 = create_new_object('L',screen, 65, 5);
+    life_of_hero_list = cons(life_1, life_of_hero_list);
+    life_of_hero_list = cons(life_2, life_of_hero_list);
+    life_of_hero_list = cons(life_3, life_of_hero_list);
+
+    
       
     /* setup sprite colorkey and turn on RLE */
     hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);

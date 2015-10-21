@@ -47,7 +47,7 @@ int Collision_H_E(pt_sprite hero, object_type enemy)
       || (enemy->y + enemy->rc_image.h < hero->y))  // trop en haut
     return 0; 
   else
-    if (enemy->y - enemy->rc_image.h > hero->y) // on saute sur l'ennemi
+    if ((enemy->y >= hero->y) && (enemy->y < (hero->y + (hero->rc_image.h/2)))) // on saute sur l'ennemi
       return 1;
     else
       return 2; 
