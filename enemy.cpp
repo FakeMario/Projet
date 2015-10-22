@@ -1,6 +1,7 @@
 #include "enemy.h"
 
 /*CREATE ENEMY*/
+char dir(object_type object, char* direction, char** table);
 
 object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
   object_type object =(object_type)malloc(sizeof(struct object));
@@ -118,45 +119,62 @@ pt_sprite convert_enemy_type_to_pt_spite (object_type object){
 }
 
 
-void deplacement_object(object_type object, char direction, char** table)
+void deplacement_object(object_type object, char* direction, char** table)
 {
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
   if (object->type == 'C' || object->type == 'G'){
-  if (0==collision_hero_decor(enemy, table)) /* manque collision avec sortie */ {
-    object->y += 0.75;
-  } else {
-    enemy->y -= 33;
-    if (collision_hero_decor(enemy, table) == 0) { /* monte si case en haut vide pour ne monter qu'une case */
-      object->y -= 0.75;
-    }
-  }
-  }
-  //printf("%d \n", direction);
-  /*if (object->type == 'R'){
-    if (0==collision_hero_decor(enemy, table)){
-      direction = !direction;
-      //printf("%d \n", direction);  
-    }
-    }*/
-    switch (direction) {
-    case 'L': /*Left*/
-      object->x -= 0.08;
-      object->coord.x = (int)object->x;
-      object->coord.y = (int)object->y;
-      object->rc_image.x = object->rc_image.x+object->rc_image.w;
-      if (object->rc_image.x == 2 * object->rc_image.w || object->rc_image.x == 4 * object->rc_image.w){
-	object->rc_image.x=0;
+    if (0==collision_hero_decor(enemy, table)) /* manque collision avec sortie */ {
+      object->y += 0.75;
+    } else { /* si collision quand il marche */
+      enemy->y -= 33; /* on monte la hitbox d'une case */
+      if (collision_hero_decor(enemy, table) == 0) { /* monte si case en haut vide pour ne monter qu'une case */
+	object->y -= 0.75;
       }
-      break;
-    case 'R': /*Right*/
-      object->x += 0.08;
-      object->coord.x = (int)object->x;
-      object->coord.y = (int)object->y;
-      object->rc_image.x = object->rc_image.x + object->rc_image.w;
-      if (object->rc_image.x== 4 * object->rc_image.w){
-	object->rc_image.x= 2 * object->rc_image.w;
-      }
-      break;
+      enemy->y = object->y;
     }
   }
 
+  // if (object->type == 'R'){
+  //   if (0==collision_hero_decor(enemy, table)) {
+  //     printf("yolo");
+  //     object->y -= 0.75;
+  //     if (*direction == 'L') {
+  // 	object->x -= 0.3;
+  //     } else {
+  // 	object->x += 0.3;
+  //     }
+  //     object->y += 0.75;
+  //   }
+  //   printf("%c \n", *direction);  
+  // }
+
+  switch (*direction) {
+  case 'L': /*Left*/
+    object->x -= 0.18;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
+    object->rc_image.x = object->rc_image.x+object->rc_image.w;
+    if (object->rc_image.x == 2 * object->rc_image.w || object->rc_image.x == 4 * object->rc_image.w){
+      object->rc_image.x=0;
+    }
+    break;
+  case 'R': /*Right*/
+    object->x += 0.18;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
+    object->rc_image.x = object->rc_image.x + object->rc_image.w;
+    if (object->rc_image.x== 4 * object->rc_image.w){
+      object->rc_image.x= 2 * object->rc_image.w;
+    }
+    break;
+  }
+}
+
+
+char dir (object_type object, char* direction, char** table)
+{
+pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
+  if (0==collision_hero_decor(enemy, table) && *direction == 'L')
+    return 'R';
+  return 'L';
+}

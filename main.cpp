@@ -223,21 +223,25 @@ int main(int argc, char** argv)
 	  /* deplacement of the enemy */
 	  if (enemy_list_copy->first->type == 'C'){
 	    if (((present_time_enemy - past_time_enemy)/2500)%2 == 0){
-	      deplacement_object(enemy_list_copy->first,'R', table[level]);
+	      direction = 'R';
 	    } else {
-	      deplacement_object(enemy_list_copy->first,'L', table[level]);
+	      direction = 'L';    
 	    }
+	    deplacement_object(enemy_list_copy->first,&direction, table[level]);
 	  }
+
 	  if (enemy_list_copy->first->type == 'G'){
 	    if (((present_time_enemy - past_time_enemy)/8500)%2 == 0){
-	      deplacement_object(enemy_list_copy->first,'L', table[level]);
+	      direction = 'L';
 	    } else {
-	      deplacement_object(enemy_list_copy->first,'R', table[level]);
+	      direction = 'R';    
 	    }
+	    deplacement_object(enemy_list_copy->first,&direction, table[level]);
 	  }
 	  //printf("%d \n", direction);
 	  if (enemy_list_copy->first->type == 'R' || enemy_list_copy->first->type == 'M'){
-	    deplacement_object(enemy_list_copy->first, 'L', table[level]);
+	    direction = dir(enemy_list_copy->first, &direction, table[level]);
+	    deplacement_object(enemy_list_copy->first, &direction, table[level]);
 	  }
 
 	  Collision_screen_enemy(enemy_list_copy->first);
