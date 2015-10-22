@@ -296,7 +296,8 @@ int main(int argc, char** argv)
 
   /* clean up */
   SDL_FreeSurface(hero->sprite);
-  SDL_FreeSurface(enemy_list->first->sprite);
+  if (enemy_list != NULL)
+    SDL_FreeSurface(enemy_list->first->sprite);
   SDL_FreeSurface(tileset);
   SDL_Quit();
 
