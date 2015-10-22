@@ -118,7 +118,7 @@ pt_sprite convert_enemy_type_to_pt_spite (object_type object){
 }
 
 
-void deplacement_object(object_type object, bool direction, char** table)
+void deplacement_object(object_type object, char direction, char** table)
 {
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
   if (object->type == 'C' || object->type == 'G'){
@@ -132,20 +132,15 @@ void deplacement_object(object_type object, bool direction, char** table)
   }
   }
   //printf("%d \n", direction);
-  if (object->type == 'R'){
+  /*if (object->type == 'R'){
     if (0==collision_hero_decor(enemy, table)){
       direction = !direction;
       //printf("%d \n", direction);  
     }
-  }
-  
+    }*/
     switch (direction) {
     case 'L': /*Left*/
       object->x -= 0.08;
-      // if ((collision_hero_decor(enemy, table))==1 || collision_hero_decor(enemy, table)==2) {
-      //    object->x += 0.08;
-      //    }
-      object->y += 0;
       object->coord.x = (int)object->x;
       object->coord.y = (int)object->y;
       object->rc_image.x = object->rc_image.x+object->rc_image.w;
@@ -155,14 +150,9 @@ void deplacement_object(object_type object, bool direction, char** table)
       break;
     case 'R': /*Right*/
       object->x += 0.08;
-      // if ((collision_hero_decor(enemy, table))==1 || collision_hero_decor(enemy, table)==2) {
-      //    object->x -= 0.08;
-      //    }
-      object->y += 0;
       object->coord.x = (int)object->x;
       object->coord.y = (int)object->y;
       object->rc_image.x = object->rc_image.x + object->rc_image.w;
-
       if (object->rc_image.x== 4 * object->rc_image.w){
 	object->rc_image.x= 2 * object->rc_image.w;
       }

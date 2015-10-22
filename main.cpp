@@ -105,7 +105,7 @@ int main(int argc, char** argv)
   int past_time_enemy, present_time_enemy;
   int invulnerable_time = -1500, invulnerable_time2 = -1500;
   int sleep_time = 0;
-  bool direction = 1;
+  char direction = 'L';
 
   /* set sprite position */
   hero->coord.x = hero->x = TAILLE_TUILE + 1;
@@ -223,21 +223,21 @@ int main(int argc, char** argv)
 	  /* deplacement of the enemy */
 	  if (enemy_list_copy->first->type == 'C'){
 	    if (((present_time_enemy - past_time_enemy)/2500)%2 == 0){
-	      deplacement_object(enemy_list_copy->first, 0, table[level]);
+	      deplacement_object(enemy_list_copy->first,'R', table[level]);
 	    } else {
-	      deplacement_object(enemy_list_copy->first, 1, table[level]);
+	      deplacement_object(enemy_list_copy->first,'L', table[level]);
 	    }
 	  }
 	  if (enemy_list_copy->first->type == 'G'){
 	    if (((present_time_enemy - past_time_enemy)/8500)%2 == 0){
-	      deplacement_object(enemy_list_copy->first, 0, table[level]);
+	      deplacement_object(enemy_list_copy->first,'L', table[level]);
 	    } else {
-	      deplacement_object(enemy_list_copy->first, 1, table[level]);
+	      deplacement_object(enemy_list_copy->first,'R', table[level]);
 	    }
 	  }
 	  //printf("%d \n", direction);
 	  if (enemy_list_copy->first->type == 'R' || enemy_list_copy->first->type == 'M'){
-	    deplacement_object(enemy_list_copy->first, direction, table[level]);
+	    deplacement_object(enemy_list_copy->first, 'L', table[level]);
 	  }
 
 	  Collision_screen_enemy(enemy_list_copy->first);
@@ -282,10 +282,10 @@ int main(int argc, char** argv)
 	SDL_UpdateRect(screen, 0, 0, 0, 0);
 
 	//régulation du rythme du programme
-	if (SDL_GetTicks()-sleep_time > 3) {
+	if (SDL_GetTicks()-sleep_time > 10) {
 	  sleep_time = SDL_GetTicks();
 	} else { 
-	  SDL_Delay(3 - (SDL_GetTicks() - sleep_time));
+	  SDL_Delay(10 - (SDL_GetTicks() - sleep_time));
 	}	      
       }
   }
