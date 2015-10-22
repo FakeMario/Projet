@@ -39,6 +39,38 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
     object->rc_image.h = 20;
     break;
 
+ case 'R': /*Robot*/
+    temp = SDL_LoadBMP("robot_1.bmp");
+    object->sprite = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
+    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
+    object->x = x;
+    object->y = y;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
+    object->rc_image.x = 0;
+    object->rc_image.y = 0;
+    object->rc_image.w = 40;
+    object->rc_image.h = 50;
+    break;
+
+ case 'M': /*Missile*/
+    temp = SDL_LoadBMP("LargeMissiles.bmp");
+    object->sprite = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
+    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
+    object->x = x;
+    object->y = y;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
+    object->rc_image.x = 0;
+    object->rc_image.y = 0;
+    object->rc_image.w = 40;
+    object->rc_image.h = 50;
+    break;
+
   case 'L': /*Life of the hero*/
     temp = SDL_LoadBMP("life.bmp");
     object->sprite = SDL_DisplayFormat(temp);
@@ -86,17 +118,26 @@ pt_sprite convert_enemy_type_to_pt_spite (object_type object){
 }
 
 
-void deplacement_object(object_type object, char direction, char** table)
+void deplacement_object(object_type object, bool direction, char** table)
 {
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
-  if (0==collision_hero_decor(enemy, table)){
-    object->y += 0.75;
-  }//  else {
-  //   object->y -= 0.75;
-  // }
+  if (object->type == 'C' || object->type == 'G'){
+    if (0==collision_hero_decor(enemy, table)){
+      object->y += 0.75;
+    }//  else {
+    //   object->y -= 0.75;
+    // }
+  }
+  //printf("%d \n", direction);
+  if (object->type == 'R'){
+    if (0==collision_hero_decor(enemy, table)){
+      direction = !direction;
+      //printf("%d \n", direction);  
+    }
+  }
   
   switch (direction) {
-  case 'L': /*Left*/
+  case 0: /*Left*/
     object->x -= 0.08;
     // if ((collision_hero_decor(enemy, table))==1 || collision_hero_decor(enemy, table)==2) {
     //    object->x += 0.08;
@@ -109,7 +150,7 @@ void deplacement_object(object_type object, char direction, char** table)
       object->rc_image.x=0;
     }
     break;
-  case 'R': /*Right*/
+  case 1: /*Right*/
     object->x += 0.08;
     // if ((collision_hero_decor(enemy, table))==1 || collision_hero_decor(enemy, table)==2) {
     //    object->x -= 0.08;

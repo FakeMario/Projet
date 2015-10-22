@@ -98,13 +98,14 @@ void HandleEvent(char* key, SDL_Surface *screen)
 int main(int argc, char** argv)
 {
   SDL_Surface *screen,*temp,*tileset;
-  object_type robot_enemy_1, robot_enemy_2, mini_champi_enemy_1, mini_champi_enemy_2, mini_champi_enemy_3;
+  object_type ghost_enemy_1, ghost_enemy_2, mini_champi_enemy_1, mini_champi_enemy_2, mini_champi_enemy_3, robot_enemy_1, missile_enemy_1;
   object_type life_1,life_2,life_3;
   list_of_object enemy_list, enemy_list_copy,enemy_list_prev;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
   int past_time_enemy, present_time_enemy;
   int invulnerable_time = -1500, invulnerable_time2 = -1500;
   int sleep_time = 0;
+  bool direction = 1;
 
   /* set sprite position */
   hero->coord.x = hero->x = TAILLE_TUILE + 1;
@@ -150,17 +151,21 @@ int main(int argc, char** argv)
 
     // 1er level
     if (level == 0){
-    enemy_list = create_new_list_of_object();
-    robot_enemy_1 = create_new_object('G',screen, 200, 152);
-    robot_enemy_2 = create_new_object('G',screen, 1000, 280);
-    mini_champi_enemy_1 = create_new_object('C',screen, 700, 684);
-    mini_champi_enemy_2 = create_new_object('C',screen, 725, 684);
-    mini_champi_enemy_3 = create_new_object('C',screen, 750, 684);
-    enemy_list = cons(robot_enemy_1, enemy_list);
-    enemy_list = cons(robot_enemy_2, enemy_list);
-    enemy_list = cons(mini_champi_enemy_1, enemy_list);
-    enemy_list = cons(mini_champi_enemy_2, enemy_list);
-    enemy_list = cons(mini_champi_enemy_3, enemy_list);
+      enemy_list = create_new_list_of_object();
+      ghost_enemy_1 = create_new_object('G',screen, 200, 152);
+      ghost_enemy_2 = create_new_object('G',screen, 1000, 280);
+      mini_champi_enemy_1 = create_new_object('C',screen, 700, 684);
+      mini_champi_enemy_2 = create_new_object('C',screen, 725, 684);
+      mini_champi_enemy_3 = create_new_object('C',screen, 750, 684);
+      robot_enemy_1 = create_new_object('R',screen, 350, 405);
+      missile_enemy_1 = create_new_object('M',screen, 300, 400);
+      enemy_list = cons(ghost_enemy_1, enemy_list);
+      enemy_list = cons(ghost_enemy_2, enemy_list);
+      enemy_list = cons(mini_champi_enemy_1, enemy_list);
+      enemy_list = cons(mini_champi_enemy_2, enemy_list);
+      enemy_list = cons(mini_champi_enemy_3, enemy_list);
+      enemy_list = cons(robot_enemy_1, enemy_list);
+      enemy_list = cons(missile_enemy_1, enemy_list);
     }
     
    
@@ -218,17 +223,21 @@ int main(int argc, char** argv)
 	  /* deplacement of the enemy */
 	  if (enemy_list_copy->first->type == 'C'){
 	    if (((present_time_enemy - past_time_enemy)/2500)%2 == 0){
-	      deplacement_object(enemy_list_copy->first,'R', table[level]);
+	      deplacement_object(enemy_list_copy->first, 0, table[level]);
 	    } else {
-	      deplacement_object(enemy_list_copy->first,'L', table[level]);
+	      deplacement_object(enemy_list_copy->first, 1, table[level]);
 	    }
 	  }
 	  if (enemy_list_copy->first->type == 'G'){
 	    if (((present_time_enemy - past_time_enemy)/8500)%2 == 0){
-	      deplacement_object(enemy_list_copy->first,'L', table[level]);
+	      deplacement_object(enemy_list_copy->first, 0, table[level]);
 	    } else {
-	      deplacement_object(enemy_list_copy->first,'R', table[level]);
+	      deplacement_object(enemy_list_copy->first, 1, table[level]);
 	    }
+	  }
+	  //printf("%d \n", direction);
+	  if (enemy_list_copy->first->type == 'R' || enemy_list_copy->first->type == 'M'){
+	    deplacement_object(enemy_list_copy->first, direction, table[level]);
 	  }
 
 	  Collision_screen_enemy(enemy_list_copy->first);
