@@ -89,13 +89,14 @@ pt_sprite convert_enemy_type_to_pt_spite (object_type object){
 void deplacement_object(object_type object, char direction, char** table)
 {
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
-  if (0==collision_hero_decor(enemy, table)) {
+  if (0==collision_hero_decor(enemy, table)) /* manque collision avec sortie */ {
     object->y += 0.75;
   } else {
-    enemy->y -= 0.75;
-    if (collision_hero_decor(enemy, table) == 0) {
+    enemy->y -= 33;
+    if (collision_hero_decor(enemy, table) == 0) { /* monte si case en haut vide pour ne monter qu'une case */
       object->y -= 0.75;
     }
+  }
   
     switch (direction) {
     case 'L': /*Left*/
