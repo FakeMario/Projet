@@ -22,6 +22,7 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
     object->rc_image.y = 0;
     object->rc_image.w = 41;
     object->rc_image.h = 40;
+    object->speed = 0.4;
     break;
 
   case 'C': /*Mini-Champi*/
@@ -38,6 +39,7 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
     object->rc_image.y = 0;
     object->rc_image.w = 20;
     object->rc_image.h = 20;
+    object->speed = 0.3;
     break;
 
  case 'R': /*Robot*/
@@ -54,6 +56,7 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
     object->rc_image.y = 0;
     object->rc_image.w = 40;
     object->rc_image.h = 50;
+    object->speed = 0.3;
     break;
 
  case 'M': /*Missile*/
@@ -70,6 +73,7 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
     object->rc_image.y = 0;
     object->rc_image.w = 40;
     object->rc_image.h = 50;
+    object->speed = 0.5;
     break;
 
   case 'L': /*Life of the hero*/
@@ -124,7 +128,7 @@ void deplacement_object(object_type object, char* direction, char** table)
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
   if (object->type == 'C' || object->type == 'G'){
     if (0==collision_hero_decor(enemy, table)) /* manque collision avec sortie */ {
-      object->y += 0.75;
+      object->y += 1.75;
     } else { /* si collision quand il marche */
       enemy->y -= 33; /* on monte la hitbox d'une case */
       if (collision_hero_decor(enemy, table) == 0) { /* monte si case en haut vide pour ne monter qu'une case */
@@ -134,23 +138,9 @@ void deplacement_object(object_type object, char* direction, char** table)
     }
   }
 
-  // if (object->type == 'R'){
-  //   if (0==collision_hero_decor(enemy, table)) {
-  //     printf("yolo");
-  //     object->y -= 0.75;
-  //     if (*direction == 'L') {
-  // 	object->x -= 0.3;
-  //     } else {
-  // 	object->x += 0.3;
-  //     }
-  //     object->y += 0.75;
-  //   }
-  //   printf("%c \n", *direction);  
-  // }
-
   switch (*direction) {
   case 'L': /*Left*/
-    object->x -= 0.18;
+    object->x -= object->speed;
     object->coord.x = (int)object->x;
     object->coord.y = (int)object->y;
     object->rc_image.x = object->rc_image.x+object->rc_image.w;
@@ -159,7 +149,7 @@ void deplacement_object(object_type object, char* direction, char** table)
     }
     break;
   case 'R': /*Right*/
-    object->x += 0.18;
+    object->x += object->speed;
     object->coord.x = (int)object->x;
     object->coord.y = (int)object->y;
     object->rc_image.x = object->rc_image.x + object->rc_image.w;
@@ -171,10 +161,10 @@ void deplacement_object(object_type object, char* direction, char** table)
 }
 
 
-char dir (object_type object, char* direction, char** table)
+char dir (pt_sprite adjacent_tile, char** table)
 {
-pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
-  if (0==collision_hero_decor(enemy, table) && *direction == 'L')
-    return 'R';
-  return 'L';
+  if (0==collision_hero_decor(adjacent_tile, table)) {
+    return 'L';
+  }
+  return 'R';
 }

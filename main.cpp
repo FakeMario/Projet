@@ -55,13 +55,13 @@ void HandleEvent(char* key, SDL_Surface *screen)
   SDLKey tabkey[NBPLAYERS][3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
   int i;
   for (i=0; i<NBPLAYERS; i++){
-    hero->y += 0.8; /* pour calculer si collision avec bloc en dessous */
+    hero->y += 3.0; /* pour calculer si collision avec bloc en dessous */
     if((collision_hero_decor(hero, table[level]))!=0) { /* on autorise appui sur haut si perso pas dans le ciel ou si il a droit au double saut */
       if(key[tabkey[i][0]]) { //UP
 	oldtime = SDL_GetTicks();
       }
     }
-    hero->y -= 0.8; /* reprend sa pos */
+    hero->y -= 3.0; /* reprend sa pos */
 
   if(key[tabkey[i][1]]) { //LEFT
     /* Movement sprite*/
@@ -73,9 +73,9 @@ void HandleEvent(char* key, SDL_Surface *screen)
       hero->rc_image.x += SPRITE_WIDTH;
     /* Deplacement*/
     if (hero->x >= 0){
-      hero->x -= 0.3;
+      hero->x -= 1.5;
       if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
-	hero->x += 0.3;
+	hero->x += 1.5;
       
     }
   }
@@ -87,9 +87,9 @@ void HandleEvent(char* key, SDL_Surface *screen)
       hero->rc_image.x = 0;
     else
       hero->rc_image.x += SPRITE_WIDTH;
-      hero->x += 0.3;
+      hero->x += 1.5;
       if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
-	hero->x -= 0.3; 
+	hero->x -= 1.5; 
       
   }
 }
@@ -105,7 +105,8 @@ int main(int argc, char** argv)
   int past_time_enemy, present_time_enemy;
   int invulnerable_time = -1500, invulnerable_time2 = -1500;
   int sleep_time = 0;
-  char direction = 'L';
+  char direction = 'R', direction_rob = 'R';
+
 
   /* set sprite position */
   hero->coord.x = hero->x = TAILLE_TUILE + 1;
@@ -238,10 +239,17 @@ int main(int argc, char** argv)
 	    }
 	    deplacement_object(enemy_list_copy->first,&direction, table[level]);
 	  }
-	  //printf("%d \n", direction);
-	  if (enemy_list_copy->first->type == 'R' || enemy_list_copy->first->type == 'M'){
-	    direction = dir(enemy_list_copy->first, &direction, table[level]);
-	    deplacement_object(enemy_list_copy->first, &direction, table[level]);
+
+	  if (enemy_list_copy->first->type == 'R' /*|| enemy_list_copy->first->type == 'M'*/){
+	    pt_sprite enemy = convert_enemy_type_to_pt_spite (enemy_list_copy->first);
+	    if(0==collision_hero_decor(enemy, table[level])) {
+	      pt_sprite temp_pos = enemy; 
+	      temp_pos->x = enemy->x + 16; /* regarde tuile à droite */
+	      temp_pos->y = enemy->y;
+	      
+	      direction_rob = dir(temp_pos, table[level]); /* si tuile à droite vide : va à gauche */
+	    }
+	    deplacement_object(enemy_list_copy->first, &direction_rob, table[level]);
 	  }
 
 	  Collision_screen_enemy(enemy_list_copy->first);
@@ -286,10 +294,10 @@ int main(int argc, char** argv)
 	SDL_UpdateRect(screen, 0, 0, 0, 0);
 
 	//régulation du rythme du programme
-	if (SDL_GetTicks()-sleep_time > 10) {
+	if (SDL_GetTicks()-sleep_time > 20) {
 	  sleep_time = SDL_GetTicks();
 	} else { 
-	  SDL_Delay(10 - (SDL_GetTicks() - sleep_time));
+	  SDL_Delay(20 - (SDL_GetTicks() - sleep_time));
 	}	      
       }
   }
