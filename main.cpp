@@ -158,8 +158,8 @@ int main(int argc, char** argv)
       mini_champi_enemy_1 = create_new_object('C',screen, 700, 684);
       mini_champi_enemy_2 = create_new_object('C',screen, 725, 684);
       mini_champi_enemy_3 = create_new_object('C',screen, 750, 684);
-      robot_enemy_1 = create_new_object('R',screen, 350, 405);
-      missile_enemy_1 = create_new_object('M',screen, 300, 400);
+      robot_enemy_1 = create_new_object('S',screen, 350, 405);
+      missile_enemy_1 = create_new_object('H',screen, 300, 400);
       enemy_list = cons(ghost_enemy_1, enemy_list);
       enemy_list = cons(ghost_enemy_2, enemy_list);
       enemy_list = cons(mini_champi_enemy_1, enemy_list);
@@ -187,7 +187,6 @@ int main(int argc, char** argv)
 	  
     levelover = 0;
     past_time_enemy =SDL_GetTicks();
-
 
     char key[SDLK_LAST]= {0};
  
@@ -222,7 +221,7 @@ int main(int argc, char** argv)
 	  SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
 	  present_time_enemy = SDL_GetTicks();
 	  /* deplacement of the enemy */
-	  if (enemy_list_copy->first->type == 'C'){
+	  if (enemy_list_copy->first->type == 'C'){ /*mini-champi*/
 	    if (((present_time_enemy - past_time_enemy)/2500)%2 == 0){
 	      direction = 'R';
 	    } else {
@@ -231,7 +230,7 @@ int main(int argc, char** argv)
 	    deplacement_object(enemy_list_copy->first,&direction, table[level]);
 	  }
 
-	  if (enemy_list_copy->first->type == 'G'){
+	  if (enemy_list_copy->first->type == 'G'){ /*ghost*/
 	    if (((present_time_enemy - past_time_enemy)/8500)%2 == 0){
 	      direction = 'L';
 	    } else {
@@ -240,7 +239,12 @@ int main(int argc, char** argv)
 	    deplacement_object(enemy_list_copy->first,&direction, table[level]);
 	  }
 
-	  if (enemy_list_copy->first->type == 'R' /*|| enemy_list_copy->first->type == 'M'*/){
+	  if (enemy_list_copy->first->type == 'H'){ /*hache*/
+	    direction = 'R';    
+	    deplacement_object(enemy_list_copy->first,&direction, table[level]);
+	  }
+
+	  if (enemy_list_copy->first->type == 'S' /*|| enemy_list_copy->first->type == 'M'*/){ /*Squarel*/
 	    pt_sprite enemy = convert_enemy_type_to_pt_spite (enemy_list_copy->first);
 	    if(0==collision_hero_decor(enemy, table[level])) {
 	      pt_sprite temp_pos = enemy; 
@@ -265,7 +269,7 @@ int main(int argc, char** argv)
 	      }
 	    }
 	  }
-	  if (Collision_H_E(hero, enemy_list_copy->first) == 1) {
+	  if (Collision_H_E(hero, enemy_list_copy->first) == 1 || enemy_list_copy->first->coord.x >= SCREEN_WIDTH || enemy_list_copy->first->coord.x <= 0){
 	    free(enemy_list_copy->first);
 	    if (NULL!=enemy_list_prev) {
 	      enemy_list_prev->rest = enemy_list_copy->rest;

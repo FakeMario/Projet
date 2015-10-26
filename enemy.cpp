@@ -42,8 +42,8 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
     object->speed = 0.3;
     break;
 
- case 'R': /*Robot*/
-    temp = SDL_LoadBMP("robot_1.bmp");
+ case 'S': /*Squarel*/
+    temp = SDL_LoadBMP("Squarel.bmp");
     object->sprite = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
     object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
@@ -54,13 +54,13 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
     object->coord.y = (int)object->y;
     object->rc_image.x = 0;
     object->rc_image.y = 0;
-    object->rc_image.w = 40;
-    object->rc_image.h = 50;
+    object->rc_image.w = 37;
+    object->rc_image.h = 46;
     object->speed = 0.3;
     break;
 
- case 'M': /*Missile*/
-    temp = SDL_LoadBMP("LargeMissiles.bmp");
+ case 'H': /*Hache*/
+    temp = SDL_LoadBMP("hache.bmp");
     object->sprite = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
     object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
@@ -71,8 +71,8 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
     object->coord.y = (int)object->y;
     object->rc_image.x = 0;
     object->rc_image.y = 0;
-    object->rc_image.w = 40;
-    object->rc_image.h = 50;
+    object->rc_image.w = 31;
+    object->rc_image.h = 31;
     object->speed = 0.5;
     break;
 
@@ -144,8 +144,14 @@ void deplacement_object(object_type object, char* direction, char** table)
     object->coord.x = (int)object->x;
     object->coord.y = (int)object->y;
     object->rc_image.x = object->rc_image.x+object->rc_image.w;
-    if (object->rc_image.x == 2 * object->rc_image.w || object->rc_image.x == 4 * object->rc_image.w){
-      object->rc_image.x=0;
+    if (object->type !='H'){
+      if (object->rc_image.x == 2 * object->rc_image.w || object->rc_image.x == 4 * object->rc_image.w){
+	object->rc_image.x=0;
+      }
+    } else {
+      if (object->rc_image.x== 6 * object->rc_image.w){
+	object->rc_image.x= 3 * object->rc_image.w;
+      }
     }
     break;
   case 'R': /*Right*/
@@ -153,18 +159,24 @@ void deplacement_object(object_type object, char* direction, char** table)
     object->coord.x = (int)object->x;
     object->coord.y = (int)object->y;
     object->rc_image.x = object->rc_image.x + object->rc_image.w;
-    if (object->rc_image.x== 4 * object->rc_image.w){
-      object->rc_image.x= 2 * object->rc_image.w;
+    if (object->type != 'H'){
+      if (object->rc_image.x== 4 * object->rc_image.w){
+	object->rc_image.x= 2 * object->rc_image.w;
+      }
+    } else {
+      if (object->rc_image.x== 3 * object->rc_image.w || object->rc_image.x == 6 * object->rc_image.w){
+	object->rc_image.x= 0;
+      }
     }
     break;
   }
 }
 
 
-char dir (pt_sprite adjacent_tile, char** table)
-{
-  if (0==collision_hero_decor(adjacent_tile, table)) {
-    return 'L';
+  char dir (pt_sprite adjacent_tile, char** table)
+  {
+    if (0==collision_hero_decor(adjacent_tile, table)) {
+      return 'L';
+    }
+    return 'R';
   }
-  return 'R';
-}
