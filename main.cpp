@@ -150,9 +150,9 @@ int main(int argc, char** argv)
 
     /* create list of new enemy */
 
-    // 1er level
-    if (level == 0){
-      enemy_list = create_new_list_of_object();
+    switch (level) {
+    case 0 : //1st level
+      //enemy_list = create_new_list_of_object();
       ghost_enemy_1 = create_new_object('G',screen, 200, 152);
       ghost_enemy_2 = create_new_object('G',screen, 1000, 280);
       mini_champi_enemy_1 = create_new_object('C',screen, 700, 684);
@@ -167,9 +167,16 @@ int main(int argc, char** argv)
       enemy_list = cons(mini_champi_enemy_3, enemy_list);
       enemy_list = cons(robot_enemy_1, enemy_list);
       enemy_list = cons(missile_enemy_1, enemy_list);
+      break;
+    case 1 : //2nd leve
+      //enemy_list = create_new_list_of_object();
+      ghost_enemy_1 = create_new_object('G',screen, 200, 152);
+      enemy_list = cons(ghost_enemy_1, enemy_list);
+      break;
     }
-    
    
+
+
     /* create list of new hero lives */
     life_of_hero_list = create_new_list_of_object(); 
     life_1 = create_new_object('L',screen, 5, 5);
@@ -178,7 +185,6 @@ int main(int argc, char** argv)
     life_of_hero_list = cons(life_1, life_of_hero_list);
     life_of_hero_list = cons(life_2, life_of_hero_list);
     life_of_hero_list = cons(life_3, life_of_hero_list);
-
     
       
     /* setup sprite colorkey and turn on RLE */
@@ -211,8 +217,9 @@ int main(int argc, char** argv)
 	Collision_screen_hero(hero);
 
 	/* draw the sprite */
+	if (level != 2 && level !=3){
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
-
+	}
 
 	/* draw the enemy sprite */
 	enemy_list_prev = NULL;
@@ -265,11 +272,12 @@ int main(int argc, char** argv)
 	      }
 	    
 	      if (life_of_hero_list == NULL){
-		gameover = 1;
+		levelover = 1;
+		level = 3;
 	      }
 	    }
 	  }
-	  if (Collision_H_E(hero, enemy_list_copy->first) == 1 || enemy_list_copy->first->coord.x >= SCREEN_WIDTH || enemy_list_copy->first->coord.x <= 0){
+	  if (Collision_H_E(hero, enemy_list_copy->first) == 1 || enemy_list_copy->first->coord.x >= SCREEN_WIDTH || enemy_list_copy->first->coord.x <= -50){
 	    free(enemy_list_copy->first);
 	    if (NULL!=enemy_list_prev) {
 	      enemy_list_prev->rest = enemy_list_copy->rest;
@@ -284,10 +292,9 @@ int main(int argc, char** argv)
 	    enemy_list_copy = enemy_list_copy->rest;
 	}
 
-
 	/* draw the hero lives sprite */
 	life_of_hero_list_copy = life_of_hero_list;
-	while (life_of_hero_list_copy != NULL){
+	while (life_of_hero_list_copy != NULL && level !=2 && level !=3){
 	  SDL_BlitSurface(life_of_hero_list_copy->first->sprite, &life_of_hero_list_copy->first->rc_image, screen, &life_of_hero_list_copy->first->coord);
 	  life_of_hero_list_copy = life_of_hero_list_copy->rest;
 	}
