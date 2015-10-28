@@ -128,16 +128,17 @@ void deplacement_object(object_type object, char* direction, char** table)
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
   if (object->type == 'C' || object->type == 'G'){
     if (0==collision_hero_decor(enemy, table)) /* manque collision avec sortie */ {
-      object->y += 1.75;
+      object->y += 3.5;
     } else { /* si collision quand il marche */
       enemy->y -= 33; /* on monte la hitbox d'une case */
       if (collision_hero_decor(enemy, table) == 0) { /* monte si case en haut vide pour ne monter qu'une case */
-	object->y -= 0.75;
+      	object->y -= 3.75;
       }
       enemy->y = object->y;
     }
   }
-
+  enemy = NULL;
+  free(enemy);
   switch (*direction) {
   case 'L': /*Left*/
     object->x -= object->speed;
