@@ -237,7 +237,7 @@ int main(int argc, char** argv)
       HandleEvent(key, screen);
       update_events(key);
       
-      jump(hero, SDL_GetTicks(), oldtime, table[level]); // jumps only if oldtime < SDLGetTicks() so if u press up */
+      jump(hero, SDL_GetTicks(), oldtime, table[level], life_of_hero_list, screen); // jumps only if oldtime < SDLGetTicks() so if u press up */
       reload_pos(hero);
 
       CheckLevel(hero, table[level], &level, &levelover, screen);
