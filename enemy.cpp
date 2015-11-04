@@ -181,3 +181,4 @@ void deplacement_object(object_type object, char* direction, char** table)
     }
     return 'R';
   }
+
