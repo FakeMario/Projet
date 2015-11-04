@@ -151,7 +151,7 @@ int main(int argc, char** argv)
     /* create list of new enemy */
 
     switch (level) {
-    case 0 : //1st level
+    case 1 : //1st level
       //enemy_list = create_new_list_of_object();
       ghost_enemy_1 = create_new_object('G',screen, 200, 152);
       ghost_enemy_2 = create_new_object('G',screen, 1000, 280);
@@ -168,7 +168,7 @@ int main(int argc, char** argv)
       enemy_list = cons(robot_enemy_1, enemy_list);
       enemy_list = cons(missile_enemy_1, enemy_list);
       break;
-    case 1 : //2nd leve
+    case 2 : //2nd level
       //enemy_list = create_new_list_of_object();
       ghost_enemy_1 = create_new_object('G',screen, 200, 152);
       enemy_list = cons(ghost_enemy_1, enemy_list);
@@ -216,7 +216,7 @@ int main(int argc, char** argv)
       Collision_screen_hero(hero);
 
       /* draw the sprite */
-      if (level != 2 && level !=3){
+      if (level != 0 && level != 3 && level != 4){
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
       }
 
@@ -227,7 +227,7 @@ int main(int argc, char** argv)
 	SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
 	present_time_enemy = SDL_GetTicks();
 
-	if ((SDL_GetTicks()-time_axe > 8000)&&(level==0)) {
+	if ((SDL_GetTicks()-time_axe > 8000)&&(level==1)) {
 	  time_axe = SDL_GetTicks();
 	  enemy_list = cons(create_new_object('H',screen, 1024, 410), enemy_list);
 	  //printf("%f \n",missile_enemy_1->x);
@@ -279,7 +279,7 @@ int main(int argc, char** argv)
 	    
 	    if (life_of_hero_list == NULL){
 	      levelover = 1;
-	      level = 3;
+	      level = 4;
 	    }
 	  }
 	}
