@@ -43,6 +43,10 @@ void update_events(char* keys){
       case SDLK_ESCAPE:
 	gameover = 1;
 	break;
+      case SDLK_KP1:
+	levelover = 1;
+	level += 1;
+	break;
       }
       keys[event.key.keysym.sym]=1;
       break;
@@ -52,7 +56,7 @@ void update_events(char* keys){
 
 void HandleEvent(char* key, SDL_Surface *screen)
 {
-  SDLKey tabkey[NBPLAYERS][3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
+  SDLKey tabkey[NBPLAYERS][4] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
   int i;
   for (i=0; i<NBPLAYERS; i++){
     hero->y += 3.0; /* pour calculer si collision avec bloc en dessous */
@@ -92,7 +96,9 @@ void HandleEvent(char* key, SDL_Surface *screen)
 	hero->x -= 1.5; 
       
   }
-}
+  
+  
+  }
 }	       
 
 int main(int argc, char** argv)
@@ -127,14 +133,7 @@ int main(int argc, char** argv)
   /* create window */
   screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
-  /* create list of new hero lives */
-  life_of_hero_list = create_new_list_of_object(); 
-  life_1 = create_new_object('L',screen, 5, 5);
-  life_2 = create_new_object('L',screen, 35, 5);
-  life_3 = create_new_object('L',screen, 65, 5);
-  life_of_hero_list = cons(life_1, life_of_hero_list);
-  life_of_hero_list = cons(life_2, life_of_hero_list);
-  life_of_hero_list = cons(life_3, life_of_hero_list);
+ 
     
   while (!gameover){
     //load tileset
@@ -175,6 +174,15 @@ int main(int argc, char** argv)
       enemy_list = cons(mini_champi_enemy_3, enemy_list);
       enemy_list = cons(robot_enemy_1, enemy_list);
       enemy_list = cons(missile_enemy_1, enemy_list);
+
+      /* create list of new hero lives */
+      life_of_hero_list = create_new_list_of_object(); 
+      life_1 = create_new_object('L',screen, 5, 5);
+      life_2 = create_new_object('L',screen, 35, 5);
+      life_3 = create_new_object('L',screen, 65, 5);
+      life_of_hero_list = cons(life_1, life_of_hero_list);
+      life_of_hero_list = cons(life_2, life_of_hero_list);
+      life_of_hero_list = cons(life_3, life_of_hero_list);
       break;
     case 2 : //2nd level
       //enemy_list = create_new_list_of_object();
