@@ -3,7 +3,10 @@
 #include "SDL.h"
 
 #define SCREEN_WIDTH  1024
+#define SCREEN_HEIGHT 768
 #define TAILLE_TUILE 32
+#define SPRITE_WIDTH  24
+#define SPRITE_HEIGHT 62
 
 #pragma GCC diagnostic ignored "-Wwrite-strings"
 
@@ -32,9 +35,62 @@ char* table0[]={
   "00000000000000000000000000000000",
   "00000000000000000000000000000000",
   "00000000000000000000000000000000",
-  "00000000000000000000000000000000",
+  "00220000002200000022000000220000",
   "11111111111111111111111111111111",
 };
+
+void afficher_menu(SDL_Surface *screen){
+  SDL_Surface *temp;
+  pt_sprite choix = (pt_sprite) malloc (sizeof(s_sprite));
+  pt_sprite choix1 = (pt_sprite) malloc (sizeof(s_sprite));
+  pt_sprite choix2 = (pt_sprite) malloc (sizeof(s_sprite));
+  pt_sprite choix3 = (pt_sprite) malloc (sizeof(s_sprite));
+  pt_sprite choix4 = (pt_sprite) malloc (sizeof(s_sprite));
+  
+  temp = SDL_LoadBMP("sprite.bmp");
+  choix1->sprite = SDL_DisplayFormat(temp);
+  SDL_FreeSurface(temp);
+
+  temp = SDL_LoadBMP("sprite_1.bmp");
+  choix2->sprite = SDL_DisplayFormat(temp);
+  SDL_FreeSurface(temp);
+
+  temp = SDL_LoadBMP("sprite_2.bmp");
+  choix3->sprite = SDL_DisplayFormat(temp);
+  SDL_FreeSurface(temp);
+
+  temp = SDL_LoadBMP("sprite_3.bmp");
+  choix4->sprite = SDL_DisplayFormat(temp);
+  SDL_FreeSurface(temp);
+  
+  choix1->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
+  SDL_SetColorKey(choix1->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, choix1->colorkey);
+  choix2->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
+  SDL_SetColorKey(choix2->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, choix2->colorkey);
+  choix3->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
+  SDL_SetColorKey(choix3->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, choix3->colorkey);
+  choix4->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
+  SDL_SetColorKey(choix4->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, choix4->colorkey);
+
+  choix->rc_image.x = 0;
+  choix->rc_image.y = 0;
+  choix->rc_image.w = SPRITE_WIDTH;
+  choix->rc_image.h = SPRITE_HEIGHT;
+  
+  choix1->coord.x = SCREEN_WIDTH / 12;
+  choix1->coord.y = SCREEN_HEIGHT - 2*TAILLE_TUILE - SPRITE_HEIGHT - 1;
+  choix2->coord.x = 4*SCREEN_WIDTH / 12;
+  choix2->coord.y = SCREEN_HEIGHT - 2*TAILLE_TUILE - SPRITE_HEIGHT - 1;
+  choix3->coord.x = 7*SCREEN_WIDTH / 12;
+  choix3->coord.y = SCREEN_HEIGHT - 2*TAILLE_TUILE - SPRITE_HEIGHT - 1;
+  choix4->coord.x = 10*SCREEN_WIDTH / 12;
+  choix4->coord.y = SCREEN_HEIGHT - 2*TAILLE_TUILE - SPRITE_HEIGHT - 1;
+
+  SDL_BlitSurface(choix1->sprite, &choix->rc_image, screen, &choix1->coord);
+  SDL_BlitSurface(choix2->sprite, &choix->rc_image, screen, &choix2->coord);
+  SDL_BlitSurface(choix3->sprite, &choix->rc_image, screen, &choix3->coord);
+  SDL_BlitSurface(choix4->sprite, &choix->rc_image, screen, &choix4->coord);
+}
 
 // LEVEL 1
 
