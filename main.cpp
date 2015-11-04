@@ -44,8 +44,28 @@ void update_events(char* keys){
 	gameover = 1;
 	break;
       case SDLK_KP1:
-	levelover = 1;
-	level += 1;
+	if (level == 0){
+	  levelover = 1;
+	  level += 1;
+	}
+	break;
+      case SDLK_KP2:
+	if (level == 0){
+	  levelover = 1;
+	  level += 1;
+	    }
+	break;
+      case SDLK_KP3:
+	if (level == 0){
+	  levelover = 1;
+	  level += 1;
+	}
+	break;
+      case SDLK_KP4:
+	if (level == 0){
+	  levelover = 1;
+	  level += 1;
+	}
 	break;
       }
       keys[event.key.keysym.sym]=1;
