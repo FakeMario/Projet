@@ -227,7 +227,7 @@ int main(int argc, char** argv)
 	SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
 	present_time_enemy = SDL_GetTicks();
 
-	if (SDL_GetTicks()-time_axe > 8000) {
+	if ((SDL_GetTicks()-time_axe > 8000)&&(level==0)) {
 	  time_axe = SDL_GetTicks();
 	  enemy_list = cons(create_new_object('H',screen, 1024, 410), enemy_list);
 	  //printf("%f \n",missile_enemy_1->x);
