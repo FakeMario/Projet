@@ -19,6 +19,7 @@ int gameover = 0;
 unsigned int oldtime = 10000000;
 int level = 0;
 int levelover = 0;
+int hero_choice;
 
 /* source and destination rectangles */
 pt_sprite hero = (pt_sprite) malloc (sizeof(s_sprite));
@@ -47,24 +48,28 @@ void update_events(char* keys){
 	if (level == 0){
 	  levelover = 1;
 	  level += 1;
+	  hero_choice = 1;
 	}
 	break;
       case SDLK_KP2:
 	if (level == 0){
 	  levelover = 1;
 	  level += 1;
+	  hero_choice = 2;
 	    }
 	break;
       case SDLK_KP3:
 	if (level == 0){
 	  levelover = 1;
 	  level += 1;
+	  hero_choice = 3;
 	}
 	break;
       case SDLK_KP4:
 	if (level == 0){
 	  levelover = 1;
 	  level += 1;
+	  hero_choice = 4;
 	}
 	break;
       }
