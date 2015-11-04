@@ -118,17 +118,25 @@ int main(int argc, char** argv)
   hero->rc_image.w = SPRITE_WIDTH;
   hero->rc_image.h = SPRITE_HEIGHT;
 
+  /* initialize SDL */
+  SDL_Init(SDL_INIT_VIDEO);
 
+  /* set the title bar */
+  SDL_WM_SetCaption("SDL Animation", "SDL Animation");
+
+  /* create window */
+  screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
+
+  /* create list of new hero lives */
+  life_of_hero_list = create_new_list_of_object(); 
+  life_1 = create_new_object('L',screen, 5, 5);
+  life_2 = create_new_object('L',screen, 35, 5);
+  life_3 = create_new_object('L',screen, 65, 5);
+  life_of_hero_list = cons(life_1, life_of_hero_list);
+  life_of_hero_list = cons(life_2, life_of_hero_list);
+  life_of_hero_list = cons(life_3, life_of_hero_list);
+    
   while (!gameover){
-    /* initialize SDL */
-    SDL_Init(SDL_INIT_VIDEO);
-
-    /* set the title bar */
-    SDL_WM_SetCaption("SDL Animation", "SDL Animation");
-
-    /* create window */
-    screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
-
     //load tileset
     temp = SDL_LoadBMP("tileset.bmp");
     tileset = SDL_DisplayFormat(temp);
@@ -175,17 +183,6 @@ int main(int argc, char** argv)
       break;
     }
    
-
-
-    /* create list of new hero lives */
-    life_of_hero_list = create_new_list_of_object(); 
-    life_1 = create_new_object('L',screen, 5, 5);
-    life_2 = create_new_object('L',screen, 35, 5);
-    life_3 = create_new_object('L',screen, 65, 5);
-    life_of_hero_list = cons(life_1, life_of_hero_list);
-    life_of_hero_list = cons(life_2, life_of_hero_list);
-    life_of_hero_list = cons(life_3, life_of_hero_list);
-    
       
     /* setup sprite colorkey and turn on RLE */
     hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
@@ -227,10 +224,9 @@ int main(int argc, char** argv)
 	SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
 	present_time_enemy = SDL_GetTicks();
 
-	if ((SDL_GetTicks()-time_axe > 8000)&&(level==0)) {
+	if ((SDL_GetTicks() - time_axe > 8000)&&(level==0)) {
 	  time_axe = SDL_GetTicks();
 	  enemy_list = cons(create_new_object('H',screen, 1024, 410), enemy_list);
-	  //printf("%f \n",missile_enemy_1->x);
 	}
 
 	/* deplacement of the enemy */
