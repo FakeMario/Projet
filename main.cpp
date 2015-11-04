@@ -19,7 +19,7 @@ int gameover = 0;
 unsigned int oldtime = 10000000;
 int level = 0;
 int levelover = 0;
-int hero_choice;
+int hero_choice = 1;
 
 /* source and destination rectangles */
 pt_sprite hero = (pt_sprite) malloc (sizeof(s_sprite));
@@ -170,9 +170,28 @@ int main(int argc, char** argv)
     SDL_EnableKeyRepeat(70, 70);
 
     /* load sprite */
-    temp = SDL_LoadBMP("sprite.bmp");
-    hero->sprite = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);   
+    switch (hero_choice){
+    case 1:
+      temp = SDL_LoadBMP("sprite.bmp");
+      hero->sprite = SDL_DisplayFormat(temp);
+      SDL_FreeSurface(temp);   
+      break;
+    case 2:
+      temp = SDL_LoadBMP("sprite_1.bmp");
+      hero->sprite = SDL_DisplayFormat(temp);
+      SDL_FreeSurface(temp);   
+      break;
+    case 3:
+      temp = SDL_LoadBMP("sprite_2.bmp");
+      hero->sprite = SDL_DisplayFormat(temp);
+      SDL_FreeSurface(temp);   
+      break;
+    case 4:
+      temp = SDL_LoadBMP("sprite_3.bmp");
+      hero->sprite = SDL_DisplayFormat(temp);
+      SDL_FreeSurface(temp);   
+      break;
+    }
 
     // Eliminer les ennemis qu'on n'a pas tué quand on change de tableau
     if (enemy_list != NULL){
@@ -234,6 +253,9 @@ int main(int argc, char** argv)
       // fonction affichage
       Afficher(screen,tileset,table[level],NB_BLOCS_HAUTEUR, NB_BLOCS_LARGEUR);
 	  
+      if(!level)
+	afficher_menu(screen);
+
       HandleEvent(key, screen);
       update_events(key);
       
@@ -246,7 +268,7 @@ int main(int argc, char** argv)
       Collision_screen_hero(hero);
 
       /* draw the sprite */
-      if (level != 0 && level != 3 && level != 4){
+      if (level > 0 && level < 3){
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
       }
 
