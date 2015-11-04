@@ -12,7 +12,7 @@
 
 int Collision_H_E(pt_sprite hero, object_type enemy);
 int Collision_Sortie(char tuile);
-
+int Collision_item(char tuile);
 
 int collision_hero_decor (pt_sprite hero,char** table) {
   int i,j;
@@ -29,6 +29,8 @@ int collision_hero_decor (pt_sprite hero,char** table) {
 	if(Collision_H_E(hero, tuile)!=0) {
 	  if (Collision_Sortie(table[j][i])) { //si on rencontre une sortie
 	    return 3; //return special sortie
+	  } else if (Collision_item(table[j][i])) {
+	    return 4;
 	  } else {
 	    return Collision_H_E(hero, tuile);
 	  }
@@ -90,4 +92,9 @@ void Collision_screen_enemy(object_type enemy){
     if (enemy->x >= SCREEN_WIDTH - SPRITE_WIDTH) 
       enemy->x = enemy->coord.x = SCREEN_WIDTH - SPRITE_WIDTH;
   }
+}
+
+int Collision_item(char tuile)
+{
+  return tuile =='3';
 }
