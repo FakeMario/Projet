@@ -102,7 +102,7 @@ int main(int argc, char** argv)
   object_type life_1,life_2,life_3;
   list_of_object enemy_list, enemy_list_copy,enemy_list_prev;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
-  int past_time_enemy, present_time_enemy;
+  int past_time_enemy, present_time_enemy, time_axe = 0;
   int invulnerable_time = -1500, invulnerable_time2 = -1500;
   int sleep_time = 0;
   char direction = 'R', direction_rob = 'R';
@@ -198,119 +198,125 @@ int main(int argc, char** argv)
  
 					    
     /* message pump */
-    while (!levelover&&!gameover)
-      {
-	SDL_Event event;
+    while (!levelover&&!gameover) {
+      SDL_Event event;
 	  
-	// fonction affichage
-	Afficher(screen,tileset,table[level],NB_BLOCS_HAUTEUR, NB_BLOCS_LARGEUR);
+      // fonction affichage
+      Afficher(screen,tileset,table[level],NB_BLOCS_HAUTEUR, NB_BLOCS_LARGEUR);
 	  
-	HandleEvent(key, screen);
-	update_events(key);
+      HandleEvent(key, screen);
+      update_events(key);
       
-	jump(hero, SDL_GetTicks(), oldtime, table[level]); // jumps only if oldtime < SDLGetTicks() so if u press up */
-	reload_pos(hero);
+      jump(hero, SDL_GetTicks(), oldtime, table[level]); // jumps only if oldtime < SDLGetTicks() so if u press up */
+      reload_pos(hero);
 
-	CheckLevel(hero, table[level], &level, &levelover, screen);
+      CheckLevel(hero, table[level], &level, &levelover, screen);
 
-	/* collide with edges of screen */
-	Collision_screen_hero(hero);
+      /* collide with edges of screen */
+      Collision_screen_hero(hero);
 
-	/* draw the sprite */
-	if (level != 2 && level !=3){
+      /* draw the sprite */
+      if (level != 2 && level !=3){
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
-	}
-
-	/* draw the enemy sprite */
-	enemy_list_prev = NULL;
-	enemy_list_copy = enemy_list;
-	while (enemy_list_copy != NULL){
-	  SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
-	  present_time_enemy = SDL_GetTicks();
-	  /* deplacement of the enemy */
-	  if (enemy_list_copy->first->type == 'C'){ /*mini-champi*/
-	    if (((present_time_enemy - past_time_enemy)/2500)%2 == 0){
-	      direction = 'R';
-	    } else {
-	      direction = 'L';    
-	    }
-	    deplacement_object(enemy_list_copy->first,&direction, table[level]);
-	  }
-
-	  if (enemy_list_copy->first->type == 'G'){ /*ghost*/
-	    if (((present_time_enemy - past_time_enemy)/8500)%2 == 0){
-	      direction = 'L';
-	    } else {
-	      direction = 'R';    
-	    }
-	    deplacement_object(enemy_list_copy->first,&direction, table[level]);
-	  }
-
-	  if (enemy_list_copy->first->type == 'H'){ /*hache*/
-	    direction = 'L';    
-	    deplacement_object(enemy_list_copy->first,&direction, table[level]);
-	  }
-
-	  if (enemy_list_copy->first->type == 'S' /*|| enemy_list_copy->first->type == 'M'*/){ /*Squarel*/
-	    pt_sprite enemy = convert_enemy_type_to_pt_spite (enemy_list_copy->first);
-	    if(0==collision_hero_decor(enemy, table[level])) {
-	      pt_sprite temp_pos = enemy; 
-	      temp_pos->x = enemy->x + 16; /* regarde tuile à droite */
-	      temp_pos->y = enemy->y;
-	      
-	      direction_rob = dir(temp_pos, table[level]); /* si tuile à droite vide : va à gauche */
-	    }
-	    deplacement_object(enemy_list_copy->first, &direction_rob, table[level]);
-	  }
-
-	  Collision_screen_enemy(enemy_list_copy->first);
-	  if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
-	    if (SDL_GetTicks()-invulnerable_time > 1500) {
-	      invulnerable_time = SDL_GetTicks();
-	      if (life_of_hero_list != NULL){
-		life_of_hero_list = life_of_hero_list -> rest;
-	      }
-	    
-	      if (life_of_hero_list == NULL){
-		levelover = 1;
-		level = 3;
-	      }
-	    }
-	  }
-	  if (Collision_H_E(hero, enemy_list_copy->first) == 1 || enemy_list_copy->first->coord.x >= SCREEN_WIDTH || enemy_list_copy->first->coord.x <= -50){
-	    free(enemy_list_copy->first);
-	    if (NULL!=enemy_list_prev) {
-	      enemy_list_prev->rest = enemy_list_copy->rest;
-	    } else {
-	      enemy_list = enemy_list->rest;
-	    }
-	    free(enemy_list_copy);
-	    enemy_list_copy = enemy_list_prev;
-	  }
-	  enemy_list_prev = enemy_list_copy;
-	  if (enemy_list_copy != NULL)
-	    enemy_list_copy = enemy_list_copy->rest;
-	}
-
-	/* draw the hero lives sprite */
-	life_of_hero_list_copy = life_of_hero_list;
-	while (life_of_hero_list_copy != NULL && level !=2 && level !=3){
-	  SDL_BlitSurface(life_of_hero_list_copy->first->sprite, &life_of_hero_list_copy->first->rc_image, screen, &life_of_hero_list_copy->first->coord);
-	  life_of_hero_list_copy = life_of_hero_list_copy->rest;
-	}
-
-
-
-	/* update the screen */
-	SDL_UpdateRect(screen, 0, 0, 0, 0);
-
-	//régulation du rythme du programme
-	if (SDL_GetTicks()-sleep_time > 20) {
-	  sleep_time = SDL_GetTicks();
-	} else { 
-	  SDL_Delay(20 - (SDL_GetTicks() - sleep_time));
-	}	      
       }
+
+      /* draw the enemy sprite */
+      enemy_list_prev = NULL;
+      enemy_list_copy = enemy_list;
+      while (enemy_list_copy != NULL){
+	SDL_BlitSurface(enemy_list_copy->first->sprite, &enemy_list_copy->first->rc_image, screen, &enemy_list_copy->first->coord);
+	present_time_enemy = SDL_GetTicks();
+
+	if (SDL_GetTicks()-time_axe > 8000) {
+	  time_axe = SDL_GetTicks();
+	  enemy_list = cons(create_new_object('H',screen, 1024, 410), enemy_list);
+	  //printf("%f \n",missile_enemy_1->x);
+	}
+
+	/* deplacement of the enemy */
+	if (enemy_list_copy->first->type == 'C'){ /*mini-champi*/
+	  if (((present_time_enemy - past_time_enemy)/2500)%2 == 0){
+	    direction = 'R';
+	  } else {
+	    direction = 'L';    
+	  }
+	  deplacement_object(enemy_list_copy->first,&direction, table[level]);
+	}
+
+	if (enemy_list_copy->first->type == 'G'){ /*ghost*/
+	  if (((present_time_enemy - past_time_enemy)/8500)%2 == 0){
+	    direction = 'L';
+	  } else {
+	    direction = 'R';    
+	  }
+	  deplacement_object(enemy_list_copy->first,&direction, table[level]);
+	}
+
+	if (enemy_list_copy->first->type == 'H'){ /*hache*/
+	  direction = 'L';    
+	  deplacement_object(enemy_list_copy->first,&direction, table[level]);
+	}
+
+	if (enemy_list_copy->first->type == 'S' /*|| enemy_list_copy->first->type == 'M'*/){ /*Squarel*/
+	  pt_sprite enemy = convert_enemy_type_to_pt_spite (enemy_list_copy->first);
+	  if(0==collision_hero_decor(enemy, table[level])) {
+	    pt_sprite temp_pos = enemy; 
+	    temp_pos->x = enemy->x + 16; /* regarde tuile à droite */
+	    temp_pos->y = enemy->y;
+	      
+	    direction_rob = dir(temp_pos, table[level]); /* si tuile à droite vide : va à gauche */
+	  }
+	  deplacement_object(enemy_list_copy->first, &direction_rob, table[level]);
+	}
+
+	Collision_screen_enemy(enemy_list_copy->first);
+	if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
+	  if (SDL_GetTicks()-invulnerable_time > 1500) {
+	    invulnerable_time = SDL_GetTicks();
+	    if (life_of_hero_list != NULL){
+	      life_of_hero_list = life_of_hero_list -> rest;
+	    }
+	    
+	    if (life_of_hero_list == NULL){
+	      levelover = 1;
+	      level = 3;
+	    }
+	  }
+	}
+	if (Collision_H_E(hero, enemy_list_copy->first) == 1 || enemy_list_copy->first->type == 'H' && enemy_list_copy->first->x <=-50){
+	  free(enemy_list_copy->first);
+	  if (NULL!=enemy_list_prev) {
+	    enemy_list_prev->rest = enemy_list_copy->rest;
+	  } else {
+	    enemy_list = enemy_list->rest;
+	  }
+	  free(enemy_list_copy);
+	  enemy_list_copy = enemy_list_prev;
+	}
+	enemy_list_prev = enemy_list_copy;
+	if (enemy_list_copy != NULL)
+	  enemy_list_copy = enemy_list_copy->rest;
+      }
+
+      /* draw the hero lives sprite */
+      life_of_hero_list_copy = life_of_hero_list;
+      while (life_of_hero_list_copy != NULL && level !=2 && level !=3){
+	SDL_BlitSurface(life_of_hero_list_copy->first->sprite, &life_of_hero_list_copy->first->rc_image, screen, &life_of_hero_list_copy->first->coord);
+	life_of_hero_list_copy = life_of_hero_list_copy->rest;
+      }
+
+
+
+      /* update the screen */
+      SDL_UpdateRect(screen, 0, 0, 0, 0);
+
+      //régulation du rythme du programme
+      if (SDL_GetTicks()-sleep_time > 20) {
+	sleep_time = SDL_GetTicks();
+      } else { 
+	SDL_Delay(20 - (SDL_GetTicks() - sleep_time));
+      }	      
+    }
   }
 
   /* clean up */
