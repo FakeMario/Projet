@@ -17,7 +17,7 @@
 
 int gameover = 0;
 unsigned int oldtime = 10000000;
-int level = 0;
+int level = 3;
 int levelover = 0;
 int hero_choice = 1;
 
@@ -210,7 +210,7 @@ int main(int argc, char** argv)
       mini_champi_enemy_2 = create_new_object('C',screen, 725, 684);
       mini_champi_enemy_3 = create_new_object('C',screen, 750, 684);
       robot_enemy_1 = create_new_object('S',screen, 350, 405);
-      missile_enemy_1 = create_new_object('H',screen, 1024, 410);
+      missile_enemy_1 = create_new_object('I',screen, 1024, 410);
       enemy_list = cons(ghost_enemy_1, enemy_list);
       enemy_list = cons(ghost_enemy_2, enemy_list);
       enemy_list = cons(mini_champi_enemy_1, enemy_list);
@@ -304,11 +304,16 @@ int main(int argc, char** argv)
 	}
 
 	if (enemy_list_copy->first->type == 'H'){ /*hache*/
+	  direction = 'R';    
+	  deplacement_object(enemy_list_copy->first,&direction, table[level]);
+	}
+
+	if (enemy_list_copy->first->type == 'I'){ /*hache_2*/
 	  direction = 'L';    
 	  deplacement_object(enemy_list_copy->first,&direction, table[level]);
 	}
 
-	if (enemy_list_copy->first->type == 'S' /*|| enemy_list_copy->first->type == 'M'*/){ /*Squarel*/
+	if (enemy_list_copy->first->type == 'S'){ /*Squarel*/
 	  pt_sprite enemy = convert_enemy_type_to_pt_spite (enemy_list_copy->first);
 	  if(0==collision_hero_decor(enemy, table[level])) {
 	    pt_sprite temp_pos = enemy; 

@@ -86,7 +86,7 @@ void Collision_screen_hero(pt_sprite hero){
 }
 
 void Collision_screen_enemy(object_type enemy){
-  if (enemy->type != 'H'){
+  if (enemy->type != 'H' && enemy->type !='I'){
     if (enemy->x <= 0)
       enemy->x = enemy->coord.x = 0;
     if (enemy->x >= SCREEN_WIDTH - SPRITE_WIDTH) 
