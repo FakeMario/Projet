@@ -57,7 +57,7 @@ void update_events(char* keys){
 	  levelover = 1;
 	  level += 1;
 	  hero_choice = 2;
-	    }
+	}
 	break;
       case SDLK_KP3:
 	if (level == 0){
@@ -103,7 +103,7 @@ void HandleEvent(char* key, SDL_Surface *screen)
     /* Deplacement*/
     if (hero->x >= 0){
       hero->x -= 1.5;
-      if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
+      if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2 || collision_hero_decor(hero, table[level])==4)
 	hero->x += 1.5;
       
     }
@@ -117,7 +117,7 @@ void HandleEvent(char* key, SDL_Surface *screen)
     else
       hero->rc_image.x += SPRITE_WIDTH;
     hero->x += 1.5;
-    if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
+    if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2 || collision_hero_decor(hero, table[level])==4 )
       hero->x -= 1.5; 
       
   }
@@ -216,7 +216,7 @@ int main(int argc, char** argv)
     }
 
     /* create list of new enemy */
-    enemy_list = lvl_gen(level, screen);
+    enemy_list = lvl_gen(level, screen, enemy_list);
 
     if (level == 1) {
       /* create list of new hero lives */
@@ -282,6 +282,13 @@ int main(int argc, char** argv)
 	  time_axe = SDL_GetTicks();
 	  enemy_list = cons(create_new_object('H',screen, 1024, 410, 'L'), enemy_list);
 	}
+
+	/* comme le lvl 3 contient uniquement des haches, cons les éléments du début du lvl tous les x secs revient à ajouter les haches à cet endroit toutes les x sec */
+	if ((SDL_GetTicks()-time_axe > 5000)&&(level==3)) {
+	  time_axe = SDL_GetTicks();
+	  enemy_list = lvl_gen(level, screen, enemy_list);
+	}
+
 
 	/* deplacement of the enemy */
 	if (enemy_list_copy->first->type == 'C'){ /*mini-champi*/
