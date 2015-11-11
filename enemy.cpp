@@ -3,10 +3,11 @@
 /*CREATE ENEMY*/
 char dir(object_type object, char* direction, char** table);
 
-object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
+object_type create_new_object(char type, SDL_Surface *screen, float x, float y, char direction){
   object_type object =(object_type)malloc(sizeof(struct object));
   SDL_Surface * temp;
   object->type = type;
+  object->direction = direction;
   switch (type) {
   case 'G': /*Ghost*/
     temp = SDL_LoadBMP("ghost.bmp");
@@ -61,23 +62,6 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y){
 
  case 'H': /*Hache*/
     temp = SDL_LoadBMP("hache.bmp");
-    object->sprite = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);
-    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
-    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
-    object->x = x;
-    object->y = y;
-    object->coord.x = (int)object->x;
-    object->coord.y = (int)object->y;
-    object->rc_image.x = 0;
-    object->rc_image.y = 0;
-    object->rc_image.w = 31;
-    object->rc_image.h = 31;
-    object->speed = 0.7;
-    break;
-
-case 'I': /*Hache_2*/
-    temp = SDL_LoadBMP("hache_2.bmp");
     object->sprite = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
     object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);

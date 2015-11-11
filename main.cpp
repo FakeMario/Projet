@@ -17,7 +17,7 @@
 
 int gameover = 0;
 unsigned int oldtime = 10000000;
-int level = 3;
+int level = 0;
 int levelover = 0;
 int hero_choice = 1;
 
@@ -204,13 +204,13 @@ int main(int argc, char** argv)
     switch (level) {
     case 1 : //1st level
       //enemy_list = create_new_list_of_object();
-      ghost_enemy_1 = create_new_object('G',screen, 200, 152);
-      ghost_enemy_2 = create_new_object('G',screen, 1000, 280);
-      mini_champi_enemy_1 = create_new_object('C',screen, 700, 684);
-      mini_champi_enemy_2 = create_new_object('C',screen, 725, 684);
-      mini_champi_enemy_3 = create_new_object('C',screen, 750, 684);
-      robot_enemy_1 = create_new_object('S',screen, 350, 405);
-      missile_enemy_1 = create_new_object('I',screen, 1024, 410);
+      ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
+      ghost_enemy_2 = create_new_object('G',screen, 1000, 280, 'L');
+      mini_champi_enemy_1 = create_new_object('C',screen, 700, 684, 'L');
+      mini_champi_enemy_2 = create_new_object('C',screen, 725, 684, 'L');
+      mini_champi_enemy_3 = create_new_object('C',screen, 750, 684, 'L');
+      robot_enemy_1 = create_new_object('S',screen, 350, 405, 'L');
+      missile_enemy_1 = create_new_object('H',screen, 1024, 410, 'L');
       enemy_list = cons(ghost_enemy_1, enemy_list);
       enemy_list = cons(ghost_enemy_2, enemy_list);
       enemy_list = cons(mini_champi_enemy_1, enemy_list);
@@ -221,16 +221,16 @@ int main(int argc, char** argv)
 
       /* create list of new hero lives */
       life_of_hero_list = create_new_list_of_object(); 
-      life_1 = create_new_object('L',screen, 5, 5);
-      life_2 = create_new_object('L',screen, 35, 5);
-      life_3 = create_new_object('L',screen, 65, 5);
+      life_1 = create_new_object('L',screen, 5, 5, 'L');
+      life_2 = create_new_object('L',screen, 35, 5, 'L');
+      life_3 = create_new_object('L',screen, 65, 5, 'L');
       life_of_hero_list = cons(life_1, life_of_hero_list);
       life_of_hero_list = cons(life_2, life_of_hero_list);
       life_of_hero_list = cons(life_3, life_of_hero_list);
       break;
     case 2 : //2nd level
       //enemy_list = create_new_list_of_object();
-      ghost_enemy_1 = create_new_object('G',screen, 200, 152);
+      ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
       enemy_list = cons(ghost_enemy_1, enemy_list);
       break;
     }
@@ -281,7 +281,7 @@ int main(int argc, char** argv)
 
 	if ((SDL_GetTicks()-time_axe > 8000)&&(level==1)) {
 	  time_axe = SDL_GetTicks();
-	  enemy_list = cons(create_new_object('H',screen, 1024, 410), enemy_list);
+	  enemy_list = cons(create_new_object('H',screen, 200, 410, 'R'), enemy_list);
 	}
 
 	/* deplacement of the enemy */
@@ -304,16 +304,10 @@ int main(int argc, char** argv)
 	}
 
 	if (enemy_list_copy->first->type == 'H'){ /*hache*/
-	  direction = 'R';    
-	  deplacement_object(enemy_list_copy->first,&direction, table[level]);
+	  deplacement_object(enemy_list_copy->first,&enemy_list_copy->first->direction, table[level]);
 	}
 
-	if (enemy_list_copy->first->type == 'I'){ /*hache_2*/
-	  direction = 'L';    
-	  deplacement_object(enemy_list_copy->first,&direction, table[level]);
-	}
-
-	if (enemy_list_copy->first->type == 'S'){ /*Squarel*/
+	if (enemy_list_copy->first->type == 'S' /*|| enemy_list_copy->first->type == 'M'*/){ /*Squarel*/
 	  pt_sprite enemy = convert_enemy_type_to_pt_spite (enemy_list_copy->first);
 	  if(0==collision_hero_decor(enemy, table[level])) {
 	    pt_sprite temp_pos = enemy; 

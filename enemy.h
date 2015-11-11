@@ -14,7 +14,7 @@
    SDL_Rect rc_image;
    SDL_Rect coord;
    float speed;
-   unsigned int direction;
+   char direction;
    float x;
    float y;
    char type;
@@ -22,7 +22,7 @@
 typedef struct object *object_type;
 
 
-object_type create_new_object(char type, SDL_Surface *screen, float x, float y);
+object_type create_new_object(char type, SDL_Surface *screen, float x, float y, char direction);
 
 /*LIST OF ENEMY*/
 

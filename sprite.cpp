@@ -11,7 +11,7 @@ void jump(pt_sprite hero, unsigned int time, unsigned int oldtime, char** table,
 
     if (4==collision_hero_decor(hero, table)) {
       printf("yolo");
-      life = cons(create_new_object('L', screen, life->first->x + 30, life->first->y), life);
+      life = cons(create_new_object('L', screen, life->first->x + 30, life->first->y, 'L'), life);
     }
 
     if (0!=collision_hero_decor(hero, table)) {
