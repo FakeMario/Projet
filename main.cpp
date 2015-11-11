@@ -1,4 +1,5 @@
 #include "SDL.h"
+#include "SDL_ttf.h"
 #include <time.h>
 #include "sprite.cpp"
 #include "enemy.cpp"
@@ -17,7 +18,7 @@
 
 int gameover = 0;
 unsigned int oldtime = 10000000;
-int level = 3;
+int level = 0;
 int levelover = 0;
 int hero_choice = 1;
 
@@ -124,7 +125,11 @@ void HandleEvent(char* key, SDL_Surface *screen)
 
 int main(int argc, char** argv)
 {
-  SDL_Surface *screen,*temp,*tileset;
+  SDL_Surface *screen,*temp,*tileset, *coins_text, *coins_img;
+  SDL_Surface *coins = NULL;
+  TTF_Font *police = NULL;
+  SDL_Color text_color{255,255,255,0};
+  SDL_Rect coins_text_pos, coins_pos;
   object_type life_1,life_2,life_3;
   list_of_object enemy_list, enemy_list_copy,enemy_list_prev;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
@@ -132,7 +137,15 @@ int main(int argc, char** argv)
   int invulnerable_time = -1500, invulnerable_time2 = -1500;
   int sleep_time = 0;
   char direction = 'R', direction_rob = 'R';
+  int nb_coins = 0;
+  char nb_coins_aff[2];
 
+  /* Initalize font */
+  police = TTF_OpenFont("angelina.ttf", 35);
+  sprintf(nb_coins_aff, "X %d", nb_coins);
+  coins = TTF_RenderText_Blended(police, nb_coins_aff, text_color);
+  coins_text_pos.x = 1000;
+  coins_text_pos.y = 5;
 
   /* set sprite position */
   hero->coord.x = hero->x = TAILLE_TUILE + 1;
@@ -160,7 +173,15 @@ int main(int argc, char** argv)
     temp = SDL_LoadBMP("tileset.bmp");
     tileset = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
-    
+
+    //load coins
+    temp = SDL_LoadBMP("coin.bmp");
+    coins_img = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);    
+
+    coins_pos.x = coins_text_pos.x - 30;
+    coins_pos.y = coins_text_pos.y;
+
     /* set keyboard repeat */
     SDL_EnableKeyRepeat(70, 70);
 
@@ -244,6 +265,11 @@ int main(int argc, char** argv)
       if (level > 0 && level < 6){
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
       }
+      
+      // draw coins and number of coins
+       if (level > 0 && level < 6){
+        SDL_BlitSurface(coins_img, NULL, screen, &coins_pos);
+      }
 
       /* draw the enemy sprite */
       enemy_list_prev = NULL;
@@ -323,7 +349,7 @@ int main(int argc, char** argv)
 
       /* draw the hero lives sprite */
       life_of_hero_list_copy = life_of_hero_list;
-      while (life_of_hero_list_copy != NULL && level > 0 && level < 7){
+      while (life_of_hero_list_copy != NULL && level > 0 && level < 6){
 	SDL_BlitSurface(life_of_hero_list_copy->first->sprite, &life_of_hero_list_copy->first->rc_image, screen, &life_of_hero_list_copy->first->coord);
 	life_of_hero_list_copy = life_of_hero_list_copy->rest;
       }
@@ -346,6 +372,12 @@ int main(int argc, char** argv)
   SDL_FreeSurface(hero->sprite);
   if (enemy_list != NULL)
     SDL_FreeSurface(enemy_list->first->sprite);
+				 
+  
+  TTF_CloseFont(police);
+  TTF_Quit();
+  SDL_FreeSurface(coins);
+			       
   SDL_FreeSurface(tileset);
   SDL_Quit();
 
