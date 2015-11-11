@@ -268,7 +268,7 @@ int main(int argc, char** argv)
       Collision_screen_hero(hero);
 
       /* draw the sprite */
-      if (level > 0 && level < 7){
+      if (level > 0 && level < 6){
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
       }
 
@@ -329,7 +329,7 @@ int main(int argc, char** argv)
 	    
 	    if (life_of_hero_list == NULL){
 	      levelover = 1;
-	      level = 8;
+	      level = 7;
 	    }
 	  }
 	}
