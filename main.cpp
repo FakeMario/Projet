@@ -17,7 +17,7 @@
 
 int gameover = 0;
 unsigned int oldtime = 10000000;
-int level = 0;
+int level = 3;
 int levelover = 0;
 int hero_choice = 1;
 
@@ -81,18 +81,17 @@ void update_events(char* keys){
 
 void HandleEvent(char* key, SDL_Surface *screen)
 {
-  SDLKey tabkey[NBPLAYERS][4] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
+  SDLKey tabkey[3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
   int i;
-  for (i=0; i<NBPLAYERS; i++){
-    hero->y += 3.0; /* pour calculer si collision avec bloc en dessous */
-    if((collision_hero_decor(hero, table[level]))!=0) { /* on autorise appui sur haut si perso pas dans le ciel ou si il a droit au double saut */
-      if(key[tabkey[i][0]]) { //UP
-	oldtime = SDL_GetTicks();
-      }
+  hero->y += 3.0; /* pour calculer si collision avec bloc en dessous */
+  if((collision_hero_decor(hero, table[level]))!=0) { /* on autorise appui sur haut si perso pas dans le ciel ou si il a droit au double saut */
+    if(key[tabkey[0]]) { //UP
+      oldtime = SDL_GetTicks();
     }
-    hero->y -= 3.0; /* reprend sa pos */
+  }
+  hero->y -= 3.0; /* reprend sa pos */
 
-  if(key[tabkey[i][1]]) { //LEFT
+  if(key[tabkey[1]]) { //LEFT
     /* Movement sprite*/
     if ( hero->rc_image.x < 2*SPRITE_WIDTH )
       hero->rc_image.x = 2*SPRITE_WIDTH;
@@ -109,27 +108,23 @@ void HandleEvent(char* key, SDL_Surface *screen)
     }
   }
     
-  if(key[tabkey[i][2]]) { //RIGHT
+  if(key[tabkey[2]]) { //RIGHT
     if ( hero->rc_image.x > SPRITE_WIDTH )
       hero->rc_image.x = 0;
     if ( hero->rc_image.x == SPRITE_WIDTH )
       hero->rc_image.x = 0;
     else
       hero->rc_image.x += SPRITE_WIDTH;
-      hero->x += 1.5;
-      if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
-	hero->x -= 1.5; 
+    hero->x += 1.5;
+    if ((collision_hero_decor(hero, table[level]))==1 || collision_hero_decor(hero, table[level])==2)
+      hero->x -= 1.5; 
       
-  }
-  
-  
   }
 }	       
 
 int main(int argc, char** argv)
 {
   SDL_Surface *screen,*temp,*tileset;
-  object_type ghost_enemy_1, ghost_enemy_2, mini_champi_enemy_1, mini_champi_enemy_2, mini_champi_enemy_3, robot_enemy_1, missile_enemy_1;
   object_type life_1,life_2,life_3;
   list_of_object enemy_list, enemy_list_copy,enemy_list_prev;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
@@ -200,25 +195,9 @@ int main(int argc, char** argv)
     }
 
     /* create list of new enemy */
+    enemy_list = lvl_gen(level, screen);
 
-    switch (level) {
-    case 1 : //1st level
-      //enemy_list = create_new_list_of_object();
-      ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
-      ghost_enemy_2 = create_new_object('G',screen, 1000, 280, 'L');
-      mini_champi_enemy_1 = create_new_object('C',screen, 700, 684, 'L');
-      mini_champi_enemy_2 = create_new_object('C',screen, 725, 684, 'L');
-      mini_champi_enemy_3 = create_new_object('C',screen, 750, 684, 'L');
-      robot_enemy_1 = create_new_object('S',screen, 350, 405, 'L');
-      missile_enemy_1 = create_new_object('H',screen, 1024, 410, 'L');
-      enemy_list = cons(ghost_enemy_1, enemy_list);
-      enemy_list = cons(ghost_enemy_2, enemy_list);
-      enemy_list = cons(mini_champi_enemy_1, enemy_list);
-      enemy_list = cons(mini_champi_enemy_2, enemy_list);
-      enemy_list = cons(mini_champi_enemy_3, enemy_list);
-      enemy_list = cons(robot_enemy_1, enemy_list);
-      enemy_list = cons(missile_enemy_1, enemy_list);
-
+    if (level == 1) {
       /* create list of new hero lives */
       life_of_hero_list = create_new_list_of_object(); 
       life_1 = create_new_object('L',screen, 5, 5, 'L');
@@ -227,12 +206,6 @@ int main(int argc, char** argv)
       life_of_hero_list = cons(life_1, life_of_hero_list);
       life_of_hero_list = cons(life_2, life_of_hero_list);
       life_of_hero_list = cons(life_3, life_of_hero_list);
-      break;
-    case 2 : //2nd level
-      //enemy_list = create_new_list_of_object();
-      ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
-      enemy_list = cons(ghost_enemy_1, enemy_list);
-      break;
     }
    
       
@@ -281,7 +254,7 @@ int main(int argc, char** argv)
 
 	if ((SDL_GetTicks()-time_axe > 8000)&&(level==1)) {
 	  time_axe = SDL_GetTicks();
-	  enemy_list = cons(create_new_object('H',screen, 200, 410, 'R'), enemy_list);
+	  enemy_list = cons(create_new_object('H',screen, 1024, 410, 'L'), enemy_list);
 	}
 
 	/* deplacement of the enemy */

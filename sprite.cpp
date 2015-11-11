@@ -15,12 +15,12 @@ void jump(pt_sprite hero, unsigned int time, unsigned int oldtime, char** table,
     }
 
     if (0!=collision_hero_decor(hero, table)) {
-      hero->y += 3.2;
+      hero->y += 3.2; /* si collision descend d'un pixel */
     }
   } else {
-    hero->y += 3.0;
+    hero->y += 3.2; /* apres saut, heros retombe */
     if (0!=collision_hero_decor(hero, table)) {
-      hero->y -= 3.0;
+      hero->y -= 3.2; /* si collision avec sol remonte d'un pixel */
     }
   }    
 }
