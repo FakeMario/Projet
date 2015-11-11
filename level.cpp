@@ -327,36 +327,44 @@ void CheckLevel(pt_sprite hero, char** table, int* level, int* levelover, SDL_Su
 }
 
 
-list_of_object lvl_gen(int lvl, SDL_Surface *screen)
+list_of_object lvl_gen(int lvl, SDL_Surface *screen, list_of_object enemy_list)
 {
-  list_of_object enemy_list = NULL;
-  object_type ghost_enemy_1, ghost_enemy_2, mini_champi_enemy_1, mini_champi_enemy_2, mini_champi_enemy_3, robot_enemy_1, missile_enemy_1;
+  //list_of_object enemy_list = NULL;
+  object_type ghost_enemy_1, ghost_enemy_2, mini_champi_enemy_1, mini_champi_enemy_2, mini_champi_enemy_3, robot_enemy_1, hache_1, hache_2, hache_3, hache_4, hache_5;
   switch (lvl) {
-    case 1:
-      ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
-      ghost_enemy_2 = create_new_object('G',screen, 1000, 280, 'L');
-      mini_champi_enemy_1 = create_new_object('C',screen, 700, 684, 'L');
-      mini_champi_enemy_2 = create_new_object('C',screen, 725, 684, 'L');
-      mini_champi_enemy_3 = create_new_object('C',screen, 750, 684, 'L');
-      robot_enemy_1 = create_new_object('S',screen, 350, 405, 'L');
-      missile_enemy_1 = create_new_object('H',screen, 1024, 410, 'L');
-      enemy_list = cons(ghost_enemy_1, enemy_list);
-      enemy_list = cons(ghost_enemy_2, enemy_list);
-      enemy_list = cons(mini_champi_enemy_1, enemy_list);
-      enemy_list = cons(mini_champi_enemy_2, enemy_list);
-      enemy_list = cons(mini_champi_enemy_3, enemy_list);
-      enemy_list = cons(robot_enemy_1, enemy_list);
-      enemy_list = cons(missile_enemy_1, enemy_list);
-      break;
-    case 2 : //2nd level
-      ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
-      enemy_list = cons(ghost_enemy_1, enemy_list);
-      break;
+  case 1:
+    ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
+    ghost_enemy_2 = create_new_object('G',screen, 1000, 280, 'L');
+    mini_champi_enemy_1 = create_new_object('C',screen, 700, 684, 'L');
+    mini_champi_enemy_2 = create_new_object('C',screen, 725, 684, 'L');
+    mini_champi_enemy_3 = create_new_object('C',screen, 750, 684, 'L');
+    robot_enemy_1 = create_new_object('S',screen, 350, 405, 'L');
+    hache_1 = create_new_object('H',screen, 1024, 410, 'L');
+    enemy_list = cons(ghost_enemy_1, enemy_list);
+    enemy_list = cons(ghost_enemy_2, enemy_list);
+    enemy_list = cons(mini_champi_enemy_1, enemy_list);
+    enemy_list = cons(mini_champi_enemy_2, enemy_list);
+    enemy_list = cons(mini_champi_enemy_3, enemy_list);
+    enemy_list = cons(robot_enemy_1, enemy_list);
+    enemy_list = cons(hache_1, enemy_list);
+    break;
+  case 2 : //2nd level
+    ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
+    enemy_list = cons(ghost_enemy_1, enemy_list);
+    break;
 
- case 3:
-
-   break;
+  case 3:
+    hache_1 = create_new_object('H',screen, 1024, 540, 'L');
+    enemy_list = cons(hache_1, enemy_list);
+    hache_2 = create_new_object('H',screen, 0, 635, 'R');
+    enemy_list = cons(hache_2, enemy_list);
+    hache_3 = create_new_object('H',screen, 0, 60, 'R');
+    enemy_list = cons(hache_3, enemy_list);
+    hache_4 = create_new_object('H',screen, 0, 220, 'R');
+    enemy_list = cons(hache_4, enemy_list);
+    hache_5 = create_new_object('H',screen, 1024, 350, 'L');
+    enemy_list = cons(hache_5, enemy_list);
+    break;
   }
   return enemy_list;
 }
-   
