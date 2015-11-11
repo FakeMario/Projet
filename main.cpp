@@ -134,7 +134,7 @@ int main(int argc, char** argv)
   list_of_object enemy_list, enemy_list_copy,enemy_list_prev;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
   int past_time_enemy, present_time_enemy, time_axe = 0;
-  int invulnerable_time = -1500, invulnerable_time2 = -1500;
+  int invulnerable_time = -1500;
   int sleep_time = 0;
   char direction = 'R', direction_rob = 'R';
   int nb_coins = 0;
@@ -144,7 +144,7 @@ int main(int argc, char** argv)
   police = TTF_OpenFont("angelina.ttf", 35);
   sprintf(nb_coins_aff, "X %d", nb_coins);
   coins = TTF_RenderText_Blended(police, nb_coins_aff, text_color);
-  coins_text_pos.x = 1000;
+  coins_text_pos.x = 900;
   coins_text_pos.y = 5;
 
   /* set sprite position */
@@ -177,7 +177,7 @@ int main(int argc, char** argv)
     //load coins
     temp = SDL_LoadBMP("coin.bmp");
     coins_img = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);    
+    SDL_FreeSurface(temp);  
 
     coins_pos.x = coins_text_pos.x - 30;
     coins_pos.y = coins_text_pos.y;
@@ -218,7 +218,7 @@ int main(int argc, char** argv)
     /* create list of new enemy */
     enemy_list = lvl_gen(level, screen, enemy_list);
 
-    if (level == 1) {
+    if (level == 0) {
       /* create list of new hero lives */
       life_of_hero_list = create_new_list_of_object(); 
       life_1 = create_new_object('L',screen, 5, 5, 'L');
