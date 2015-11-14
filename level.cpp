@@ -329,12 +329,11 @@ void CheckLevel(pt_sprite hero, char** table, int* level, int* levelover, SDL_Su
 
 list_of_object lvl_gen(int lvl, SDL_Surface *screen, list_of_object enemy_list)
 {
-  //list_of_object enemy_list = NULL;
   object_type ghost_enemy_1, ghost_enemy_2, mini_champi_enemy_1, mini_champi_enemy_2, mini_champi_enemy_3, robot_enemy_1, hache_1, hache_2, hache_3, hache_4, hache_5;
   switch (lvl) {
   case 1:
     ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
-    ghost_enemy_2 = create_new_object('G',screen, 1000, 280, 'L');
+    ghost_enemy_2 = create_new_object('G',screen, 920, 130, 'L');
     mini_champi_enemy_1 = create_new_object('C',screen, 700, 684, 'L');
     mini_champi_enemy_2 = create_new_object('C',screen, 725, 684, 'L');
     mini_champi_enemy_3 = create_new_object('C',screen, 750, 684, 'L');

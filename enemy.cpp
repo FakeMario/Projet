@@ -129,7 +129,7 @@ void deplacement_object(object_type object, char* direction, char** table)
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
   if (object->type == 'C' || object->type == 'G'){
     if (0==collision_hero_decor(enemy, table) || 4==collision_hero_decor(enemy, table)) {
-      object->y += 3.5;
+      object->y += 4.5;
     } else { /* si collision quand il marche */
       enemy->y -= 3.5; /* en le soulevant il ne touche plus le sol */
       if (0!=collision_hero_decor(enemy, table) && 4!=collision_hero_decor(enemy, table)) { /*si vrai : bloc sur le passage*/
@@ -177,19 +177,19 @@ void deplacement_object(object_type object, char* direction, char** table)
   }
 }
 
-	char dir (pt_sprite adjacent_tile, char** table)
-	{
-	  if (0==collision_hero_decor(adjacent_tile, table)) {
-	    return 'L';
-	  }
-	  return 'R';
-	}
+char dir (pt_sprite adjacent_tile, char** table)
+{
+  if (0==collision_hero_decor(adjacent_tile, table)) {
+    return 'L';
+  }
+  return 'R';
+}
 
-	list_of_object spawn_life(bool item_tile, bool* void_item, list_of_object life, SDL_Surface *screen)
-	{
-	  if(item_tile && ! *void_item) {
-	    life = cons(create_new_object('L', screen, life->first->x + 30, life->first->y, 'L'), life);
-	    *void_item = true;
-	  }
-	  return life;
-	}
+list_of_object spawn_life(bool item_tile, bool* void_item, list_of_object life, SDL_Surface *screen)
+{
+  if(item_tile && ! *void_item) {
+    life = cons(create_new_object('L', screen, life->first->x + 30, life->first->y, 'L'), life);
+    *void_item = true;
+  }
+  return life;
+}

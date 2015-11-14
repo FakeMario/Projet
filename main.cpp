@@ -256,10 +256,10 @@ int main(int argc, char** argv)
       update_events(key);
       
       jump(hero, SDL_GetTicks(), oldtime, table[level], &item_tile); // jumps only if oldtime < SDLGetTicks() so if u press up */
-      reload_pos(hero);
+      reload_pos(hero); //set hero->coord.x = hero->x same for y
       life_of_hero_list = spawn_life(item_tile, &void_item, life_of_hero_list, screen); /* item_tile = true if u jump under an item tile */
       /* void_item = true if u have already hit the block */
-      CheckLevel(hero, table[level], &level, &levelover, screen);
+   
 
       /* collide with edges of screen */
       Collision_screen_hero(hero);
@@ -365,7 +365,7 @@ int main(int argc, char** argv)
       }
 
 
-
+   CheckLevel(hero, table[level], &level, &levelover, screen);
       /* update the screen */
       SDL_UpdateRect(screen, 0, 0, 0, 0);
 
