@@ -17,7 +17,7 @@
 #define NBPLAYERS 1
 
 int gameover = 0;
-unsigned int oldtime = 10000000;
+unsigned int oldtime = 0;
 int level = 0;
 int levelover = 0;
 int hero_choice = 1;
@@ -139,6 +139,7 @@ int main(int argc, char** argv)
   char direction = 'R', direction_rob = 'R';
   int nb_coins = 0;
   char nb_coins_aff[2];
+  bool item_tile, void_item;
 
   /* Initalize font */
   police = TTF_OpenFont("angelina.ttf", 35);
@@ -229,7 +230,8 @@ int main(int argc, char** argv)
       life_of_hero_list = cons(life_3, life_of_hero_list);
     }
    
-      
+    item_tile = false;
+    void_item = false;
     /* setup sprite colorkey and turn on RLE */
     hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
     SDL_SetColorKey(hero->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, hero->colorkey);
@@ -253,9 +255,10 @@ int main(int argc, char** argv)
       HandleEvent(key, screen);
       update_events(key);
       
-      jump(hero, SDL_GetTicks(), oldtime, table[level], life_of_hero_list, screen); // jumps only if oldtime < SDLGetTicks() so if u press up */
+      jump(hero, SDL_GetTicks(), oldtime, table[level], &item_tile); // jumps only if oldtime < SDLGetTicks() so if u press up */
       reload_pos(hero);
-
+      life_of_hero_list = spawn_life(item_tile, &void_item, life_of_hero_list, screen); /* item_tile = true if u jump under an item tile */
+      /* void_item = true if u have already hit the block */
       CheckLevel(hero, table[level], &level, &levelover, screen);
 
       /* collide with edges of screen */

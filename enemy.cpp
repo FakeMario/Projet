@@ -174,7 +174,6 @@ void deplacement_object(object_type object, char* direction, char** table)
   }
 }
 
-
   char dir (pt_sprite adjacent_tile, char** table)
   {
     if (0==collision_hero_decor(adjacent_tile, table)) {
@@ -183,3 +182,12 @@ void deplacement_object(object_type object, char* direction, char** table)
     return 'R';
   }
 
+list_of_object spawn_life(bool item_tile, bool* void_item, list_of_object life, SDL_Surface *screen)
+{
+  //printf("%d" *void_item);
+  if(item_tile && ! *void_item) {
+    life = cons(create_new_object('L', screen, life->first->x + 30, life->first->y, 'L'), life);
+    *void_item = true;
+  }
+  return life;
+}

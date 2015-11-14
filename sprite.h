@@ -19,5 +19,5 @@
 };
 typedef struct s_sprite *pt_sprite;
 
-void jump(pt_sprite hero, unsigned int time, unsigned int oldtime, int *Haut, int *Bas);
+void jump(pt_sprite hero, unsigned int time, unsigned int oldtime, char** table, bool* item_tile);
 #endif
