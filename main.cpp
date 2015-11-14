@@ -270,7 +270,7 @@ int main(int argc, char** argv)
       }
       
       // draw coins and number of coins
-       if (level > 0 && level < 6){
+      if (level > 0 && level < 6){
         SDL_BlitSurface(coins_img, NULL, screen, &coins_pos);
       }
 
@@ -316,8 +316,13 @@ int main(int argc, char** argv)
 	  deplacement_object(enemy_list_copy->first,&enemy_list_copy->first->direction, table[level]);
 	}
 
-	if (enemy_list_copy->first->type == 'S' /*|| enemy_list_copy->first->type == 'M'*/){ /*Squarel*/
+	if (enemy_list_copy->first->type == 'S'){ /*Squarel*/
 	  pt_sprite enemy = convert_enemy_type_to_pt_spite (enemy_list_copy->first);
+	  if (direction_rob == 'L') { /* ennemi prend en compte le centre de l'ecureuil */
+	    enemy->x = enemy->x - enemy->rc_image.w / 2;
+	  } else {
+	    enemy->x = enemy->x + enemy->rc_image.w / 2;
+	  }
 	  if(0==collision_hero_decor(enemy, table[level])) {
 	    pt_sprite temp_pos = enemy; 
 	    temp_pos->x = enemy->x + 16; /* regarde tuile à droite */
@@ -326,6 +331,8 @@ int main(int argc, char** argv)
 	    direction_rob = dir(temp_pos, table[level]); /* si tuile à droite vide : va à gauche */
 	  }
 	  deplacement_object(enemy_list_copy->first, &direction_rob, table[level]);
+	  enemy = NULL;
+	  free(enemy);
 	}
 
 	Collision_screen_enemy(enemy_list_copy->first);
@@ -365,7 +372,7 @@ int main(int argc, char** argv)
       }
 
 
-   CheckLevel(hero, table[level], &level, &levelover, screen);
+      CheckLevel(hero, table[level], &level, &levelover, screen);
       /* update the screen */
       SDL_UpdateRect(screen, 0, 0, 0, 0);
 
