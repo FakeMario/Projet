@@ -112,6 +112,17 @@ list_of_object cons(object_type object, list_of_object L){
   return L1;
 }
 
+void free_list(list_of_object L)
+{
+  if(L != NULL) {
+    SDL_FreeSurface(L->first->sprite);
+    free(L->first);
+    free(L);
+    free_list(L->rest);
+
+  }
+}
+
 pt_sprite convert_enemy_type_to_pt_spite (object_type object){
   pt_sprite enemy = (pt_sprite)malloc(sizeof(struct s_sprite));
   enemy->x = object->x;

@@ -210,13 +210,8 @@ int main(int argc, char** argv)
       break;
     }
 
-    // Eliminer les ennemis qu'on n'a pas tué quand on change de tableau
-    if (enemy_list != NULL){
-      enemy_list = NULL;
-      free(enemy_list);
-    }
-
     /* create list of new enemy */
+    enemy_list = NULL;
     enemy_list = lvl_gen(level, screen, enemy_list);
 
     if (level == 0) {
@@ -230,8 +225,8 @@ int main(int argc, char** argv)
       life_of_hero_list = cons(life_3, life_of_hero_list);
     }
    
-    item_tile = false;
-    void_item = false;
+    item_tile = false; // si on a touché un bloc à item
+    void_item = false; // si ce bloc est vide
     /* setup sprite colorkey and turn on RLE */
     hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
     SDL_SetColorKey(hero->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, hero->colorkey);
@@ -383,13 +378,13 @@ int main(int argc, char** argv)
 	SDL_Delay(20 - (SDL_GetTicks() - sleep_time));
       }	      
     }
+    free_list(enemy_list);
+    free_list(enemy_list_copy);
   }
 
   /* clean up */
   SDL_FreeSurface(hero->sprite);
-  if (enemy_list != NULL)
-    SDL_FreeSurface(enemy_list->first->sprite);
-				 
+  free(hero);				 
   
   TTF_CloseFont(police);
   TTF_Quit();
