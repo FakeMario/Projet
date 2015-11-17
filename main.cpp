@@ -139,14 +139,15 @@ int main(int argc, char** argv)
   int nb_coins = 0;
   char nb_coins_aff[10] = "";
   bool item_tile, void_item;
+  int coins_colorkey;
 
   /* Initalize font */
   TTF_Init();
   police = TTF_OpenFont("angelina.TTF", 35);
-  sprintf(nb_coins_aff, "X %d", nb_coins);
+  sprintf(nb_coins_aff, "%d", nb_coins);
   coins = TTF_RenderText_Blended(police, nb_coins_aff, text_color);
-  coins_text_pos.x = 800;
-  coins_text_pos.y = 0;
+  coins_text_pos.x = 40;
+  coins_text_pos.y = SCREEN_HEIGHT - 30;
 
   /* set sprite position */
   hero->coord.x = hero->x = TAILLE_TUILE + 1;
@@ -181,7 +182,7 @@ int main(int argc, char** argv)
     coins_img = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);  
 
-    coins_pos.x = coins_text_pos.x - 50;
+    coins_pos.x = coins_text_pos.x - 40;
     coins_pos.y = coins_text_pos.y;
 
     /* set keyboard repeat */
@@ -233,7 +234,10 @@ int main(int argc, char** argv)
     /* setup sprite colorkey and turn on RLE */
     hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
     SDL_SetColorKey(hero->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, hero->colorkey);
-	  
+	 
+    coins_colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
+    SDL_SetColorKey(coins_img, SDL_SRCCOLORKEY | SDL_RLEACCEL, coins_colorkey);
+ 
     levelover = 0;
     past_time_enemy =SDL_GetTicks();
 
@@ -270,12 +274,10 @@ int main(int argc, char** argv)
       // draw coins and number of coins
       if (level > 0 && level < 6){
 	SDL_FreeSurface(coins);
-	nb_coins = 1;
-	sprintf(nb_coins_aff, "X %d", nb_coins);
+	sprintf(nb_coins_aff, "%d", nb_coins);
 	coins = TTF_RenderText_Blended(police, nb_coins_aff, text_color);
 	SDL_BlitSurface(coins, NULL, screen, &coins_text_pos);
 	SDL_BlitSurface(coins_img, NULL, screen, &coins_pos);
-	//printf("%s", nb_coins_aff);
       }
 
       /* draw the enemy sprite */
