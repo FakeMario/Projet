@@ -26,23 +26,6 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y, 
     object->speed = 0.4;
     break;
 
-  case 'C': /*Mini-Champi*/
-    temp = SDL_LoadBMP("mini_champi.bmp");
-    object->sprite = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);
-    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
-    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
-    object->x = x;
-    object->y = y;
-    object->coord.x = (int)object->x;
-    object->coord.y = (int)object->y;
-    object->rc_image.x = 0;
-    object->rc_image.y = 0;
-    object->rc_image.w = 20;
-    object->rc_image.h = 20;
-    object->speed = 0.3;
-    break;
-
  case 'S': /*Squarel*/
     temp = SDL_LoadBMP("Squarel.bmp");
     object->sprite = SDL_DisplayFormat(temp);
@@ -92,6 +75,14 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y, 
     object->rc_image.w = 25;
     object->rc_image.h = 20;
     break;
+
+    // case 'P': /*Coins*/
+    /*  temp = SDL_LoadBMP("coins.bmp");
+    object->sprite = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
+    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
+    break; */
   }
   return object;
 }
@@ -138,7 +129,7 @@ pt_sprite convert_enemy_type_to_pt_spite (object_type object){
 void deplacement_object(object_type object, char* direction, char** table)
 {
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
-  if (object->type == 'C' || object->type == 'G'){
+  if (object->type == 'G'){
     if (0==collision_hero_decor(enemy, table) || 4==collision_hero_decor(enemy, table)) {
       object->y += 4.5;
     } else { /* si collision quand il marche */
