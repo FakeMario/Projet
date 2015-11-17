@@ -74,7 +74,7 @@ void update_events(char* keys){
 	}
 	break;
       case SDLK_KP5:
-	printf("X: %f, Y: %f", hero->x, hero->y);
+	printf("X: %f, Y: %f\n", hero->x, hero->y);
 	break;
       }
       keys[event.key.keysym.sym]=1;

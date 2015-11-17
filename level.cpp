@@ -408,7 +408,9 @@ list_of_object lvl_gen_co(int lvl, SDL_Surface *screen, list_of_object coins_lis
  case 1:
    coin_1 = create_new_object('P', screen, 50, 50, 'L');
    coin_2 = create_new_object('P', screen, 65, 340, 'L');
+   coin_3 = create_new_object('P', screen, 340, 115, 'L');
    coins_list = cons(coin_1, coins_list);
+   coins_list = cons(coin_2, coins_list);
    coins_list = cons(coin_2, coins_list);
    break;
  case 2:
