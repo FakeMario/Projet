@@ -383,11 +383,14 @@ list_of_object lvl_gen(int lvl, SDL_Surface *screen, list_of_object enemy_list)
     enemy_list = cons(ghost_enemy_2, enemy_list);
     enemy_list = cons(ghost_enemy_3, enemy_list);
     enemy_list = cons(ghost_enemy_4, enemy_list);
+    break;
+  
+  case 5:
+    // ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
+    // ghost_enemy_2 = create_new_object('G',screen, 600, 313, 'L');
+    // ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
+    // ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
+    break; 
   }
- case 5:
-// ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
-// ghost_enemy_2 = create_new_object('G',screen, 600, 313, 'L');
-// ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
-// ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
   return enemy_list;
 }
