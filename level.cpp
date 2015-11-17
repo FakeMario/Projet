@@ -178,8 +178,8 @@ char* table3[]={
   "12222222222223222222222222222001",
   "C0000000000000000000000000000001",
   "E0000000000000000000000000000000",
-  "10000220222200022220002222000221",
-  "10000210111200021120002112000211",
+  "10000220022200022220002222000221",
+  "10000220211200021120002112000211",
   "11111111111111111111111111111111",
 };
 
@@ -408,15 +408,43 @@ list_of_object lvl_gen_co(int lvl, SDL_Surface *screen, list_of_object coins_lis
    coin_1 = create_new_object('P', screen, 50, 50, 'L');
    coin_2 = create_new_object('P', screen, 65, 340, 'L');
    coin_3 = create_new_object('P', screen, 340, 115, 'L');
+   coin_4 = create_new_object('P', screen, 930, 345, 'L');
+   coin_5 = create_new_object('P', screen, 417, 666, 'L');
+   coin_6 = create_new_object('P', screen, 673, 312, 'L');
    coins_list = cons(coin_1, coins_list);
    coins_list = cons(coin_2, coins_list);
-   coins_list = cons(coin_2, coins_list);
+   coins_list = cons(coin_3, coins_list);
+   coins_list = cons(coin_4, coins_list);
+   coins_list = cons(coin_5, coins_list);
+   coins_list = cons(coin_6, coins_list);
    break;
  case 2:
+   coin_1 = create_new_object('P', screen, 874, 48, 'L');
+   coin_2 = create_new_object('P', screen, 380, 386, 'L');
+   coins_list = cons(coin_1, coins_list);
+   coins_list = cons(coin_2, coins_list);
    break;
  case 3:
+   coin_1 = create_new_object('P', screen, 70, 689, 'L');
+   coin_2 = create_new_object('P', screen, 121, 689, 'L');
+   coin_3 = create_new_object('P', screen, 927, 314, 'L');
+   coins_list = cons(coin_1, coins_list);
+   coins_list = cons(coin_2, coins_list);
+   coins_list = cons(coin_3, coins_list);
    break;
  case 4:
+   coin_1 = create_new_object('P', screen, 111, 320, 'L');
+   coin_2 = create_new_object('P', screen, 78, 666, 'L');
+   coin_3 = create_new_object('P', screen, 373, 256, 'L');
+   coin_4 = create_new_object('P', screen, 951, 96, 'L');
+   coin_5 = create_new_object('P', screen, 613, 602, 'L');
+   coin_6 = create_new_object('P', screen, 924, 391, 'L');
+   coins_list = cons(coin_1, coins_list);
+   coins_list = cons(coin_2, coins_list);
+   coins_list = cons(coin_3, coins_list);
+   coins_list = cons(coin_4, coins_list);
+   coins_list = cons(coin_5, coins_list);
+   coins_list = cons(coin_6, coins_list);
    break;
  case 5:
    break;
