@@ -76,13 +76,13 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y, 
     object->rc_image.h = 20;
     break;
 
-    // case 'P': /*Coins*/
-    /*  temp = SDL_LoadBMP("coins.bmp");
+    case 'P': /*Coins*/
+    temp = SDL_LoadBMP("coins.bmp");
     object->sprite = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);
     object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
     SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
-    break; */
+    break; 
   }
   return object;
 }
