@@ -83,7 +83,7 @@ void Collision_screen_hero(pt_sprite hero){
      hero->y = hero->coord.y = SCREEN_HEIGHT - SPRITE_HEIGHT;
 }
 
-void Collision_screen_enemy(object_type enemy){
+void Collision_screen_enemy(object_type enemy, int level){
   if (enemy->type != 'H' && enemy->type !='I'){
     if (enemy->x <= 0)
       enemy->x = enemy->coord.x = 0;
