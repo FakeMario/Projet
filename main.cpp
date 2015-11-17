@@ -301,16 +301,18 @@ int main(int argc, char** argv)
 
 	/* deplacement of the enemy */
 	if (enemy_list_copy->first->type == 'G'){ /*ghost*/
-	  if (((present_time_enemy - past_time_enemy)/8500)%2 == 0){
-	    enemy_list_copy->first->direction = 'L';
-	  } else {
-	    enemy_list_copy->first->direction = 'R';    
+	  if (level != 5) {
+	    if (((present_time_enemy - past_time_enemy)/8500)%2 == 0){
+	      enemy_list_copy->first->direction = 'L';
+	    } else {
+	      enemy_list_copy->first->direction = 'R';    
+	    }
 	  }
-	  deplacement_object(enemy_list_copy->first,&enemy_list_copy->first->direction, table[level]);
+	  deplacement_object(enemy_list_copy->first,&enemy_list_copy->first->direction, table[level], level);
 	}
 
 	if (enemy_list_copy->first->type == 'H'){ /*hache*/
-	  deplacement_object(enemy_list_copy->first,&enemy_list_copy->first->direction, table[level]);
+	  deplacement_object(enemy_list_copy->first,&enemy_list_copy->first->direction, table[level], level);
 	}
 
 	if (enemy_list_copy->first->type == 'S'){ /*Squarel*/
@@ -327,7 +329,7 @@ int main(int argc, char** argv)
 	      
 	    enemy_list_copy->first->direction = dir(temp_pos, table[level]); /* si tuile à droite vide : va à gauche */
 	  }
-	  deplacement_object(enemy_list_copy->first, &enemy_list_copy->first->direction, table[level]);
+	  deplacement_object(enemy_list_copy->first, &enemy_list_copy->first->direction, table[level], level);
 	  enemy = NULL;
 	  free(enemy);
 	}
