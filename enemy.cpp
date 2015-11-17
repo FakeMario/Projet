@@ -138,7 +138,7 @@ pt_sprite convert_enemy_type_to_pt_spite (object_type object){
 void deplacement_object(object_type object, char* direction, char** table)
 {
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
-  if (object->type == 'C' || object->type == 'G'){
+  if (object->type == 'G'){
     if (0==collision_hero_decor(enemy, table) || 4==collision_hero_decor(enemy, table)) {
       object->y += 4.5;
     } else { /* si collision quand il marche */
