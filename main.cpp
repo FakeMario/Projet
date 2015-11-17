@@ -213,6 +213,7 @@ int main(int argc, char** argv)
     /* create list of new enemy */
     enemy_list = NULL;
     enemy_list = lvl_gen(level, screen, enemy_list);
+    time_axe = SDL_GetTicks();
 
     if (level == 0) {
       /* create list of new hero lives */
@@ -227,6 +228,7 @@ int main(int argc, char** argv)
    
     item_tile = false; // si on a touché un bloc à item
     void_item = false; // si ce bloc est vide
+
     /* setup sprite colorkey and turn on RLE */
     hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
     SDL_SetColorKey(hero->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, hero->colorkey);
@@ -282,7 +284,7 @@ int main(int argc, char** argv)
 	}
 
 	/* comme le lvl 3 contient uniquement des haches, cons les éléments du début du lvl tous les x secs revient à ajouter les haches à cet endroit toutes les x sec */
-	if ((SDL_GetTicks()-time_axe > 5000)&&(level==3)) {
+	if ((SDL_GetTicks()-time_axe > 6000)&&(level==3)) {
 	  time_axe = SDL_GetTicks();
 	  enemy_list = lvl_gen(level, screen, enemy_list);
 	}
