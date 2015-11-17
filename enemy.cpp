@@ -2,11 +2,12 @@
 
 /*CREATE ENEMY*/
 
-object_type create_new_object(char type, SDL_Surface *screen, float x, float y, char direction){
+object_type create_new_object(char type, SDL_Surface *screen, float x, float y, char direction, float speed){
   object_type object =(object_type)malloc(sizeof(struct object));
   SDL_Surface * temp;
   object->type = type;
   object->direction = direction;
+  object->speed = speed;
   switch (type) {
   case 'G': /*Ghost*/
     temp = SDL_LoadBMP("ghost.bmp");
@@ -22,7 +23,6 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y, 
     object->rc_image.y = 0;
     object->rc_image.w = 41;
     object->rc_image.h = 40;
-    object->speed = 0.4;
     break;
 
  case 'S': /*Squarel*/
@@ -39,7 +39,6 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y, 
     object->rc_image.y = 0;
     object->rc_image.w = 37;
     object->rc_image.h = 46;
-    object->speed = 0.3;
     break;
 
  case 'H': /*Hache*/
@@ -56,7 +55,6 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y, 
     object->rc_image.y = 0;
     object->rc_image.w = 31;
     object->rc_image.h = 31;
-    object->speed = 0.7;
     break;
 
   case 'L': /*Life of the hero*/
@@ -209,7 +207,7 @@ char dir (pt_sprite adjacent_tile, char** table)
 list_of_object spawn_life(bool item_tile, bool* void_item, list_of_object life, SDL_Surface *screen)
 {
   if(item_tile && ! *void_item) {
-    life = cons(create_new_object('L', screen, life->first->x + 30, life->first->y, 'L'), life);
+    life = cons(create_new_object('L', screen, life->first->x + 30, life->first->y, 'L', 0), life);
     *void_item = true;
   }
   return life;

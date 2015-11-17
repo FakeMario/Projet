@@ -65,7 +65,6 @@ void update_events(char* keys){
 	  level += 1;
 	  hero_choice = 3;
 	}
-	printf("%f %f \n", hero->x, hero->y);
 	break;
       case SDLK_KP4:
 	if (level == 0){
@@ -73,9 +72,6 @@ void update_events(char* keys){
 	  level += 1;
 	  hero_choice = 4;
 	}
-	break;
-      case SDLK_KP5:
-	printf("X: %f, Y: %f\n", hero->x, hero->y);
 	break;
       }
       keys[event.key.keysym.sym]=1;
@@ -89,7 +85,7 @@ void HandleEvent(char* key, SDL_Surface *screen)
   SDLKey tabkey[3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
   int i;
   hero->y += 3.0; /* pour calculer si collision avec bloc en dessous */
-  if((collision_hero_decor(hero, table[level]))!=0) { /* on autorise appui sur haut si perso pas dans le ciel ou si il a droit au double saut */
+  if((collision_hero_decor(hero, table[level]))!=0) { /* on autorise appui sur haut si perso pas dans le ciel */
     if(key[tabkey[0]]) { //UP
       oldtime = SDL_GetTicks();
     }
@@ -180,7 +176,14 @@ int main(int argc, char** argv)
   /* create window */
   screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
- 
+  /* create list of new hero lives */
+  life_of_hero_list = create_new_list_of_object(); 
+  life_1 = create_new_object('L',screen, 5, 5, 'L', 0);
+  life_2 = create_new_object('L',screen, 35, 5, 'L', 0);
+  life_3 = create_new_object('L',screen, 65, 5, 'L', 0);
+  life_of_hero_list = cons(life_1, life_of_hero_list);
+  life_of_hero_list = cons(life_2, life_of_hero_list);
+  life_of_hero_list = cons(life_3, life_of_hero_list);
     
   while (!gameover){
 
@@ -247,17 +250,7 @@ int main(int argc, char** argv)
     lucas_pos.y = 700;
     guillaume_pos.x = 675;
     guillaume_pos.y = 700;
-
-    /* create list of new hero lives */
-    life_of_hero_list = create_new_list_of_object(); 
-    life_1 = create_new_object('L',screen, 5, 5, 'L');
-    life_2 = create_new_object('L',screen, 35, 5, 'L');
-    life_3 = create_new_object('L',screen, 65, 5, 'L');
-    life_of_hero_list = cons(life_1, life_of_hero_list);
-    life_of_hero_list = cons(life_2, life_of_hero_list);
-    life_of_hero_list = cons(life_3, life_of_hero_list);
-    
-
+  
     item_tile = false; // si on a touché un bloc à item
     void_item = false; // si ce bloc est vide
 
@@ -339,7 +332,7 @@ int main(int argc, char** argv)
 
 	if ((SDL_GetTicks()-time_axe > 8000)&&(level==1)) {
 	  time_axe = SDL_GetTicks();
-	  enemy_list = cons(create_new_object('H',screen, 1024, 410, 'L'), enemy_list);
+	  enemy_list = cons(create_new_object('H',screen, 1024, 410, 'L', 0.7), enemy_list);
 	}
 
 	/* comme le lvl 3 contient uniquement des haches, cons les éléments du début du lvl tous les x secs revient à ajouter les haches à cet endroit toutes les x sec */
@@ -348,7 +341,7 @@ int main(int argc, char** argv)
 	  enemy_list = lvl_gen_en(level, screen, enemy_list);
 	}
 
-	if ((SDL_GetTicks()-time_axe > 10000)&&(level==5)) {
+	if ((SDL_GetTicks()-time_axe > 5000)&&(level==5)) {
 	  time_axe = SDL_GetTicks();
 	  enemy_list = lvl_gen_en(level, screen, enemy_list);
 	}
@@ -389,7 +382,7 @@ int main(int argc, char** argv)
 	  free(enemy);
 	}
 
-	Collision_screen_enemy(enemy_list_copy->first);
+	Collision_screen_enemy(enemy_list_copy->first, level);
 	if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
 	  if (SDL_GetTicks()-invulnerable_time > 1500) {
 	    invulnerable_time = SDL_GetTicks();
@@ -403,7 +396,7 @@ int main(int argc, char** argv)
 	    }
 	  }
 	}
-	if (Collision_H_E(hero, enemy_list_copy->first) == 1 || enemy_list_copy->first->type == 'H' && enemy_list_copy->first->x <=-50){
+	if (Collision_H_E(hero, enemy_list_copy->first) == 1 || (enemy_list_copy->first->type == 'H' && enemy_list_copy->first->x <=-50) || (level == 5 && enemy_list_copy->first->x > 985)){
 	  free(enemy_list_copy->first);
 	  if (NULL!=enemy_list_prev) {
 	    enemy_list_prev->rest = enemy_list_copy->rest;
@@ -424,8 +417,8 @@ int main(int argc, char** argv)
 
       while (coins_list_copy != NULL){
 	SDL_BlitSurface(coins_list_copy->first->sprite, &coins_list_copy->first->rc_image, screen, &coins_list_copy->first->coord);
-      /* collision coins / hero */
-      if (Collision_H_E(hero, coins_list_copy->first)){
+	/* collision coins / hero */
+	if (Collision_H_E(hero, coins_list_copy->first)){
 	  free(coins_list_copy->first);
 	  nb_coins += 1;
 	  if (NULL!=coins_list_prev) {
@@ -468,7 +461,7 @@ int main(int argc, char** argv)
   /* clean up */
   SDL_FreeSurface(hero->sprite);
   free(hero);				 
-  
+  free(life_of_hero_list);
   TTF_CloseFont(police);
   TTF_CloseFont(police2);
   TTF_Quit();
