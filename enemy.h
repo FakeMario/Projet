@@ -21,7 +21,7 @@
 };
 typedef struct object *object_type;
 
-object_type create_new_object(char type, SDL_Surface *screen, float x, float y, char direction);
+object_type create_new_object(char type, SDL_Surface *screen, float x, float y, char direction, float speed);
 
 /*LIST OF ENEMY*/
 
