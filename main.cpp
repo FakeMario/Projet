@@ -462,7 +462,6 @@ int main(int argc, char** argv)
   SDL_FreeSurface(hero->sprite);
   free(hero);				 
   free(life_of_hero_list);
-  free(life_of_hero_list_copy);
   TTF_CloseFont(police);
   TTF_CloseFont(police2);
   TTF_Quit();
