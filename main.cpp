@@ -125,9 +125,10 @@ void HandleEvent(char* key, SDL_Surface *screen)
 
 int main(int argc, char** argv)
 {
-  SDL_Surface *screen,*temp,*tileset, *coins_img, *coins;
+  SDL_Surface *screen,*temp,*tileset, *coins_text, *coins_img;
+  SDL_Surface *coins = NULL;
   TTF_Font *police = NULL;
-  SDL_Color text_color = {255, 255, 255, 0};
+  SDL_Color text_color{255,255,255,0};
   SDL_Rect coins_text_pos, coins_pos;
   object_type life_1,life_2,life_3;
   list_of_object enemy_list, enemy_list_copy,enemy_list_prev;
@@ -137,15 +138,15 @@ int main(int argc, char** argv)
   int sleep_time = 0;
   char direction = 'R', direction_rob = 'R';
   int nb_coins = 0;
-  char nb_coins_aff[10] = "";
+  char nb_coins_aff[2];
   bool item_tile, void_item;
 
   /* Initalize font */
-  police = TTF_OpenFont("angelina.TTF", 35);
+  police = TTF_OpenFont("angelina.ttf", 35);
   sprintf(nb_coins_aff, "X %d", nb_coins);
   coins = TTF_RenderText_Blended(police, nb_coins_aff, text_color);
-  coins_text_pos.x = 800;
-  coins_text_pos.y = 0;
+  coins_text_pos.x = 900;
+  coins_text_pos.y = 5;
 
   /* set sprite position */
   hero->coord.x = hero->x = TAILLE_TUILE + 1;
@@ -169,7 +170,6 @@ int main(int argc, char** argv)
  
     
   while (!gameover){
-
     //load tileset
     temp = SDL_LoadBMP("tileset.bmp");
     tileset = SDL_DisplayFormat(temp);
@@ -180,7 +180,7 @@ int main(int argc, char** argv)
     coins_img = SDL_DisplayFormat(temp);
     SDL_FreeSurface(temp);  
 
-    coins_pos.x = coins_text_pos.x - 50;
+    coins_pos.x = coins_text_pos.x - 30;
     coins_pos.y = coins_text_pos.y;
 
     /* set keyboard repeat */
@@ -210,10 +210,14 @@ int main(int argc, char** argv)
       break;
     }
 
+    // Eliminer les ennemis qu'on n'a pas tué quand on change de tableau
+    if (enemy_list != NULL){
+      enemy_list = NULL;
+      free(enemy_list);
+    }
+
     /* create list of new enemy */
-    enemy_list = NULL;
     enemy_list = lvl_gen(level, screen, enemy_list);
-    time_axe = SDL_GetTicks();
 
     if (level == 0) {
       /* create list of new hero lives */
@@ -226,9 +230,8 @@ int main(int argc, char** argv)
       life_of_hero_list = cons(life_3, life_of_hero_list);
     }
    
-    item_tile = false; // si on a touché un bloc à item
-    void_item = false; // si ce bloc est vide
-
+    item_tile = false;
+    void_item = false;
     /* setup sprite colorkey and turn on RLE */
     hero->colorkey = SDL_MapRGB(screen->format, 0, 255, 255);
     SDL_SetColorKey(hero->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, hero->colorkey);
@@ -268,13 +271,7 @@ int main(int argc, char** argv)
       
       // draw coins and number of coins
       if (level > 0 && level < 6){
-	SDL_FreeSurface(coins);
-	nb_coins = 1;
-	sprintf(nb_coins_aff, "X %d", nb_coins);
-	coins = TTF_RenderText_Blended(police, nb_coins_aff, text_color);
-	SDL_BlitSurface(coins, NULL, screen, &coins_text_pos);
-	SDL_BlitSurface(coins_img, NULL, screen, &coins_pos);
-	printf("%s", nb_coins_aff);
+        SDL_BlitSurface(coins_img, NULL, screen, &coins_pos);
       }
 
       /* draw the enemy sprite */
@@ -290,7 +287,7 @@ int main(int argc, char** argv)
 	}
 
 	/* comme le lvl 3 contient uniquement des haches, cons les éléments du début du lvl tous les x secs revient à ajouter les haches à cet endroit toutes les x sec */
-	if ((SDL_GetTicks()-time_axe > 6000)&&(level==3)) {
+	if ((SDL_GetTicks()-time_axe > 5000)&&(level==3)) {
 	  time_axe = SDL_GetTicks();
 	  enemy_list = lvl_gen(level, screen, enemy_list);
 	}
@@ -299,20 +296,20 @@ int main(int argc, char** argv)
 	/* deplacement of the enemy */
 	if (enemy_list_copy->first->type == 'C'){ /*mini-champi*/
 	  if (((present_time_enemy - past_time_enemy)/2500)%2 == 0){
-	    direction = 'R';
+	    enemy_list_copy->first->direction = 'R';
 	  } else {
-	    direction = 'L';    
+	    enemy_list_copy->first->direction = 'L';    
 	  }
-	  deplacement_object(enemy_list_copy->first,&direction, table[level]);
+	  deplacement_object(enemy_list_copy->first,&enemy_list_copy->first->direction, table[level]);
 	}
 
 	if (enemy_list_copy->first->type == 'G'){ /*ghost*/
 	  if (((present_time_enemy - past_time_enemy)/8500)%2 == 0){
-	    direction = 'L';
+	    enemy_list_copy->first->direction = 'L';
 	  } else {
-	    direction = 'R';    
+	    enemy_list_copy->first->direction = 'R';    
 	  }
-	  deplacement_object(enemy_list_copy->first,&direction, table[level]);
+	  deplacement_object(enemy_list_copy->first,&enemy_list_copy->first->direction, table[level]);
 	}
 
 	if (enemy_list_copy->first->type == 'H'){ /*hache*/
@@ -321,7 +318,7 @@ int main(int argc, char** argv)
 
 	if (enemy_list_copy->first->type == 'S'){ /*Squarel*/
 	  pt_sprite enemy = convert_enemy_type_to_pt_spite (enemy_list_copy->first);
-	  if (direction_rob == 'L') { /* ennemi prend en compte le centre de l'ecureuil */
+	  if (enemy_list_copy->first->direction == 'L') { /* ennemi prend en compte le centre de l'ecureuil */
 	    enemy->x = enemy->x - enemy->rc_image.w / 2;
 	  } else {
 	    enemy->x = enemy->x + enemy->rc_image.w / 2;
@@ -331,9 +328,9 @@ int main(int argc, char** argv)
 	    temp_pos->x = enemy->x + 16; /* regarde tuile à droite */
 	    temp_pos->y = enemy->y;
 	      
-	    direction_rob = dir(temp_pos, table[level]); /* si tuile à droite vide : va à gauche */
+	    enemy_list_copy->first->direction = dir(temp_pos, table[level]); /* si tuile à droite vide : va à gauche */
 	  }
-	  deplacement_object(enemy_list_copy->first, &direction_rob, table[level]);
+	  deplacement_object(enemy_list_copy->first, &enemy_list_copy->first->direction, table[level]);
 	  enemy = NULL;
 	  free(enemy);
 	}
@@ -386,13 +383,13 @@ int main(int argc, char** argv)
 	SDL_Delay(20 - (SDL_GetTicks() - sleep_time));
       }	      
     }
-    free_list(enemy_list);
-    free_list(enemy_list_copy);
   }
 
   /* clean up */
   SDL_FreeSurface(hero->sprite);
-  free(hero);				 
+  if (enemy_list != NULL)
+    SDL_FreeSurface(enemy_list->first->sprite);
+				 
   
   TTF_CloseFont(police);
   TTF_Quit();
