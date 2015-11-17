@@ -326,10 +326,20 @@ void CheckLevel(pt_sprite hero, char** table, int* level, int* levelover, SDL_Su
   }
 }
 
+/* On remplit un tableau avec les lvl déjà visités */
+void add_lvl_visited(int* lvl_visited, int lvl){
+  if(lvl_visited[lvl-1] != lvl)
+    lvl_visited[lvl-1] = lvl;
+}
 
-list_of_object lvl_gen(int lvl, SDL_Surface *screen, list_of_object enemy_list)
+/* Check si on a déjà visité un lvl */
+int is_lvl_visited(int* lvl_visited, int lvl){
+  return (lvl_visited[lvl-1] == lvl);
+}
+
+list_of_object lvl_gen_en(int lvl, SDL_Surface *screen, list_of_object enemy_list)
 {
-  object_type ghost_enemy_1, ghost_enemy_2, ghost_enemy_3, ghost_enemy_4, squarel_enemy_1, squarel_enemy_2, squarel_enemy_3, squarel_enemy_4, squarel_enemy_5, hache_1, hache_2, hache_3, hache_4, hache_5;
+  object_type ghost_enemy_1, ghost_enemy_2, ghost_enemy_3, ghost_enemy_4, squarel_enemy_1, squarel_enemy_2, squarel_enemy_3, squarel_enemy_4, squarel_enemy_5, hache_1, hache_2, hache_3, hache_4, hache_5; 
   switch (lvl) {
   case 1:
     ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
@@ -340,6 +350,8 @@ list_of_object lvl_gen(int lvl, SDL_Surface *screen, list_of_object enemy_list)
     enemy_list = cons(ghost_enemy_2, enemy_list);
     enemy_list = cons(squarel_enemy_1, enemy_list);
     enemy_list = cons(hache_1, enemy_list);
+
+
     break;
   case 2 : //2nd level
     ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
@@ -387,4 +399,26 @@ list_of_object lvl_gen(int lvl, SDL_Surface *screen, list_of_object enemy_list)
     break;
   }
   return enemy_list;
+}
+
+list_of_object lvl_gen_co(int lvl, SDL_Surface *screen, list_of_object coins_list){
+  object_type coin_1, coin_2, coin_3, coin_4, coin_5, coin_6;
+
+ switch(lvl){
+ case 1:
+   coin_1 = create_new_object('P', screen, 50, 50, 'L');
+   coin_2 = create_new_object('P', screen, 65, 340, 'L');
+   coins_list = cons(coin_1, coins_list);
+   coins_list = cons(coin_2, coins_list);
+   break;
+ case 2:
+   break;
+ case 3:
+   break;
+ case 4:
+   break;
+ case 5:
+   break;
+ }
+ return coins_list;
 }
