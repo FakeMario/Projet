@@ -65,7 +65,6 @@ void update_events(char* keys){
 	  level += 1;
 	  hero_choice = 3;
 	}
-	printf("%f %f \n", hero->x, hero->y);
 	break;
       case SDLK_KP4:
 	if (level == 0){
@@ -86,7 +85,7 @@ void HandleEvent(char* key, SDL_Surface *screen)
   SDLKey tabkey[3] = {SDLK_UP, SDLK_LEFT, SDLK_RIGHT};
   int i;
   hero->y += 3.0; /* pour calculer si collision avec bloc en dessous */
-  if((collision_hero_decor(hero, table[level]))!=0) { /* on autorise appui sur haut si perso pas dans le ciel ou si il a droit au double saut */
+  if((collision_hero_decor(hero, table[level]))!=0) { /* on autorise appui sur haut si perso pas dans le ciel */
     if(key[tabkey[0]]) { //UP
       oldtime = SDL_GetTicks();
     }
@@ -214,6 +213,7 @@ int main(int argc, char** argv)
       hero->sprite = SDL_DisplayFormat(temp);
       SDL_FreeSurface(temp);   
       break;
+      printf("%f \n", enemy_list_copy->first->x);
     case 4:
       temp = SDL_LoadBMP("sprite_3.bmp");
       hero->sprite = SDL_DisplayFormat(temp);
@@ -386,7 +386,7 @@ int main(int argc, char** argv)
 	  free(enemy);
 	}
 
-	Collision_screen_enemy(enemy_list_copy->first);
+	Collision_screen_enemy(enemy_list_copy->first, level);
 	if (Collision_H_E(hero, enemy_list_copy->first) == 2) {
 	  if (SDL_GetTicks()-invulnerable_time > 1500) {
 	    invulnerable_time = SDL_GetTicks();
@@ -400,7 +400,7 @@ int main(int argc, char** argv)
 	    }
 	  }
 	}
-	if (Collision_H_E(hero, enemy_list_copy->first) == 1 || enemy_list_copy->first->type == 'H' && enemy_list_copy->first->x <=-50){
+	if (Collision_H_E(hero, enemy_list_copy->first) == 1 || (enemy_list_copy->first->type == 'H' && enemy_list_copy->first->x <=-50) || (level == 5 && enemy_list_copy->first->x > 985)){
 	  free(enemy_list_copy->first);
 	  if (NULL!=enemy_list_prev) {
 	    enemy_list_prev->rest = enemy_list_copy->rest;
