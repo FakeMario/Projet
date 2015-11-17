@@ -228,9 +228,9 @@ char* table5[]={
   "10000000000000000000000000000001",
   "10001111111111111111111111111111",
   "10000000000000000000000000000001",
-  "1000000000000000000000000000000F",
-  "1100000000000000000000000000000H",
-  "B0110000000000000000000000000001",
+  "C0000000000000000000000000000001",
+  "E0000000000000000000000000000001",
+  "B1110000000000000000000000000001",
   "A0001111111111111111111111000001",
   "@0000000000000000000000000010000000",
   "11000000000000000000000000010000000",
@@ -404,7 +404,7 @@ list_of_object lvl_gen_en(int lvl, SDL_Surface *screen, list_of_object enemy_lis
 
   case 5:
     enemy_list = cons(create_new_object('G',screen, 660, 130, 'L', 1.5), enemy_list);
-    enemy_list = cons(create_new_object('H',screen, 967, 580, 'L', 1.0), enemy_list);
+    enemy_list = cons(create_new_object('H',screen, 33, 580, 'R', 1.0), enemy_list);
     enemy_list = cons(create_new_object('H',screen, 33, 256, 'R', 1.0), enemy_list);
     break;
   }

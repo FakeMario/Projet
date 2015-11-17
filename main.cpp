@@ -341,7 +341,7 @@ int main(int argc, char** argv)
 	  enemy_list = lvl_gen_en(level, screen, enemy_list);
 	}
 
-	if ((SDL_GetTicks()-time_axe > 7000)&&(level==5)) {
+	if ((SDL_GetTicks()-time_axe > 5000)&&(level==5)) {
 	  time_axe = SDL_GetTicks();
 	  enemy_list = lvl_gen_en(level, screen, enemy_list);
 	}
