@@ -74,6 +74,9 @@ void update_events(char* keys){
 	  hero_choice = 4;
 	}
 	break;
+      case SDLK_KP5:
+	printf("X: %f, Y: %f", hero->x, hero->y);
+	break;
       }
       keys[event.key.keysym.sym]=1;
       break;
@@ -131,7 +134,7 @@ int main(int argc, char** argv)
   SDL_Color text_color = {255, 255, 255, 0};
   SDL_Rect coins_text_pos, coins_pos;
   object_type life_1,life_2,life_3;
-  list_of_object enemy_list, enemy_list_copy,enemy_list_prev;
+  list_of_object enemy_list, enemy_list_copy,enemy_list_prev, coins_list, coins_list_copy, coins_list_prev;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
   int past_time_enemy, present_time_enemy, time_axe = 0;
   int invulnerable_time = -1500;
@@ -141,6 +144,7 @@ int main(int argc, char** argv)
   char nb_coins_aff[10] = "";
   bool item_tile, void_item;
   int coins_colorkey;
+  int lvl_visited[5]={0,0,0,0,0};
 
   /* Initalize font */
   TTF_Init();
@@ -213,9 +217,15 @@ int main(int argc, char** argv)
       break;
     }
 
+    /* create list of coins */
+    coins_list = NULL;
+    if(!is_lvl_visited(lvl_visited, level))
+      coins_list = lvl_gen_co(level, screen, coins_list);
+
     /* create list of new enemy */
     enemy_list = NULL;
-    enemy_list = lvl_gen(level, screen, enemy_list);
+    enemy_list = lvl_gen_en(level, screen, enemy_list);
+    add_lvl_visited(lvl_visited, level);
     time_axe = SDL_GetTicks();
 
     if (level == 0) {
@@ -272,7 +282,7 @@ int main(int argc, char** argv)
 	SDL_BlitSurface(hero->sprite, &hero->rc_image, screen, &hero->coord);
       }
       
-      // draw coins and number of coins
+      // draw coins number
       if (level > 0 && level < 6){
 	SDL_FreeSurface(coins);
 	sprintf(nb_coins_aff, "%d", nb_coins);
@@ -280,6 +290,8 @@ int main(int argc, char** argv)
 	SDL_BlitSurface(coins, NULL, screen, &coins_text_pos);
 	SDL_BlitSurface(coins_img, NULL, screen, &coins_pos);
       }
+
+    
 
       /* draw the enemy sprite */
       enemy_list_prev = NULL;
@@ -296,7 +308,7 @@ int main(int argc, char** argv)
 	/* comme le lvl 3 contient uniquement des haches, cons les éléments du début du lvl tous les x secs revient à ajouter les haches à cet endroit toutes les x sec */
 	if ((SDL_GetTicks()-time_axe > 6000)&&(level==3)) {
 	  time_axe = SDL_GetTicks();
-	  enemy_list = lvl_gen(level, screen, enemy_list);
+	  enemy_list = lvl_gen_en(level, screen, enemy_list);
 	}
 
 	if ((SDL_GetTicks()-time_axe > 10000)&&(level==5)) {
@@ -368,7 +380,31 @@ int main(int argc, char** argv)
 	if (enemy_list_copy != NULL)
 	  enemy_list_copy = enemy_list_copy->rest;
       }
+      
+      /* draw coins sprite */
+      coins_list_prev = NULL;
+      coins_list_copy = coins_list;
 
+      while (coins_list_copy != NULL){
+	SDL_BlitSurface(coins_list_copy->first->sprite, &coins_list_copy->first->rc_image, screen, &coins_list_copy->first->coord);
+      /* collision coins / hero */
+      if (Collision_H_E(hero, coins_list_copy->first)){
+	  free(coins_list_copy->first);
+	  nb_coins += 1;
+	  if (NULL!=coins_list_prev) {
+	    coins_list_prev->rest = coins_list_copy->rest;
+	  } else {
+	    coins_list = coins_list->rest;
+	  }
+	  free(coins_list_copy);
+	  coins_list_copy = coins_list_prev;
+	}
+	coins_list_prev = coins_list_copy;
+	if (coins_list_copy != NULL)
+	  coins_list_copy = coins_list_copy->rest;
+      }
+    
+    
       /* draw the hero lives sprite */
       life_of_hero_list_copy = life_of_hero_list;
       while (life_of_hero_list_copy != NULL && level > 0 && level < 6){
