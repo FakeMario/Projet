@@ -176,7 +176,14 @@ int main(int argc, char** argv)
   /* create window */
   screen = SDL_SetVideoMode(TAILLE_TUILE*NB_BLOCS_LARGEUR, TAILLE_TUILE*NB_BLOCS_HAUTEUR, 32,SDL_HWSURFACE|SDL_DOUBLEBUF);
 
- 
+  /* create list of new hero lives */
+  life_of_hero_list = create_new_list_of_object(); 
+  life_1 = create_new_object('L',screen, 5, 5, 'L', 0);
+  life_2 = create_new_object('L',screen, 35, 5, 'L', 0);
+  life_3 = create_new_object('L',screen, 65, 5, 'L', 0);
+  life_of_hero_list = cons(life_1, life_of_hero_list);
+  life_of_hero_list = cons(life_2, life_of_hero_list);
+  life_of_hero_list = cons(life_3, life_of_hero_list);
     
   while (!gameover){
 
@@ -213,7 +220,6 @@ int main(int argc, char** argv)
       hero->sprite = SDL_DisplayFormat(temp);
       SDL_FreeSurface(temp);   
       break;
-      printf("%f \n", enemy_list_copy->first->x);
     case 4:
       temp = SDL_LoadBMP("sprite_3.bmp");
       hero->sprite = SDL_DisplayFormat(temp);
@@ -244,17 +250,7 @@ int main(int argc, char** argv)
     lucas_pos.y = 700;
     guillaume_pos.x = 675;
     guillaume_pos.y = 700;
-
-    /* create list of new hero lives */
-    life_of_hero_list = create_new_list_of_object(); 
-    life_1 = create_new_object('L',screen, 5, 5, 'L');
-    life_2 = create_new_object('L',screen, 35, 5, 'L');
-    life_3 = create_new_object('L',screen, 65, 5, 'L');
-    life_of_hero_list = cons(life_1, life_of_hero_list);
-    life_of_hero_list = cons(life_2, life_of_hero_list);
-    life_of_hero_list = cons(life_3, life_of_hero_list);
-    
-
+  
     item_tile = false; // si on a touché un bloc à item
     void_item = false; // si ce bloc est vide
 
@@ -336,7 +332,7 @@ int main(int argc, char** argv)
 
 	if ((SDL_GetTicks()-time_axe > 8000)&&(level==1)) {
 	  time_axe = SDL_GetTicks();
-	  enemy_list = cons(create_new_object('H',screen, 1024, 410, 'L'), enemy_list);
+	  enemy_list = cons(create_new_object('H',screen, 1024, 410, 'L', 0.7), enemy_list);
 	}
 
 	/* comme le lvl 3 contient uniquement des haches, cons les éléments du début du lvl tous les x secs revient à ajouter les haches à cet endroit toutes les x sec */
@@ -345,7 +341,7 @@ int main(int argc, char** argv)
 	  enemy_list = lvl_gen_en(level, screen, enemy_list);
 	}
 
-	if ((SDL_GetTicks()-time_axe > 10000)&&(level==5)) {
+	if ((SDL_GetTicks()-time_axe > 7000)&&(level==5)) {
 	  time_axe = SDL_GetTicks();
 	  enemy_list = lvl_gen_en(level, screen, enemy_list);
 	}
@@ -421,8 +417,8 @@ int main(int argc, char** argv)
 
       while (coins_list_copy != NULL){
 	SDL_BlitSurface(coins_list_copy->first->sprite, &coins_list_copy->first->rc_image, screen, &coins_list_copy->first->coord);
-      /* collision coins / hero */
-      if (Collision_H_E(hero, coins_list_copy->first)){
+	/* collision coins / hero */
+	if (Collision_H_E(hero, coins_list_copy->first)){
 	  free(coins_list_copy->first);
 	  nb_coins += 1;
 	  if (NULL!=coins_list_prev) {
@@ -465,7 +461,8 @@ int main(int argc, char** argv)
   /* clean up */
   SDL_FreeSurface(hero->sprite);
   free(hero);				 
-  
+  free(life_of_hero_list);
+  free(life_of_hero_list_copy);
   TTF_CloseFont(police);
   TTF_CloseFont(police2);
   TTF_Quit();

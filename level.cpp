@@ -342,10 +342,10 @@ list_of_object lvl_gen_en(int lvl, SDL_Surface *screen, list_of_object enemy_lis
   object_type ghost_enemy_1, ghost_enemy_2, ghost_enemy_3, ghost_enemy_4, ghost_enemy_5, ghost_enemy_6, squarel_enemy_1, squarel_enemy_2, squarel_enemy_3, squarel_enemy_4, squarel_enemy_5, hache_1, hache_2, hache_3, hache_4, hache_5; 
   switch (lvl) {
   case 1:
-    ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
-    ghost_enemy_2 = create_new_object('G',screen, 920, 130, 'L');
-    squarel_enemy_1 = create_new_object('S',screen, 350, 403, 'L');
-    hache_1 = create_new_object('H',screen, 1024, 410, 'L');
+    ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L', 0.4);
+    ghost_enemy_2 = create_new_object('G',screen, 920, 130, 'L', 0.4);
+    squarel_enemy_1 = create_new_object('S',screen, 350, 403, 'L', 0.3);
+    hache_1 = create_new_object('H',screen, 1024, 410, 'L', 0.7);
     enemy_list = cons(ghost_enemy_1, enemy_list);
     enemy_list = cons(ghost_enemy_2, enemy_list);
     enemy_list = cons(squarel_enemy_1, enemy_list);
@@ -354,12 +354,12 @@ list_of_object lvl_gen_en(int lvl, SDL_Surface *screen, list_of_object enemy_lis
 
     break;
   case 2 : //2nd level
-    ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
-    ghost_enemy_2 = create_new_object('G',screen, 450, 120, 'L');
-    ghost_enemy_3 = create_new_object('G',screen, 800, 56, 'L');
-    ghost_enemy_4 = create_new_object('G',screen, 700, 120, 'L');
-    ghost_enemy_5 = create_new_object('G',screen, 520, 376, 'L');
-    ghost_enemy_6 = create_new_object('G',screen, 806, 376, 'L');
+    ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L', 0.4);
+    ghost_enemy_2 = create_new_object('G',screen, 450, 120, 'L', 0.4);
+    ghost_enemy_3 = create_new_object('G',screen, 800, 56, 'L', 0.4);
+    ghost_enemy_4 = create_new_object('G',screen, 700, 120, 'L', 0.4);
+    ghost_enemy_5 = create_new_object('G',screen, 520, 376, 'L', 0.4);
+    ghost_enemy_6 = create_new_object('G',screen, 806, 376, 'L', 0.4);
     enemy_list = cons(ghost_enemy_1, enemy_list);
     enemy_list = cons(ghost_enemy_2, enemy_list);
     enemy_list = cons(ghost_enemy_3, enemy_list);
@@ -370,28 +370,28 @@ list_of_object lvl_gen_en(int lvl, SDL_Surface *screen, list_of_object enemy_lis
 
 
   case 3:
-    hache_1 = create_new_object('H',screen, 1024, 540, 'L');
+    hache_1 = create_new_object('H',screen, 1024, 540, 'L', 0.7);
     enemy_list = cons(hache_1, enemy_list);
-    hache_2 = create_new_object('H',screen, 0, 635, 'R');
+    hache_2 = create_new_object('H',screen, 0, 635, 'R', 0.7);
     enemy_list = cons(hache_2, enemy_list);
-    hache_3 = create_new_object('H',screen, 0, 60, 'R');
+    hache_3 = create_new_object('H',screen, 0, 60, 'R', 0.7);
     enemy_list = cons(hache_3, enemy_list);
-    hache_4 = create_new_object('H',screen, 0, 220, 'R');
+    hache_4 = create_new_object('H',screen, 0, 220, 'R', 0.7);
     enemy_list = cons(hache_4, enemy_list);
-    hache_5 = create_new_object('H',screen, 1024, 350, 'L');
+    hache_5 = create_new_object('H',screen, 1024, 350, 'L', 0.7);
     enemy_list = cons(hache_5, enemy_list);
     break;
 
   case 4:
-    squarel_enemy_1 = create_new_object('S',screen, 352, 115, 'L');
-    squarel_enemy_2 = create_new_object('S',screen, 704, 148, 'R');
-    squarel_enemy_3 = create_new_object('S',screen, 418, 403, 'L');
-    squarel_enemy_4 = create_new_object('S',screen, 70, 499, 'R');
-    squarel_enemy_5 = create_new_object('S',screen, 896, 467, 'L');
-    ghost_enemy_1 = create_new_object('G',screen, 940, 314, 'L');
-    ghost_enemy_2 = create_new_object('G',screen, 672, 378, 'L');
-    ghost_enemy_3 = create_new_object('G',screen, 416, 313, 'L');
-    ghost_enemy_4 = create_new_object('G',screen, 334, 696, 'L');
+    squarel_enemy_1 = create_new_object('S',screen, 352, 115, 'L', 0.3);
+    squarel_enemy_2 = create_new_object('S',screen, 704, 148, 'R', 0.3);
+    squarel_enemy_3 = create_new_object('S',screen, 418, 403, 'L', 0.3);
+    squarel_enemy_4 = create_new_object('S',screen, 70, 499, 'R', 0.3);
+    squarel_enemy_5 = create_new_object('S',screen, 896, 467, 'L', 0.3);
+    ghost_enemy_1 = create_new_object('G',screen, 940, 314, 'L', 0.4);
+    ghost_enemy_2 = create_new_object('G',screen, 672, 378, 'L', 0.4);
+    ghost_enemy_3 = create_new_object('G',screen, 416, 313, 'L', 0.4);
+    ghost_enemy_4 = create_new_object('G',screen, 334, 696, 'L', 0.4);
     enemy_list = cons(squarel_enemy_1, enemy_list);
     enemy_list = cons(squarel_enemy_2, enemy_list);
     enemy_list = cons(squarel_enemy_3, enemy_list);
@@ -403,9 +403,9 @@ list_of_object lvl_gen_en(int lvl, SDL_Surface *screen, list_of_object enemy_lis
     break;
 
   case 5:
-    enemy_list = cons(create_new_object('G',screen, 660, 130, 'L'), enemy_list);
-    enemy_list = cons(create_new_object('H',screen, 967, 580, 'L'), enemy_list);
-    enemy_list = cons(create_new_object('H',screen, 33, 256, 'R'), enemy_list);
+    enemy_list = cons(create_new_object('G',screen, 660, 130, 'L', 1.5), enemy_list);
+    enemy_list = cons(create_new_object('H',screen, 967, 580, 'L', 1.0), enemy_list);
+    enemy_list = cons(create_new_object('H',screen, 33, 256, 'R', 1.0), enemy_list);
     break;
   }
   return enemy_list;
@@ -416,12 +416,12 @@ list_of_object lvl_gen_co(int lvl, SDL_Surface *screen, list_of_object coins_lis
 
  switch(lvl){
  case 1:
-   coin_1 = create_new_object('P', screen, 50, 50, 'L');
-   coin_2 = create_new_object('P', screen, 65, 340, 'L');
-   coin_3 = create_new_object('P', screen, 340, 115, 'L');
-   coin_4 = create_new_object('P', screen, 930, 345, 'L');
-   coin_5 = create_new_object('P', screen, 417, 666, 'L');
-   coin_6 = create_new_object('P', screen, 673, 312, 'L');
+   coin_1 = create_new_object('P', screen, 50, 50, 'L', 0);
+   coin_2 = create_new_object('P', screen, 65, 340, 'L', 0);
+   coin_3 = create_new_object('P', screen, 340, 115, 'L', 0);
+   coin_4 = create_new_object('P', screen, 930, 345, 'L', 0);
+   coin_5 = create_new_object('P', screen, 417, 666, 'L', 0);
+   coin_6 = create_new_object('P', screen, 673, 312, 'L', 0);
    coins_list = cons(coin_1, coins_list);
    coins_list = cons(coin_2, coins_list);
    coins_list = cons(coin_3, coins_list);
@@ -430,26 +430,26 @@ list_of_object lvl_gen_co(int lvl, SDL_Surface *screen, list_of_object coins_lis
    coins_list = cons(coin_6, coins_list);
    break;
  case 2:
-   coin_1 = create_new_object('P', screen, 874, 48, 'L');
-   coin_2 = create_new_object('P', screen, 380, 386, 'L');
+   coin_1 = create_new_object('P', screen, 874, 48, 'L', 0);
+   coin_2 = create_new_object('P', screen, 380, 386, 'L', 0);
    coins_list = cons(coin_1, coins_list);
    coins_list = cons(coin_2, coins_list);
    break;
  case 3:
-   coin_1 = create_new_object('P', screen, 70, 689, 'L');
-   coin_2 = create_new_object('P', screen, 121, 689, 'L');
-   coin_3 = create_new_object('P', screen, 927, 314, 'L');
+   coin_1 = create_new_object('P', screen, 70, 689, 'L', 0);
+   coin_2 = create_new_object('P', screen, 121, 689, 'L', 0);
+   coin_3 = create_new_object('P', screen, 927, 314, 'L', 0);
    coins_list = cons(coin_1, coins_list);
    coins_list = cons(coin_2, coins_list);
    coins_list = cons(coin_3, coins_list);
    break;
  case 4:
-   coin_1 = create_new_object('P', screen, 111, 320, 'L');
-   coin_2 = create_new_object('P', screen, 78, 666, 'L');
-   coin_3 = create_new_object('P', screen, 373, 256, 'L');
-   coin_4 = create_new_object('P', screen, 951, 96, 'L');
-   coin_5 = create_new_object('P', screen, 613, 602, 'L');
-   coin_6 = create_new_object('P', screen, 924, 391, 'L');
+   coin_1 = create_new_object('P', screen, 111, 320, 'L', 0);
+   coin_2 = create_new_object('P', screen, 78, 666, 'L', 0);
+   coin_3 = create_new_object('P', screen, 373, 256, 'L', 0);
+   coin_4 = create_new_object('P', screen, 951, 96, 'L', 0);
+   coin_5 = create_new_object('P', screen, 613, 602, 'L', 0);
+   coin_6 = create_new_object('P', screen, 924, 391, 'L', 0);
    coins_list = cons(coin_1, coins_list);
    coins_list = cons(coin_2, coins_list);
    coins_list = cons(coin_3, coins_list);
