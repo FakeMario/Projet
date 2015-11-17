@@ -178,8 +178,8 @@ char* table3[]={
   "12222222222223222222222222222001",
   "C0000000000000000000000000000001",
   "E0000000000000000000000000000000",
-  "10000222222200022220002222000221",
-  "10000211111200021120002112000211",
+  "10000220222200022220002222000221",
+  "10000210111200021120002112000211",
   "11111111111111111111111111111111",
 };
 
@@ -392,10 +392,9 @@ list_of_object lvl_gen_en(int lvl, SDL_Surface *screen, list_of_object enemy_lis
     break;
 
   case 5:
-    //ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
-    // ghost_enemy_2 = create_new_object('G',screen, 600, 313, 'L');
-    // ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
-    // ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
+    enemy_list = cons(create_new_object('G',screen, 660, 130, 'L'), enemy_list);
+    enemy_list = cons(create_new_object('H',screen, 967, 416, 'L'), enemy_list);
+    enemy_list = cons(create_new_object('H',screen, 33, 256, 'R'), enemy_list);
     break;
   }
   return enemy_list;

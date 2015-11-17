@@ -65,6 +65,7 @@ void update_events(char* keys){
 	  level += 1;
 	  hero_choice = 3;
 	}
+	printf("%f %f \n", hero->x, hero->y);
 	break;
       case SDLK_KP4:
 	if (level == 0){
@@ -308,6 +309,11 @@ int main(int argc, char** argv)
 	if ((SDL_GetTicks()-time_axe > 6000)&&(level==3)) {
 	  time_axe = SDL_GetTicks();
 	  enemy_list = lvl_gen_en(level, screen, enemy_list);
+	}
+
+	if ((SDL_GetTicks()-time_axe > 10000)&&(level==5)) {
+	  time_axe = SDL_GetTicks();
+	  enemy_list = lvl_gen(level, screen, enemy_list);
 	}
 
 
