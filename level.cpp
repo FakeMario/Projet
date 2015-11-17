@@ -178,8 +178,8 @@ char* table3[]={
   "12222222222223222222222222222001",
   "C0000000000000000000000000000001",
   "E0000000000000000000000000000000",
-  "10000222222200022220002222000221",
-  "10000211111200021120002112000211",
+  "10000220222200022220002222000221",
+  "10000210111200021120002112000211",
   "11111111111111111111111111111111",
 };
 
@@ -353,16 +353,11 @@ list_of_object lvl_gen(int lvl, SDL_Surface *screen, list_of_object enemy_list)
     break;
 
   case 3:
-    hache_1 = create_new_object('H',screen, 1024, 540, 'L');
-    enemy_list = cons(hache_1, enemy_list);
-    hache_2 = create_new_object('H',screen, 0, 635, 'R');
-    enemy_list = cons(hache_2, enemy_list);
-    hache_3 = create_new_object('H',screen, 0, 60, 'R');
-    enemy_list = cons(hache_3, enemy_list);
-    hache_4 = create_new_object('H',screen, 0, 220, 'R');
-    enemy_list = cons(hache_4, enemy_list);
-    hache_5 = create_new_object('H',screen, 1024, 350, 'L');
-    enemy_list = cons(hache_5, enemy_list);
+    enemy_list = cons(create_new_object('H',screen, 1024, 540, 'L'), enemy_list);
+    enemy_list = cons(create_new_object('H',screen, 0, 635, 'R'), enemy_list);
+    enemy_list = cons(create_new_object('H',screen, 0, 60, 'R'), enemy_list);
+    enemy_list = cons(create_new_object('H',screen, 0, 220, 'R'), enemy_list);
+    enemy_list = cons(create_new_object('H',screen, 1024, 350, 'L'), enemy_list);
     break;
   }
   return enemy_list;
