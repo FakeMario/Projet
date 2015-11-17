@@ -126,11 +126,11 @@ void HandleEvent(char* key, SDL_Surface *screen)
 
 int main(int argc, char** argv)
 {
-  SDL_Surface *screen,*temp,*tileset, *coins_img, *coins, *instructions, *instructions2, *maureen, *lucas, *guillaume;
+  SDL_Surface *screen,*temp,*tileset, *coins_img, *coins, *instructions, *instructions2, *instructions3, *maureen, *lucas, *guillaume;
   TTF_Font *police = NULL;
   TTF_Font *police2 = NULL;
   SDL_Color text_color = {255, 255, 255, 0};
-  SDL_Rect coins_text_pos, coins_pos, instructions_pos, instructions2_pos, maureen_pos, lucas_pos, guillaume_pos;
+  SDL_Rect coins_text_pos, coins_pos, instructions_pos, instructions2_pos, instructions3_pos, maureen_pos, lucas_pos, guillaume_pos;
   object_type life_1,life_2,life_3;
   list_of_object enemy_list, enemy_list_copy,enemy_list_prev, coins_list, coins_list_copy, coins_list_prev;
   list_of_object life_of_hero_list, life_of_hero_list_copy;
@@ -154,6 +154,7 @@ int main(int argc, char** argv)
   coins_text_pos.y = SCREEN_HEIGHT - 30;
   instructions = TTF_RenderText_Blended(police, "Collectez toutes les pièces des 4 premiers niveaux", text_color);
   instructions2 = TTF_RenderText_Blended(police, "pour obtenir une nouvelle apparence !", text_color);
+  instructions3 = TTF_RenderText_Blended(police, "!! : Les pieces ne sont presentes qu'au premier passage dans un niveau", text_color);
   maureen = TTF_RenderText_Blended(police2, "Maureen Heitzmann", text_color);
   lucas = TTF_RenderText_Blended(police2, "Lucas Vignali", text_color);
   guillaume = TTF_RenderText_Blended(police2, "Guillaume Roth", text_color);
@@ -243,7 +244,9 @@ int main(int argc, char** argv)
     instructions_pos.x = 5;
     instructions_pos.y = 200;
     instructions2_pos.x = 5;
-    instructions2_pos.y = 250;     
+    instructions2_pos.y = 240;     
+    instructions3_pos.x = 5;
+    instructions3_pos.y = 280;
 
     maureen_pos.x = 140;
     maureen_pos.y = 700;
@@ -299,16 +302,19 @@ int main(int argc, char** argv)
 	if(level == 0){
 	  SDL_FreeSurface(instructions);
 	  SDL_FreeSurface(instructions2);
+	  SDL_FreeSurface(instructions3);
 	  SDL_FreeSurface(maureen);
 	  SDL_FreeSurface(lucas);
 	  SDL_FreeSurface(guillaume);
 	  instructions = TTF_RenderText_Blended(police, "Collectez toutes les pieces des 4 premiers niveaux pour obtenir une nouvelle apparence !", text_color);
 	  instructions2 = TTF_RenderText_Blended(police, "Controles : touches flechees.   Choisir avec 1, 2, 3, 4 du num.pad.", text_color);
+	  instructions3 = TTF_RenderText_Blended(police, "!! Les pieces ne sont presentes qu'au premier passage dans un niveau !!", text_color);
 	  maureen = TTF_RenderText_Blended(police2, "Maureen Heitzmann", text_color);
 	  lucas = TTF_RenderText_Blended(police2, "Lucas Vignali", text_color);
 	  guillaume = TTF_RenderText_Blended(police2, "Guillaume Roth", text_color);
 	  SDL_BlitSurface(instructions, NULL, screen, &instructions_pos);
 	  SDL_BlitSurface(instructions2, NULL, screen, &instructions2_pos);
+	  SDL_BlitSurface(instructions3, NULL, screen, &instructions3_pos);
 	  SDL_BlitSurface(maureen, NULL, screen, &maureen_pos);
 	  SDL_BlitSurface(lucas, NULL, screen, &lucas_pos);
 	  SDL_BlitSurface(guillaume, NULL, screen, &guillaume_pos);
