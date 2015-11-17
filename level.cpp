@@ -130,16 +130,16 @@ char* table1[]={ //32 blocs large * 24 blocs haut (64px sur 1024*768)
 //LEVEL 2
 
 char* table2[]={
-  "44444444445555555555555555555444",
-  "44444444456666666666556666666544",
-  "55555555566666666666666666666544",
-  ":6666666666655555556666555555444",
-  ";6666666665544444445555444444444",
-  "<6666666654444444444444444444444",
-  "55555566654444444444444444444444",
-  "44444456665444444444444444444444",
-  "44444445666544444444444444444444",
-  "44444444566655555555555555555555",
+  "44444444455555555555555555555444",
+  "44444444566666666666666666666544",
+  "55555555666666666666666666666544",
+  ":6666666666666666666666665555444",
+  ";6666666666555666666666654444444",
+  "<6666666665444555555555544444444",
+  "55555566665444444444444444444444",
+  "44444456666544444444444444444444",
+  "44444445666654444444444444444444",
+  "44444444566665555555555555555555",
   "44444444456666666666666666666667",
   "44444444445666666666666666666668",
   "44444444445666666666666666666669",
@@ -166,7 +166,7 @@ char* table3[]={
   "C0020000000000000000000000002111",
   "E0000000000000000000000000000211",
   "10000000000000000000000000000021",
-  "10000002000000000000000000000001",
+  "10000020000000000000000000000001",
   "B000000000000000000000000000000F",
   "A000000000000000000000000000000H",
   "@0000022200000000000000000000001",
@@ -178,8 +178,8 @@ char* table3[]={
   "12222222222223222222222222222001",
   "C0000000000000000000000000000001",
   "E0000000000000000000000000000000",
-  "10000220222200022220002222000221",
-  "10000210111200021120002112000211",
+  "10000220022200022220002222000221",
+  "10000220211200021120002112000211",
   "11111111111111111111111111111111",
 };
 
@@ -339,7 +339,7 @@ int is_lvl_visited(int* lvl_visited, int lvl){
 
 list_of_object lvl_gen_en(int lvl, SDL_Surface *screen, list_of_object enemy_list)
 {
-  object_type ghost_enemy_1, ghost_enemy_2, ghost_enemy_3, ghost_enemy_4, squarel_enemy_1, squarel_enemy_2, squarel_enemy_3, squarel_enemy_4, squarel_enemy_5, hache_1, hache_2, hache_3, hache_4, hache_5; 
+  object_type ghost_enemy_1, ghost_enemy_2, ghost_enemy_3, ghost_enemy_4, ghost_enemy_5, ghost_enemy_6, squarel_enemy_1, squarel_enemy_2, squarel_enemy_3, squarel_enemy_4, squarel_enemy_5, hache_1, hache_2, hache_3, hache_4, hache_5; 
   switch (lvl) {
   case 1:
     ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
@@ -355,8 +355,19 @@ list_of_object lvl_gen_en(int lvl, SDL_Surface *screen, list_of_object enemy_lis
     break;
   case 2 : //2nd level
     ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
+    ghost_enemy_2 = create_new_object('G',screen, 450, 120, 'L');
+    ghost_enemy_3 = create_new_object('G',screen, 800, 56, 'L');
+    ghost_enemy_4 = create_new_object('G',screen, 700, 120, 'L');
+    ghost_enemy_5 = create_new_object('G',screen, 520, 376, 'L');
+    ghost_enemy_6 = create_new_object('G',screen, 806, 376, 'L');
     enemy_list = cons(ghost_enemy_1, enemy_list);
+    enemy_list = cons(ghost_enemy_2, enemy_list);
+    enemy_list = cons(ghost_enemy_3, enemy_list);
+    enemy_list = cons(ghost_enemy_4, enemy_list);
+    enemy_list = cons(ghost_enemy_5, enemy_list);
+    enemy_list = cons(ghost_enemy_6, enemy_list);
     break;
+
 
   case 3:
     hache_1 = create_new_object('H',screen, 1024, 540, 'L');
@@ -407,14 +418,44 @@ list_of_object lvl_gen_co(int lvl, SDL_Surface *screen, list_of_object coins_lis
  case 1:
    coin_1 = create_new_object('P', screen, 50, 50, 'L');
    coin_2 = create_new_object('P', screen, 65, 340, 'L');
+   coin_3 = create_new_object('P', screen, 340, 115, 'L');
+   coin_4 = create_new_object('P', screen, 930, 345, 'L');
+   coin_5 = create_new_object('P', screen, 417, 666, 'L');
+   coin_6 = create_new_object('P', screen, 673, 312, 'L');
+   coins_list = cons(coin_1, coins_list);
+   coins_list = cons(coin_2, coins_list);
+   coins_list = cons(coin_3, coins_list);
+   coins_list = cons(coin_4, coins_list);
+   coins_list = cons(coin_5, coins_list);
+   coins_list = cons(coin_6, coins_list);
+   break;
+ case 2:
+   coin_1 = create_new_object('P', screen, 874, 48, 'L');
+   coin_2 = create_new_object('P', screen, 380, 386, 'L');
    coins_list = cons(coin_1, coins_list);
    coins_list = cons(coin_2, coins_list);
    break;
- case 2:
-   break;
  case 3:
+   coin_1 = create_new_object('P', screen, 70, 689, 'L');
+   coin_2 = create_new_object('P', screen, 121, 689, 'L');
+   coin_3 = create_new_object('P', screen, 927, 314, 'L');
+   coins_list = cons(coin_1, coins_list);
+   coins_list = cons(coin_2, coins_list);
+   coins_list = cons(coin_3, coins_list);
    break;
  case 4:
+   coin_1 = create_new_object('P', screen, 111, 320, 'L');
+   coin_2 = create_new_object('P', screen, 78, 666, 'L');
+   coin_3 = create_new_object('P', screen, 373, 256, 'L');
+   coin_4 = create_new_object('P', screen, 951, 96, 'L');
+   coin_5 = create_new_object('P', screen, 613, 602, 'L');
+   coin_6 = create_new_object('P', screen, 924, 391, 'L');
+   coins_list = cons(coin_1, coins_list);
+   coins_list = cons(coin_2, coins_list);
+   coins_list = cons(coin_3, coins_list);
+   coins_list = cons(coin_4, coins_list);
+   coins_list = cons(coin_5, coins_list);
+   coins_list = cons(coin_6, coins_list);
    break;
  case 5:
    break;
