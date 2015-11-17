@@ -1,7 +1,6 @@
 #include "enemy.h"
 
 /*CREATE ENEMY*/
-char dir(object_type object, char* direction, char** table);
 
 object_type create_new_object(char type, SDL_Surface *screen, float x, float y, char direction){
   object_type object =(object_type)malloc(sizeof(struct object));
@@ -134,7 +133,7 @@ pt_sprite convert_enemy_type_to_pt_spite (object_type object){
 }
 
 
-void deplacement_object(object_type object, char* direction, char** table)
+void deplacement_object(object_type object, char* direction, char** table, int level)
 {
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
   if (object->type == 'G'){
@@ -143,48 +142,60 @@ void deplacement_object(object_type object, char* direction, char** table)
     } else { /* si collision quand il marche */
       enemy->y -= 3.5; /* en le soulevant il ne touche plus le sol */
       if (0!=collision_hero_decor(enemy, table) && 4!=collision_hero_decor(enemy, table)) { /*si vrai : bloc sur le passage*/
-  	enemy->y -= 32; /* on remonte la hitbox d'un bloc */
-  	if (0==collision_hero_decor(enemy, table)|| 4==collision_hero_decor(enemy, table)) { // seulement un bloc de haut
-	  object->y -= 3.5; // dans ce cas l'ennemi peut l'escalader
+	if (level != 5) {
+	  enemy->y -= 32; /* on remonte la hitbox d'un bloc */
+	  if (0==collision_hero_decor(enemy, table)|| 4==collision_hero_decor(enemy, table)) { // seulement un bloc de haut
+	    object->y -= 3.5; // dans ce cas l'ennemi peut l'escalader
+	  }
+	} else {
+	  object->direction = inv_dir(object);
+	    }
 	}
       }
     }
+
+    enemy = NULL;
+    free(enemy);
+    switch (*direction) {
+    case 'L': /*Left*/
+      object->x -= object->speed;
+      object->coord.x = (int)object->x;
+      object->coord.y = (int)object->y;
+      object->rc_image.x = object->rc_image.x+object->rc_image.w;
+      if (object->type !='H'){
+	if (object->rc_image.x == 2 * object->rc_image.w || object->rc_image.x == 4 * object->rc_image.w){
+	  object->rc_image.x=0;
+	}
+      } else {
+	if (object->rc_image.x== 6 * object->rc_image.w){
+	  object->rc_image.x= 3 * object->rc_image.w;
+	}
+      }
+      break;
+    case 'R': /*Right*/
+      object->x += object->speed;
+      object->coord.x = (int)object->x;
+      object->coord.y = (int)object->y;
+      object->rc_image.x = object->rc_image.x + object->rc_image.w;
+      if (object->type != 'H'){
+	if (object->rc_image.x== 4 * object->rc_image.w){
+	  object->rc_image.x= 2 * object->rc_image.w;
+	}
+      } else {
+	if (object->rc_image.x== 3 * object->rc_image.w || object->rc_image.x == 6 * object->rc_image.w){
+	  object->rc_image.x= 0;
+	}
+      }
+      break;
+    }
   }
 
-  enemy = NULL;
-  free(enemy);
-  switch (*direction) {
-  case 'L': /*Left*/
-    object->x -= object->speed;
-    object->coord.x = (int)object->x;
-    object->coord.y = (int)object->y;
-    object->rc_image.x = object->rc_image.x+object->rc_image.w;
-    if (object->type !='H'){
-      if (object->rc_image.x == 2 * object->rc_image.w || object->rc_image.x == 4 * object->rc_image.w){
-	object->rc_image.x=0;
-      }
-    } else {
-      if (object->rc_image.x== 6 * object->rc_image.w){
-	object->rc_image.x= 3 * object->rc_image.w;
-      }
-    }
-    break;
-  case 'R': /*Right*/
-    object->x += object->speed;
-    object->coord.x = (int)object->x;
-    object->coord.y = (int)object->y;
-    object->rc_image.x = object->rc_image.x + object->rc_image.w;
-    if (object->type != 'H'){
-      if (object->rc_image.x== 4 * object->rc_image.w){
-	object->rc_image.x= 2 * object->rc_image.w;
-      }
-    } else {
-      if (object->rc_image.x== 3 * object->rc_image.w || object->rc_image.x == 6 * object->rc_image.w){
-	object->rc_image.x= 0;
-      }
-    }
-    break;
+char inv_dir(object_type object)
+{
+  if (object->direction == 'L') {
+    return 'R';
   }
+  return 'L';
 }
 
 char dir (pt_sprite adjacent_tile, char** table)
