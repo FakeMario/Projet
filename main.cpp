@@ -21,6 +21,7 @@ unsigned int oldtime = 0;
 int level = 0;
 int levelover = 0;
 int hero_choice = 1;
+int unlocked = 0;
 
 /* source and destination rectangles */
 pt_sprite hero = (pt_sprite) malloc (sizeof(s_sprite));
@@ -94,10 +95,10 @@ void HandleEvent(char* key, SDL_Surface *screen)
 
   if(key[tabkey[1]]) { //LEFT
     /* Movement sprite*/
-    if ( hero->rc_image.x < 2*SPRITE_WIDTH )
-      hero->rc_image.x = 2*SPRITE_WIDTH;
-    if ( hero->rc_image.x == 3*SPRITE_WIDTH )
-      hero->rc_image.x = 2*SPRITE_WIDTH;
+    if ( hero->rc_image.x < unlocked + 2*SPRITE_WIDTH )
+      hero->rc_image.x = unlocked + 2*SPRITE_WIDTH;
+    if ( hero->rc_image.x == unlocked + 3*SPRITE_WIDTH )
+      hero->rc_image.x = unlocked + 2*SPRITE_WIDTH;
     else
       hero->rc_image.x += SPRITE_WIDTH;
     /* Deplacement*/
@@ -110,10 +111,10 @@ void HandleEvent(char* key, SDL_Surface *screen)
   }
     
   if(key[tabkey[2]]) { //RIGHT
-    if ( hero->rc_image.x > SPRITE_WIDTH )
-      hero->rc_image.x = 0;
-    if ( hero->rc_image.x == SPRITE_WIDTH )
-      hero->rc_image.x = 0;
+    if ( hero->rc_image.x > unlocked + SPRITE_WIDTH )
+      hero->rc_image.x = unlocked;
+    if ( hero->rc_image.x == unlocked + SPRITE_WIDTH )
+      hero->rc_image.x = unlocked;
     else
       hero->rc_image.x += SPRITE_WIDTH;
     hero->x += 1.5;
@@ -275,6 +276,10 @@ int main(int argc, char** argv)
 	  
 	// fonction affichage
 	Afficher(screen,tileset,table[level],NB_BLOCS_HAUTEUR, NB_BLOCS_LARGEUR);
+
+	/* Transformation du perso si toutes les pièces */
+	if(nb_coins >= 17)
+	  unlocked = 4*SPRITE_WIDTH;
 	  
 	if(!level)
 	  afficher_menu(screen);
