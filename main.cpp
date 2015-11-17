@@ -298,15 +298,6 @@ int main(int argc, char** argv)
 
 
 	/* deplacement of the enemy */
-	if (enemy_list_copy->first->type == 'C'){ /*mini-champi*/
-	  if (((present_time_enemy - past_time_enemy)/2500)%2 == 0){
-	    enemy_list_copy->first->direction = 'R';
-	  } else {
-	    enemy_list_copy->first->direction = 'L';    
-	  }
-	  deplacement_object(enemy_list_copy->first,&enemy_list_copy->first->direction, table[level]);
-	}
-
 	if (enemy_list_copy->first->type == 'G'){ /*ghost*/
 	  if (((present_time_enemy - past_time_enemy)/8500)%2 == 0){
 	    enemy_list_copy->first->direction = 'L';

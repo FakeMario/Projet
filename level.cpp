@@ -329,21 +329,15 @@ void CheckLevel(pt_sprite hero, char** table, int* level, int* levelover, SDL_Su
 
 list_of_object lvl_gen(int lvl, SDL_Surface *screen, list_of_object enemy_list)
 {
-  object_type ghost_enemy_1, ghost_enemy_2, ghost_enemy_3, ghost_enemy_4, mini_champi_enemy_1, mini_champi_enemy_2, mini_champi_enemy_3, squarel_enemy_1, squarel_enemy_2, squarel_enemy_3, squarel_enemy_4, squarel_enemy_5, hache_1, hache_2, hache_3, hache_4, hache_5;
+  object_type ghost_enemy_1, ghost_enemy_2, ghost_enemy_3, ghost_enemy_4, squarel_enemy_1, squarel_enemy_2, squarel_enemy_3, squarel_enemy_4, squarel_enemy_5, hache_1, hache_2, hache_3, hache_4, hache_5;
   switch (lvl) {
   case 1:
     ghost_enemy_1 = create_new_object('G',screen, 200, 152, 'L');
     ghost_enemy_2 = create_new_object('G',screen, 920, 130, 'L');
-    mini_champi_enemy_1 = create_new_object('C',screen, 700, 684, 'L');
-    mini_champi_enemy_2 = create_new_object('C',screen, 725, 684, 'L');
-    mini_champi_enemy_3 = create_new_object('C',screen, 750, 684, 'L');
     squarel_enemy_1 = create_new_object('S',screen, 350, 403, 'L');
     hache_1 = create_new_object('H',screen, 1024, 410, 'L');
     enemy_list = cons(ghost_enemy_1, enemy_list);
     enemy_list = cons(ghost_enemy_2, enemy_list);
-    enemy_list = cons(mini_champi_enemy_1, enemy_list);
-    enemy_list = cons(mini_champi_enemy_2, enemy_list);
-    enemy_list = cons(mini_champi_enemy_3, enemy_list);
     enemy_list = cons(squarel_enemy_1, enemy_list);
     enemy_list = cons(hache_1, enemy_list);
     break;
@@ -383,11 +377,14 @@ list_of_object lvl_gen(int lvl, SDL_Surface *screen, list_of_object enemy_list)
     enemy_list = cons(ghost_enemy_2, enemy_list);
     enemy_list = cons(ghost_enemy_3, enemy_list);
     enemy_list = cons(ghost_enemy_4, enemy_list);
+    break;
+
+  case 5:
+    //ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
+    // ghost_enemy_2 = create_new_object('G',screen, 600, 313, 'L');
+    // ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
+    // ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
+    break;
   }
- case 5:
-// ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
-// ghost_enemy_2 = create_new_object('G',screen, 600, 313, 'L');
-// ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
-// ghost_enemy_1 = create_new_object('G',screen, 334, 313, 'L');
   return enemy_list;
 }
