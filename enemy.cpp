@@ -1,13 +1,13 @@
 #include "enemy.h"
 
 /*CREATE ENEMY*/
-char dir(object_type object, char* direction, char** table);
 
-object_type create_new_object(char type, SDL_Surface *screen, float x, float y, char direction){
+object_type create_new_object(char type, SDL_Surface *screen, float x, float y, char direction, float speed){
   object_type object =(object_type)malloc(sizeof(struct object));
   SDL_Surface * temp;
   object->type = type;
   object->direction = direction;
+  object->speed = speed;
   switch (type) {
   case 'G': /*Ghost*/
     temp = SDL_LoadBMP("ghost.bmp");
@@ -23,24 +23,6 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y, 
     object->rc_image.y = 0;
     object->rc_image.w = 41;
     object->rc_image.h = 40;
-    object->speed = 0.4;
-    break;
-
-  case 'C': /*Mini-Champi*/
-    temp = SDL_LoadBMP("mini_champi.bmp");
-    object->sprite = SDL_DisplayFormat(temp);
-    SDL_FreeSurface(temp);
-    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
-    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
-    object->x = x;
-    object->y = y;
-    object->coord.x = (int)object->x;
-    object->coord.y = (int)object->y;
-    object->rc_image.x = 0;
-    object->rc_image.y = 0;
-    object->rc_image.w = 20;
-    object->rc_image.h = 20;
-    object->speed = 0.3;
     break;
 
  case 'S': /*Squarel*/
@@ -57,7 +39,6 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y, 
     object->rc_image.y = 0;
     object->rc_image.w = 37;
     object->rc_image.h = 46;
-    object->speed = 0.3;
     break;
 
  case 'H': /*Hache*/
@@ -74,7 +55,6 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y, 
     object->rc_image.y = 0;
     object->rc_image.w = 31;
     object->rc_image.h = 31;
-    object->speed = 0.7;
     break;
 
   case 'L': /*Life of the hero*/
@@ -92,6 +72,22 @@ object_type create_new_object(char type, SDL_Surface *screen, float x, float y, 
     object->rc_image.w = 25;
     object->rc_image.h = 20;
     break;
+
+    case 'P': /*Coins*/
+    temp = SDL_LoadBMP("coin.bmp");
+    object->sprite = SDL_DisplayFormat(temp);
+    SDL_FreeSurface(temp);
+    object->colorkey = SDL_MapRGB(screen->format, 150, 0, 150);
+    SDL_SetColorKey(object->sprite, SDL_SRCCOLORKEY | SDL_RLEACCEL, object->colorkey);
+    object->x = x;
+    object->y = y;
+    object->coord.x = (int)object->x;
+    object->coord.y = (int)object->y;
+    object->rc_image.x = 0;
+    object->rc_image.y = 0;
+    object->rc_image.w = 30;
+    object->rc_image.h = 29;
+    break; 
   }
   return object;
 }
@@ -112,6 +108,17 @@ list_of_object cons(object_type object, list_of_object L){
   return L1;
 }
 
+void free_list(list_of_object L)
+{
+  if(L != NULL) {
+    SDL_FreeSurface(L->first->sprite);
+    free(L->first);
+    free(L);
+    free_list(L->rest);
+
+  }
+}
+
 pt_sprite convert_enemy_type_to_pt_spite (object_type object){
   pt_sprite enemy = (pt_sprite)malloc(sizeof(struct s_sprite));
   enemy->x = object->x;
@@ -124,57 +131,69 @@ pt_sprite convert_enemy_type_to_pt_spite (object_type object){
 }
 
 
-void deplacement_object(object_type object, char* direction, char** table)
+void deplacement_object(object_type object, char* direction, char** table, int level)
 {
   pt_sprite enemy = convert_enemy_type_to_pt_spite (object);
-  if (object->type == 'C' || object->type == 'G'){
+  if (object->type == 'G'){
     if (0==collision_hero_decor(enemy, table) || 4==collision_hero_decor(enemy, table)) {
       object->y += 4.5;
     } else { /* si collision quand il marche */
       enemy->y -= 3.5; /* en le soulevant il ne touche plus le sol */
       if (0!=collision_hero_decor(enemy, table) && 4!=collision_hero_decor(enemy, table)) { /*si vrai : bloc sur le passage*/
-  	enemy->y -= 32; /* on remonte la hitbox d'un bloc */
-  	if (0==collision_hero_decor(enemy, table)|| 4==collision_hero_decor(enemy, table)) { // seulement un bloc de haut
-	  object->y -= 3.5; // dans ce cas l'ennemi peut l'escalader
+	if (level != 5) {
+	  enemy->y -= 32; /* on remonte la hitbox d'un bloc */
+	  if (0==collision_hero_decor(enemy, table)|| 4==collision_hero_decor(enemy, table)) { // seulement un bloc de haut
+	    object->y -= 3.5; // dans ce cas l'ennemi peut l'escalader
+	  }
+	} else {
+	  object->direction = inv_dir(object);
+	    }
 	}
       }
     }
+
+    enemy = NULL;
+    free(enemy);
+    switch (*direction) {
+    case 'L': /*Left*/
+      object->x -= object->speed;
+      object->coord.x = (int)object->x;
+      object->coord.y = (int)object->y;
+      object->rc_image.x = object->rc_image.x+object->rc_image.w;
+      if (object->type !='H'){
+	if (object->rc_image.x == 2 * object->rc_image.w || object->rc_image.x == 4 * object->rc_image.w){
+	  object->rc_image.x=0;
+	}
+      } else {
+	if (object->rc_image.x== 6 * object->rc_image.w){
+	  object->rc_image.x= 3 * object->rc_image.w;
+	}
+      }
+      break;
+    case 'R': /*Right*/
+      object->x += object->speed;
+      object->coord.x = (int)object->x;
+      object->coord.y = (int)object->y;
+      object->rc_image.x = object->rc_image.x + object->rc_image.w;
+      if (object->type != 'H'){
+	if (object->rc_image.x== 4 * object->rc_image.w){
+	  object->rc_image.x= 2 * object->rc_image.w;
+	}
+      } else {
+	if (object->rc_image.x== 3 * object->rc_image.w || object->rc_image.x == 6 * object->rc_image.w){
+	  object->rc_image.x= 0;
+	}
+      }
+      break;
+    }
   }
 
-  enemy = NULL;
-  free(enemy);
-  switch (*direction) {
-  case 'L': /*Left*/
-    object->x -= object->speed;
-    object->coord.x = (int)object->x;
-    object->coord.y = (int)object->y;
-    object->rc_image.x = object->rc_image.x+object->rc_image.w;
-    if (object->type !='H'){
-      if (object->rc_image.x == 2 * object->rc_image.w || object->rc_image.x == 4 * object->rc_image.w){
-	object->rc_image.x=0;
-      }
-    } else {
-      if (object->rc_image.x== 6 * object->rc_image.w){
-	object->rc_image.x= 3 * object->rc_image.w;
-      }
-    }
-    break;
-  case 'R': /*Right*/
-    object->x += object->speed;
-    object->coord.x = (int)object->x;
-    object->coord.y = (int)object->y;
-    object->rc_image.x = object->rc_image.x + object->rc_image.w;
-    if (object->type != 'H'){
-      if (object->rc_image.x== 4 * object->rc_image.w){
-	object->rc_image.x= 2 * object->rc_image.w;
-      }
-    } else {
-      if (object->rc_image.x== 3 * object->rc_image.w || object->rc_image.x == 6 * object->rc_image.w){
-	object->rc_image.x= 0;
-      }
-    }
-    break;
+char inv_dir(object_type object)
+{
+  if (object->direction == 'L') {
+    return 'R';
   }
+  return 'L';
 }
 
 char dir (pt_sprite adjacent_tile, char** table)
@@ -188,7 +207,7 @@ char dir (pt_sprite adjacent_tile, char** table)
 list_of_object spawn_life(bool item_tile, bool* void_item, list_of_object life, SDL_Surface *screen)
 {
   if(item_tile && ! *void_item) {
-    life = cons(create_new_object('L', screen, life->first->x + 30, life->first->y, 'L'), life);
+    life = cons(create_new_object('L', screen, life->first->x + 30, life->first->y, 'L', 0), life);
     *void_item = true;
   }
   return life;

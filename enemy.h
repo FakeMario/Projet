@@ -21,8 +21,7 @@
 };
 typedef struct object *object_type;
 
-
-object_type create_new_object(char type, SDL_Surface *screen, float x, float y, char direction);
+object_type create_new_object(char type, SDL_Surface *screen, float x, float y, char direction, float speed);
 
 /*LIST OF ENEMY*/
 
@@ -35,8 +34,11 @@ struct List{
 
 list_of_object create_new_list_of_object();
 list_of_object cons(object_type object, list_of_object L);
+void free_list(list_of_object L);
 pt_sprite convert_enemy_type_to_pt_spite (object_type object);
 void deplacement_object(object_type object, bool direction, char** table);
-
+char inv_dir(object_type object);
+char dir (pt_sprite adjacent_tile, char** table);
+list_of_object spawn_life(bool item_tile, bool* void_item, list_of_object life, SDL_Surface *screen);
 
 #endif

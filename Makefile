@@ -9,7 +9,7 @@
 CC = g++
 
 # define any compile-time flags
-CFLAGS = `sdl-config --cflags --libs` -g
+CFLAGS = `sdl-config --cflags --libs` -g -std=c++11
 
 #-Wall 
 
